@@ -33,10 +33,11 @@ export const state = pgEnum("state", [
 export const businesses = createTable("businesses", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
+  phoneNumber: varchar("phoneNumber", { length: 255 }).notNull(),
   streetAddress: varchar("streetAddress", { length: 255 }).notNull(),
   suburb: varchar("suburb", { length: 255 }).notNull(),
   city: varchar("city", { length: 255 }).notNull(),
-  postcode: integer("postcode").notNull(),
+  postcode: varchar("postcode", { length: 8 }).notNull(),
   state: state("state").notNull(),
 });
 
