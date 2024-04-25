@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 export const businessRegisterSchema = z.object({
-  businessName: z
+  name: z
     .string()
     .min(1, "Name is required")
     .max(255, "Name must be less that 256 characters"),
-  address: z
+  streetAddress: z
     .string()
     .min(1, "Street address is required")
     .max(255, "Invalid street address"),

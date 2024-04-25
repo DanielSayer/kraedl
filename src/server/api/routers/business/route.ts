@@ -6,7 +6,7 @@ export const businessRouter = createTRPCRouter({
   register: publicProcedure
     .input(businessRegisterSchema)
     .mutation(async ({ input }) => {
-      const result = businessManager.create(input);
+      const result = await businessManager.create(input);
       return result;
     }),
 });

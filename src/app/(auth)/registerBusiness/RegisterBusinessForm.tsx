@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { states } from "@/lib/constants/states";
 import { businessRegisterSchema } from "@/lib/validations/businesses";
 import { useRouter } from "next/navigation";
-import { Icons } from "../Icons";
+import { Icons } from "../../../components/Icons";
 import {
   Form,
   FormControl,
@@ -19,7 +19,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "../../../components/ui/form";
+import { api } from "@/trpc/react";
 
 type FormData = z.infer<typeof businessRegisterSchema>;
 
@@ -28,8 +29,8 @@ const RegisterBusinessForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(businessRegisterSchema),
     defaultValues: {
-      businessName: "",
-      address: "",
+      name: "",
+      streetAddress: "",
       suburb: "",
       city: "",
       state: "",
@@ -38,15 +39,20 @@ const RegisterBusinessForm = () => {
     },
   });
   const { errors } = form.formState;
+  const mutation = api.business.register.useMutation({
+    onError: (e) => {
+      form.setError("root", { message: e.message });
+      setIsLoading(false);
+    },
+  });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-    console.log(data);
-    const businessId = 1;
+    const { id } = await mutation.mutateAsync(data);
     setIsLoading(false);
-    router.push(`/register/${businessId}`);
+    router.push(`/register/${id}`);
   };
 
   return (
@@ -57,7 +63,7 @@ const RegisterBusinessForm = () => {
             <div className="grid gap-1">
               <FormField
                 control={form.control}
-                name="businessName"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="sr-only" htmlFor="name">
@@ -80,7 +86,7 @@ const RegisterBusinessForm = () => {
               />
               <FormField
                 control={form.control}
-                name="address"
+                name="streetAddress"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="sr-only" htmlFor="address">

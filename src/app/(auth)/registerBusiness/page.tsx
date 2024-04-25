@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import RegisterBusinessForm from "@/components/auth/RegisterBusinessForm";
+import RegisterBusinessForm from "@/app/(auth)/registerBusiness/RegisterBusinessForm";
 import { Icons } from "@/components/Icons";
 
 const Page = async () => {

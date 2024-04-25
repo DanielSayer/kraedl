@@ -7,7 +7,6 @@ import { businessRouter } from "./routers/business/route";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   business: businessRouter,
 });
 
