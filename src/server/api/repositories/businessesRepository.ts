@@ -1,5 +1,7 @@
 import { db } from "@/server/db/index";
-import { businesses } from "@/server/db/schema";
+import { businesses, users } from "@/server/db/schema";
+import { and, eq } from "drizzle-orm";
+import { single } from "../common/helperMethods/arrayHelpers";
 import type { State } from "../common/valueObjects/state";
 
 type BusinessDto = {
@@ -27,10 +29,16 @@ class BusinessesRepository {
       })
       .returning({ id: businesses.id });
 
-    if (!id[0]) {
-      throw new Error("Failed to create business");
-    }
-    return id[0];
+    return single(id);
+  }
+  async getNameById(userId: string, businessId: string) {
+    const businessInfo = await db
+      .select({ id: businesses.id, name: businesses.name })
+      .from(businesses)
+      .innerJoin(users, eq(users.businessId, businesses.id))
+      .where(and(eq(businesses.id, businessId), eq(users.id, userId)));
+
+    return single(businessInfo);
   }
 }
 

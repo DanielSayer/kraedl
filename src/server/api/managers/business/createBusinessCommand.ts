@@ -2,7 +2,7 @@ import { type State, state } from "../../common/valueObjects/state";
 import businessRepository from "../../repositories/businessesRepository";
 import type { BusinessRequest } from "../../routers/business/businessSchemas";
 
-class BusinessManager {
+class CreateBusinessCommand {
   async create(business: BusinessRequest): Promise<{ id: string }> {
     const isStateValid = state.validate(business.state);
     if (!isStateValid) {
@@ -17,5 +17,5 @@ class BusinessManager {
   }
 }
 
-const businessManager = new BusinessManager();
-export default businessManager;
+const createBusinessCommand = new CreateBusinessCommand();
+export default createBusinessCommand;
