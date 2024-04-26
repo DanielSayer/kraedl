@@ -1,6 +1,5 @@
 import { Icons } from "@/components/Icons";
-import RegisterForm from "@/components/auth/RegisterForm";
-import { db } from "@/server/db";
+import { api } from "@/trpc/server";
 import { notFound } from "next/navigation";
 
 interface RegisterAdminPageProps {
@@ -11,10 +10,10 @@ interface RegisterAdminPageProps {
 
 const Page = async ({ params }: RegisterAdminPageProps) => {
   const { businessId } = params;
-  const staffInBusiness = [1];
-  const business = { name: "gae" };
+  const staffInBusiness = await api.business.getNumberOfStaff({ businessId });
+  const business = await api.business.getById({ businessId });
 
-  if (!!staffInBusiness || !business) {
+  if (staffInBusiness !== 0 || !business) {
     notFound();
   }
 
@@ -23,14 +22,16 @@ const Page = async ({ params }: RegisterAdminPageProps) => {
       <div className="hidden h-full bg-muted lg:block" />
       <div className="lg:p-8">
         <Icons.sun className="mx-auto h-8 w-8" />
-        <h1 className="mb-6 text-center text-4xl font-semibold tracking-tight">
+        <h1 className="my-2 text-center text-2xl font-semibold tracking-tight text-accent-foreground">
           Thank you for registering{" "}
-          <span className="text-primary">{business.name}</span>
+        </h1>
+        <h1 className="mb-6 text-center text-4xl font-semibold tracking-tight">
+          {business.name}
         </h1>
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-xl text-muted-foreground">
-              Now enough about your business, let&apos;s get to know you!{" "}
+              But enough about your business, let&apos;s get to know you!{" "}
             </h1>
             <h1 className="text-2xl font-semibold tracking-tight">
               Create an account below
@@ -39,7 +40,7 @@ const Page = async ({ params }: RegisterAdminPageProps) => {
               Enter your email below to create your account
             </p>
           </div>
-          <RegisterForm businessId={businessId} />
+          {/* <RegisterForm businessId={businessId} /> */}
         </div>
       </div>
     </div>

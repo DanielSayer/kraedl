@@ -1,8 +1,8 @@
 import businessRepository from "../../repositories/businessesRepository";
 
 class GetBusinessNameQuery {
-  async get(userId: string, businessId: string) {
-    return await businessRepository.getNameById(userId, businessId);
+  async get(businessId: string) {
+    return await businessRepository.getNameById(businessId);
   }
 }
 

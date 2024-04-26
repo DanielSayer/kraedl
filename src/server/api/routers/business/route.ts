@@ -1,20 +1,20 @@
 import createBusinessCommand from "../../managers/business/createBusinessCommand";
 import { getBusinessNameQuery } from "../../managers/business/getBusinessNameQuery";
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "../../trpc";
-import { businessRegisterSchema, getByIdSchema } from "./businessSchemas";
+import { getNumberOfStaffInBusinessQuery } from "../../managers/business/getNumberOfStaffInBusinessQuery";
+import { createTRPCRouter, publicProcedure } from "../../trpc";
+import { businessRegisterSchema, idSchema } from "./businessSchemas";
 
 export const businessRouter = createTRPCRouter({
-  getById: protectedProcedure
-    .input(getByIdSchema)
-    .query(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
-      const result = await getBusinessNameQuery.get(userId, input.businessId);
-      return result;
-    }),
+  getById: publicProcedure.input(idSchema).query(async ({ input }) => {
+    const result = await getBusinessNameQuery.get(input.businessId);
+    return result;
+  }),
+  getNumberOfStaff: publicProcedure.input(idSchema).query(async ({ input }) => {
+    const result = await getNumberOfStaffInBusinessQuery.count(
+      input.businessId,
+    );
+    return result;
+  }),
   register: publicProcedure
     .input(businessRegisterSchema)
     .mutation(async ({ input }) => {

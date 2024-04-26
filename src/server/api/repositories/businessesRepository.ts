@@ -1,6 +1,6 @@
 import { db } from "@/server/db/index";
 import { businesses, users } from "@/server/db/schema";
-import { and, eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
 import type { State } from "../common/valueObjects/state";
 
@@ -31,14 +31,21 @@ class BusinessesRepository {
 
     return single(id);
   }
-  async getNameById(userId: string, businessId: string) {
+  async getNameById(businessId: string) {
     const businessInfo = await db
       .select({ id: businesses.id, name: businesses.name })
       .from(businesses)
-      .innerJoin(users, eq(users.businessId, businesses.id))
-      .where(and(eq(businesses.id, businessId), eq(users.id, userId)));
+      .where(eq(businesses.id, businessId));
 
     return single(businessInfo);
+  }
+  async getNumberOfStaff(businessId: string) {
+    const numberOfStaff = await db
+      .select({ count: count() })
+      .from(users)
+      .where(eq(users.businessId, businessId));
+
+    return single(numberOfStaff).count;
   }
 }
 

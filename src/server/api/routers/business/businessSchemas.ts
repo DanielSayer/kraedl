@@ -28,6 +28,6 @@ export const businessRegisterSchema = z.object({
 
 export type BusinessRequest = z.infer<typeof businessRegisterSchema>;
 
-export const getByIdSchema = z.object({
+export const idSchema = z.object({
   businessId: z.string(),
 });
