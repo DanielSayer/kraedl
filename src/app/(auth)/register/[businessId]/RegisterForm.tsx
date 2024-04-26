@@ -5,11 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { userRegisterSchema } from "@/lib/validations/auth";
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import LoadingButton from "@/components/LoadingButton";
 import {
   Form,
   FormControl,
@@ -18,8 +14,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Icons } from "@/components/Icons";
+import { Input } from "@/components/ui/input";
+import { userRegisterSchema } from "@/lib/validations/auth";
 import { api } from "@/trpc/react";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 type FormData = z.infer<typeof userRegisterSchema>;
 
@@ -156,12 +155,12 @@ const RegisterForm = (props: { businessId: string }) => {
                 )}
               />
             </div>
-            <Button disabled={isLoading}>
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
+            <LoadingButton
+              isLoading={isLoading}
+              loadingText="Creating account..."
+            >
               Create Account
-            </Button>
+            </LoadingButton>
             <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
           </div>
         </form>

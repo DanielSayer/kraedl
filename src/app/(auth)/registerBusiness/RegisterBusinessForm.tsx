@@ -5,13 +5,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
-import { Button } from "@/components/ui/button";
+import LoadingButton from "@/components/LoadingButton";
 import Combobox from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { states } from "@/lib/constants/states";
 import { businessRegisterSchema } from "@/lib/validations/businesses";
+import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
-import { Icons } from "../../../components/Icons";
 import {
   Form,
   FormControl,
@@ -20,7 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../../../components/ui/form";
-import { api } from "@/trpc/react";
 
 type FormData = z.infer<typeof businessRegisterSchema>;
 
@@ -224,12 +223,9 @@ const RegisterBusinessForm = () => {
                 )}
               />
             </div>
-            <Button disabled={isLoading}>
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Register Business
-            </Button>
+            <LoadingButton isLoading={isLoading} loadingText="Registering...">
+              RegisterBusiness
+            </LoadingButton>
             <FormMessage>{errors?.root?.message}</FormMessage>
           </div>
         </form>
