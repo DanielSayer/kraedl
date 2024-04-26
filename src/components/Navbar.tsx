@@ -8,6 +8,7 @@ import { buttonVariants } from "./ui/button";
 import type { Session } from "next-auth";
 import { Icons } from "./Icons";
 import { useSession } from "next-auth/react";
+import MobileNav from "./MobileNav";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -20,6 +21,7 @@ const Navbar = () => {
             <span className="flex items-center">kraedl</span>
           </Link>
 
+          <MobileNav isAuth={!!session} />
           <div className="hidden items-center space-x-4 sm:flex">
             <NavItems session={session} />
             <ThemeToggle />
