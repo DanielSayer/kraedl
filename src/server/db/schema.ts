@@ -30,6 +30,8 @@ export const state = pgEnum("state", [
   "WA",
 ]);
 
+export const role = pgEnum("role", ["ADMIN", "USER"]);
+
 export const businesses = createTable("businesses", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
@@ -41,6 +43,10 @@ export const businesses = createTable("businesses", {
   state: state("state").notNull(),
 });
 
+export const businessesRelations = relations(businesses, ({ many }) => ({
+  users: many(users),
+}));
+
 export const users = createTable("user", {
   id: uuid("id").defaultRandom().notNull().primaryKey(),
   businessId: uuid("businessId")
@@ -51,10 +57,16 @@ export const users = createTable("user", {
   emailVerified: timestamp("emailVerified", {
     mode: "date",
   }).default(sql`CURRENT_TIMESTAMP`),
+  password: varchar("password", { length: 255 }).notNull(),
+  role: role("role").notNull().default("USER"),
   image: varchar("image", { length: 255 }),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ one, many }) => ({
+  businesses: one(businesses, {
+    fields: [users.businessId],
+    references: [businesses.id],
+  }),
   accounts: many(accounts),
 }));
 

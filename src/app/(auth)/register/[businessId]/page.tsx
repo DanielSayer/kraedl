@@ -1,6 +1,7 @@
 import { Icons } from "@/components/Icons";
 import { api } from "@/trpc/server";
 import { notFound } from "next/navigation";
+import RegisterForm from "./RegisterForm";
 
 interface RegisterAdminPageProps {
   params: {
@@ -40,7 +41,7 @@ const Page = async ({ params }: RegisterAdminPageProps) => {
               Enter your email below to create your account
             </p>
           </div>
-          {/* <RegisterForm businessId={businessId} /> */}
+          <RegisterForm businessId={businessId} />
         </div>
       </div>
     </div>

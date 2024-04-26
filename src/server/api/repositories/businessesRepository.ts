@@ -47,6 +47,21 @@ class BusinessesRepository {
 
     return single(numberOfStaff).count;
   }
+  async getBusinessWithUserIds(businessId: string) {
+    const business = await db.query.businesses.findFirst({
+      where: (businesses, { eq }) => eq(businesses.id, businessId),
+      with: {
+        users: {
+          where: (users, { eq }) => eq(users.businessId, businessId),
+          columns: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    return business;
+  }
 }
 
 const businessRepository = new BusinessesRepository();
