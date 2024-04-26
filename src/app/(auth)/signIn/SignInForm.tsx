@@ -1,7 +1,7 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
@@ -15,37 +15,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { userRegisterSchema } from "@/lib/validations/auth";
-import { api } from "@/trpc/react";
+import type { userSignInSchema } from "@/lib/validations/auth";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
 
-type FormData = z.infer<typeof userRegisterSchema>;
+type FormData = z.infer<typeof userSignInSchema>;
 
-const RegisterForm = (props: { businessId: string }) => {
-  const form = useForm<FormData>({
-    resolver: zodResolver(userRegisterSchema),
-  });
+const SignInForm = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const mutation = api.auth.registerAdmin.useMutation({
-    onError: (e) => {
-      form.setError("root", { message: e.message });
-      setIsLoading(false);
-    },
-  });
+  const form = useForm<FormData>();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-    await mutation.mutateAsync({ ...data, businessId: props.businessId });
     const signInResult = await signIn("credentials", {
       ...data,
       redirect: false,
     });
     if (!signInResult?.ok || signInResult?.error) {
       form.setError("root", {
-        message: "Something went wrong, please contact support",
+        message: signInResult?.error ?? "Something went wrong",
       });
       setIsLoading(false);
       return;
@@ -59,30 +47,6 @@ const RegisterForm = (props: { businessId: string }) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-2">
             <div className="grid gap-1">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="name">
-                      Name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="name"
-                        placeholder="John Smith"
-                        type="text"
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="email"
@@ -122,30 +86,6 @@ const RegisterForm = (props: { businessId: string }) => {
                         placeholder="password"
                         type="password"
                         autoCapitalize="none"
-                        autoComplete="new-password"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="confirmPassword">
-                      Password
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="confirmPassword"
-                        placeholder="password"
-                        type="password"
-                        autoCapitalize="none"
                         autoComplete="current-password"
                         disabled={isLoading}
                         {...field}
@@ -158,11 +98,11 @@ const RegisterForm = (props: { businessId: string }) => {
             </div>
             <LoadingButton
               isLoading={isLoading}
-              loadingText="Creating account..."
+              loadingText="Signing you in..."
             >
-              Create Account
+              Sign In
             </LoadingButton>
-            <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
+            <FormMessage>{form.formState.errors.root?.message}</FormMessage>
           </div>
         </form>
       </Form>
@@ -170,4 +110,4 @@ const RegisterForm = (props: { businessId: string }) => {
   );
 };
 
-export default RegisterForm;
+export default SignInForm;

@@ -16,7 +16,7 @@ const LoadingButton = ({
   return (
     <Button disabled={isLoading || disabled} {...rest}>
       {isLoading ? (
-        <span>
+        <span className="flex items-center">
           <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
           {loadingText ?? "Loading..."}
         </span>

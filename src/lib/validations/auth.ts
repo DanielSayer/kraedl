@@ -29,3 +29,8 @@ export const userRegisterSchema = z
       path: ["confirmPassword"],
     },
   );
+
+export const userSignInSchema = z.object({
+  email: z.string(),
+  password: z.string(),
+});
