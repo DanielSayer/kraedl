@@ -6,6 +6,8 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import SessionProvider from "@/components/providers/session-provider";
+import { getServerAuthSession } from "@/server/auth";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,11 +20,12 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerAuthSession();
   return (
     <html lang="en">
       <body
@@ -38,8 +41,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
-            {children}
+            <SessionProvider session={session}>
+              <Navbar />
+              {children}
+            </SessionProvider>
           </ThemeProvider>
         </TRPCReactProvider>
       </body>

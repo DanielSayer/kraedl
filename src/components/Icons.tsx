@@ -1,5 +1,6 @@
 import {
   ArrowDown,
+  ArrowRight,
   Check,
   Laptop,
   Loader2,
@@ -10,6 +11,7 @@ import {
 
 export const Icons = {
   arrowDown: ArrowDown,
+  arrowRight: ArrowRight,
   check: Check,
   moon: Moon,
   spinner: Loader2,

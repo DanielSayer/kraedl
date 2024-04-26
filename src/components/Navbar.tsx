@@ -5,8 +5,13 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import { ThemeToggle } from "./ThemeToggle";
 import UserAccountNav from "./UserAccountNav";
 import { buttonVariants } from "./ui/button";
+import type { Session } from "next-auth";
+import { Icons } from "./Icons";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session } = useSession();
+
   return (
     <nav className="sticky inset-x-0 top-0 z-30 h-14 w-full border-b bg-background/80 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
@@ -16,25 +21,57 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden items-center space-x-4 sm:flex">
-            <Link
-              href="/dashboard"
-              className={buttonVariants({
-                variant: "ghost",
-                size: "sm",
-              })}
-            >
-              Dashboard
-            </Link>
-            <UserAccountNav
-              name={"Joe Due"}
-              email={"joedue@example.com"}
-              imageUrl={""}
-            />
+            <NavItems session={session} />
             <ThemeToggle />
           </div>
         </div>
       </MaxWidthWrapper>
     </nav>
+  );
+};
+
+const NavItems = ({ session }: { session: Session | null }) => {
+  if (!session) {
+    return (
+      <>
+        <Link
+          href={"/signIn"}
+          className={buttonVariants({
+            variant: "ghost",
+            size: "sm",
+          })}
+        >
+          Sign in
+        </Link>
+        <Link
+          href={"/registerBusiness"}
+          className={buttonVariants({
+            size: "sm",
+          })}
+        >
+          Get started <Icons.arrowRight className="ml-1.5 h-5 w-5" />
+        </Link>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Link
+        href="/dashboard"
+        className={buttonVariants({
+          variant: "ghost",
+          size: "sm",
+        })}
+      >
+        Dashboard
+      </Link>
+      <UserAccountNav
+        name={session?.user.name ?? ""}
+        email={session?.user.email ?? ""}
+        imageUrl={session?.user.image ?? ""}
+      />
+    </>
   );
 };
 
