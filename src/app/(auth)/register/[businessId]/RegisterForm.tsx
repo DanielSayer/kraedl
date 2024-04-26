@@ -40,7 +40,17 @@ const RegisterForm = (props: { businessId: string }) => {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     await mutation.mutateAsync({ ...data, businessId: props.businessId });
-
+    const signInResult = await signIn("credentials", {
+      ...data,
+      redirect: false,
+    });
+    if (!signInResult?.ok || signInResult?.error) {
+      form.setError("root", {
+        message: "Something went wrong, please contact support",
+      });
+      setIsLoading(false);
+      return;
+    }
     router.push("/dashboard");
   };
 
