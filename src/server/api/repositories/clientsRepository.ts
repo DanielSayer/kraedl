@@ -30,6 +30,11 @@ class ClientsRepository {
     });
     return client;
   }
+  async getClientsForBusiness(businessId: string) {
+    return await db.query.clients.findMany({
+      where: eq(clients.businessId, businessId),
+    });
+  }
 }
 
 const clientsRepository = new ClientsRepository();

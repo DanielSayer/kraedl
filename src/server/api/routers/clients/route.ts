@@ -1,5 +1,6 @@
 import createClientCommand from "../../managers/clients/createClientCommand";
 import getClientByIdQuery from "../../managers/clients/getClientByIdQuery";
+import getClientsForBusinessQuery from "../../managers/clients/getClientsForBusinessQuery";
 import { adminProcedure, createTRPCRouter } from "../../trpc";
 import { clientIdSchema, registerClientSchema } from "./clientsSchemas";
 
@@ -17,4 +18,8 @@ export const clientRouter = createTRPCRouter({
       const client = await getClientByIdQuery.get(input.id, businessId);
       return client;
     }),
+  getByBusiness: adminProcedure.query(async ({ ctx }) => {
+    const businessId = ctx.session.user.businessId;
+    return await getClientsForBusinessQuery.get(businessId);
+  }),
 });
