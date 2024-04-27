@@ -45,6 +45,7 @@ export const businesses = createTable("businesses", {
 
 export const businessesRelations = relations(businesses, ({ many }) => ({
   users: many(users),
+  clients: many(clients),
 }));
 
 export const users = createTable("user", {
@@ -132,3 +133,20 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
+
+export const clients = createTable("clients", {
+  id: uuid("id").defaultRandom().notNull().primaryKey(),
+  businessId: uuid("businessId")
+    .notNull()
+    .references(() => businesses.id),
+  name: varchar("name", { length: 255 }),
+  email: varchar("email", { length: 255 }).notNull(),
+  phoneNumber: varchar("phoneNumber", { length: 255 }).notNull(),
+});
+
+export const clientsRelations = relations(clients, ({ one }) => ({
+  businesses: one(businesses, {
+    fields: [clients.businessId],
+    references: [businesses.id],
+  }),
+}));

@@ -13,6 +13,8 @@ import { customerData } from "./tempData";
 import { formatLocation } from "@/lib/locationUtils";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import DialogButton from "@/components/DialogButton";
+import AddClientModalContent from "./AddClientModal";
 
 export default function Page() {
   const demoGuy = customerData[0];
@@ -21,9 +23,15 @@ export default function Page() {
     <div className="mt-4">
       <div className="mx-40 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Clients</h1>
-        <Button>
-          <Icons.add className="me-2 h-4 w-4" /> Add Client
-        </Button>
+        <DialogButton
+          buttonContent={
+            <>
+              <Icons.add className="me-2 h-4 w-4" /> Add Client
+            </>
+          }
+        >
+          <AddClientModalContent />
+        </DialogButton>
       </div>
       <div className="mt-6 grid grid-cols-4">
         <div className="col-span-3 w-full">
@@ -48,7 +56,7 @@ export default function Page() {
             </TableBody>
           </Table>
         </div>
-        <Card className="relative mt-4">
+        <Card className="relative mt-4 bg-muted">
           <Button
             variant="outline"
             className="absolute right-4 mt-4 aspect-square rounded-full px-2 text-muted-foreground"
