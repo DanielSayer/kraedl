@@ -8,14 +8,18 @@ import type * as z from "zod";
 import { EmailField, PasswordField } from "@/components/FormFields";
 import LoadingButton from "@/components/LoadingButton";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
-import type { userSignInSchema } from "@/lib/validations/auth";
+import { userSignInSchema } from "@/lib/validations/auth";
 import { signIn } from "next-auth/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type FormData = z.infer<typeof userSignInSchema>;
 
 const SignInForm = () => {
   const router = useRouter();
-  const form = useForm<FormData>();
+  const form = useForm<FormData>({
+    resolver: zodResolver(userSignInSchema),
+    defaultValues: { email: "", password: "" },
+  });
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const onSubmit = async (data: FormData) => {

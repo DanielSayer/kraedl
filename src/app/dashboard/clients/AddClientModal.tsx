@@ -12,8 +12,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormField } from "@/components/ui/form";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { registerClientSchema } from "@/lib/validations/clients";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -34,12 +35,19 @@ const AddClientModalContent = () => {
     },
   });
 
+  const mutation = api.clients.create.useMutation({
+    onError: (e) => {
+      form.setError("root", { message: e.message });
+      setIsLoading(false);
+    },
+  });
+
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     console.log(data);
-    const id = 1;
+    const { id } = await mutation.mutateAsync(data);
     setIsLoading(false);
-    router.push(`/dashboard/clients/${id}`);
+    router.push(`/clients/${id}`);
   };
 
   return (
@@ -76,6 +84,7 @@ const AddClientModalContent = () => {
                   <PhoneNumberField field={field} isLoading={isLoading} />
                 )}
               />
+              <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
             </div>
           </div>
 

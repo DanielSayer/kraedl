@@ -7,6 +7,7 @@ import { env } from "@/env";
 import { db } from "@/server/db";
 import { createTable } from "@/server/db/schema";
 import { loginQuery } from "./api/managers/auth/loginQuery";
+import type { User } from "@/types/users";
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -18,13 +19,18 @@ export const authOptions: NextAuthOptions = {
     session: ({ session, token }) => {
       if (token) {
         session.user.id = token.id;
+        session.user.businessId = token.userBusinessId;
+        session.user.role = token.userRole;
       }
       return session;
     },
     jwt: ({ token, account, user }) => {
       if (account) {
+        const dbUser = user as User;
         token.accessToken = account.access_token;
         token.id = user.id;
+        token.userBusinessId = dbUser.businessId;
+        token.userRole = dbUser.role;
       }
       return token;
     },
