@@ -5,16 +5,9 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
+import { EmailField, PasswordField } from "@/components/FormFields";
 import LoadingButton from "@/components/LoadingButton";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
 import type { userSignInSchema } from "@/lib/validations/auth";
 import { signIn } from "next-auth/react";
 
@@ -51,48 +44,14 @@ const SignInForm = () => {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="email">
-                      Email
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="email"
-                        placeholder="name@example.com"
-                        type="email"
-                        autoCapitalize="none"
-                        autoComplete="email"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <EmailField field={field} isLoading={isLoading} />
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="password">
-                      Password
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="password"
-                        placeholder="password"
-                        type="password"
-                        autoCapitalize="none"
-                        autoComplete="current-password"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <PasswordField field={field} isLoading={isLoading} />
                 )}
               />
             </div>

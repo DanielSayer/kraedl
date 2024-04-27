@@ -5,9 +5,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
+import {
+  AddressField,
+  CityField,
+  NameField,
+  PhoneNumberField,
+  PostcodeField,
+  SuburbField,
+} from "@/components/FormFields";
 import LoadingButton from "@/components/LoadingButton";
 import Combobox from "@/components/ui/combobox";
-import { Input } from "@/components/ui/input";
 import { states } from "@/lib/constants/states";
 import { businessRegisterSchema } from "@/lib/validations/businesses";
 import { api } from "@/trpc/react";
@@ -64,92 +71,46 @@ const RegisterBusinessForm = () => {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="name">
-                      Business Name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="name"
-                        placeholder="My Epic Company Name"
-                        type="text"
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <NameField
+                    isLoading={isLoading}
+                    field={field}
+                    label="Business name"
+                    placeholder="My Epic Company"
+                  />
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="streetAddress"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="address">
-                      Business street address
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="address"
-                        placeholder="street address"
-                        type="text"
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <AddressField
+                    field={field}
+                    isLoading={isLoading}
+                    label="Business street address"
+                  />
                 )}
               />
               <FormField
                 control={form.control}
                 name="suburb"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="suburb">
-                      Business Suburb
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="suburb"
-                        placeholder="suburb"
-                        type="text"
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <SuburbField
+                    field={field}
+                    isLoading={isLoading}
+                    label="Business suburb"
+                  />
                 )}
               />
               <FormField
                 control={form.control}
                 name="city"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="city">
-                      Business city
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="city"
-                        placeholder="city"
-                        type="text"
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <CityField
+                    field={field}
+                    isLoading={isLoading}
+                    label="Business city"
+                  />
                 )}
               />
               <div className="flex gap-2">
@@ -157,23 +118,11 @@ const RegisterBusinessForm = () => {
                   control={form.control}
                   name="postcode"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="sr-only" htmlFor="postcode">
-                        Business postcode
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          id="postcode"
-                          placeholder="postcode"
-                          type="text"
-                          autoCapitalize="none"
-                          autoCorrect="off"
-                          disabled={isLoading}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                    <PostcodeField
+                      field={field}
+                      isLoading={isLoading}
+                      label="Business postcode"
+                    />
                   )}
                 />
                 <FormField
@@ -203,23 +152,11 @@ const RegisterBusinessForm = () => {
                 control={form.control}
                 name="phoneNumber"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only" htmlFor="phoneNumber">
-                      Business phone number
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        id="phoneNumber"
-                        placeholder="0412 345 678"
-                        type="tel"
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <PhoneNumberField
+                    field={field}
+                    isLoading={isLoading}
+                    label="Business phone number"
+                  />
                 )}
               />
             </div>
