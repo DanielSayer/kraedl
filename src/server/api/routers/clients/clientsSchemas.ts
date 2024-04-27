@@ -17,3 +17,7 @@ export const registerClientSchema = z.object({
 });
 
 export type ClientRequest = z.infer<typeof registerClientSchema>;
+
+export const clientIdSchema = z.object({
+  id: z.string(),
+});

@@ -44,7 +44,6 @@ const AddClientModalContent = () => {
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-    console.log(data);
     const { id } = await mutation.mutateAsync(data);
     setIsLoading(false);
     router.push(`/clients/${id}`);

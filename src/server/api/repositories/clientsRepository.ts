@@ -1,6 +1,7 @@
 import { db } from "@/server/db";
 import { clients } from "@/server/db/schema";
 import { single } from "../common/helperMethods/arrayHelpers";
+import { and, eq } from "drizzle-orm";
 
 type ClientDto = {
   name: string;
@@ -22,6 +23,12 @@ class ClientsRepository {
       .returning({ id: clients.id });
 
     return single(id);
+  }
+  async getById(clientId: string, businessId: string) {
+    const client = await db.query.clients.findFirst({
+      where: and(eq(clients.id, clientId), eq(clients.businessId, businessId)),
+    });
+    return client;
   }
 }
 

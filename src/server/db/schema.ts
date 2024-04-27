@@ -139,7 +139,7 @@ export const clients = createTable("clients", {
   businessId: uuid("businessId")
     .notNull()
     .references(() => businesses.id),
-  name: varchar("name", { length: 255 }),
+  name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   phoneNumber: varchar("phoneNumber", { length: 255 }).notNull(),
 });
