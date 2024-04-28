@@ -19,7 +19,7 @@ export default async function ClientLayout({
     <div className="container grid h-[calc(100vh-56px)]">
       <div className="lg:grid lg:grid-cols-4">
         <aside className="flex flex-col border-r lg:col-span-1">
-          <Link className="mt-6 flex items-start " href="/dashboard/clients">
+          <Link className="mt-6 flex" href="/dashboard/clients">
             <Icons.back className="me-2" />
             <span className="text-muted-foreground">All Clients</span>
           </Link>
