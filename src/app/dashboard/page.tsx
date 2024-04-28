@@ -18,6 +18,15 @@ export default async function Page() {
       >
         Go to clients
       </Link>
+      <Link
+        href={"/scheduler"}
+        className={buttonVariants({
+          variant: "secondary",
+          className: "mx-auto mt-10 w-28",
+        })}
+      >
+        Go to scheduler
+      </Link>
     </div>
   );
 }

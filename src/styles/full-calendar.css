@@ -1,0 +1,100 @@
+/* Primary Button */
+
+.fc .fc-button-primary {
+  background-color: hsl(from hsl(var(--primary)) h s 60);
+  border-color: hsl(var(--primary));
+  color: hsl(var(--accent));
+}
+
+.fc .fc-button-primary:hover {
+  background-color: hsl(from hsl(var(--primary)) h s 57);
+  border-color: hsl(var(--primary));
+  color: hsl(var(--accent));
+}
+
+.fc .fc-button-primary:disabled {
+  background-color: hsl(from hsl(var(--primary)) h s 50);
+  border-color: hsl(var(--primary));
+  color: hsl(var(--accent));
+}
+
+.fc .fc-button-primary:focus {
+  box-shadow: hsl(var(--primary)) 0px 0px 0px 0.2rem;
+}
+
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: hsl(from hsl(var(--primary)) h s 55);
+  border-color: hsl(var(--primary));
+  color: hsl(var(--accent));
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus {
+  box-shadow: hsl(var(--primary)) 0px 0px 0px 0.2rem;
+}
+
+/* Primary Button Dark Mode */
+
+.dark .fc .fc-button-primary {
+  background-color: hsl(from hsl(var(--primary)) h s 60);
+  border-color: hsl(var(--primary));
+  color: hsl(var(--foreground));
+}
+
+.dark .fc .fc-button-primary:hover {
+  background-color: hsl(from hsl(var(--primary)) h s 40);
+  border-color: hsl(var(--primary));
+  color: hsl(var(--foreground));
+}
+
+.dark .fc .fc-button-primary:disabled {
+  background-color: hsl(from hsl(var(--primary)) h s 65);
+  border-color: hsl(var(--primary));
+  color: hsl(var(--foreground));
+}
+
+.dark .fc .fc-button-primary:not(:disabled):active,
+.dark .fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--foreground));
+}
+
+/* Today fills */
+
+.dark .fc .fc-daygrid-day.fc-day-today {
+  background-color: hsl(from hsl(var(--primary)) h 40 50);
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: hsl(from hsl(var(--primary)) h s 90);
+}
+
+.dark .fc .fc-timegrid-col.fc-day-today {
+  background-color: hsl(from hsl(var(--primary)) h 40 50);
+}
+
+.fc .fc-timegrid-col.fc-day-today {
+  background-color: hsl(from hsl(var(--primary)) h s 90);
+}
+
+/* Grid styles */
+
+.fc-theme-standard .fc-scrollgrid {
+  border: 1px solid hsl(var(--border));
+}
+
+.fc .fc-scrollgrid {
+  border-bottom-width: 0px;
+  border-collapse: separate;
+  border-right-width: 0px;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 1px solid hsl(var(--border));
+}
+
+.fc .fc-timegrid-slot-minor {
+  border-top-style: dashed;
+}
