@@ -48,7 +48,7 @@
 }
 
 .dark .fc .fc-button-primary:disabled {
-  background-color: hsl(from hsl(var(--primary)) h s 65);
+  background-color: hsl(var(--primary));
   border-color: hsl(var(--primary));
   color: hsl(var(--foreground));
 }
@@ -63,7 +63,7 @@
 /* Today fills */
 
 .dark .fc .fc-daygrid-day.fc-day-today {
-  background-color: hsl(from hsl(var(--primary)) h 40 50);
+  background-color: hsl(from hsl(var(--primary)) h 30 54);
 }
 
 .fc .fc-daygrid-day.fc-day-today {
@@ -71,7 +71,7 @@
 }
 
 .dark .fc .fc-timegrid-col.fc-day-today {
-  background-color: hsl(from hsl(var(--primary)) h 40 50);
+  background-color: hsl(from hsl(var(--primary)) h 30 54);
 }
 
 .fc .fc-timegrid-col.fc-day-today {
