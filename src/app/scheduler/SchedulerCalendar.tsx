@@ -1,14 +1,14 @@
 "use client";
 
-import Calendar from "@/components/Calendar";
+import Calendar, { type CalendarProps } from "@/components/Calendar";
 import useWindowSize from "@/hooks/useWindowSize";
 import { getSchedulerCalendarHeight } from "@/lib/calendarUtils";
 
-const SchedulerCalendar = () => {
+const SchedulerCalendar = (props: CalendarProps) => {
   const { height } = useWindowSize();
   const calendarHeight = getSchedulerCalendarHeight(height);
 
-  return <Calendar height={calendarHeight} />;
+  return <Calendar height={calendarHeight} nowIndicator {...props} />;
 };
 
 export default SchedulerCalendar;

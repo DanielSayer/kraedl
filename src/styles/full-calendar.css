@@ -1,19 +1,19 @@
 /* Primary Button */
 
 .fc .fc-button-primary {
-  background-color: hsl(from hsl(var(--primary)) h s 60);
-  border-color: hsl(var(--primary));
-  color: hsl(var(--accent));
+  background-color: transparent;
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
 }
 
 .fc .fc-button-primary:hover {
   background-color: hsl(from hsl(var(--primary)) h s 57);
   border-color: hsl(var(--primary));
-  color: hsl(var(--accent));
+  color: hsl(var(--foreground));
 }
 
 .fc .fc-button-primary:disabled {
-  background-color: hsl(from hsl(var(--primary)) h s 50);
+  background-color: hsl(var(--primary));
   border-color: hsl(var(--primary));
   color: hsl(var(--accent));
 }
@@ -24,7 +24,7 @@
 
 .fc .fc-button-primary:not(:disabled):active,
 .fc .fc-button-primary:not(:disabled).fc-button-active {
-  background-color: hsl(from hsl(var(--primary)) h s 55);
+  background-color: hsl(var(--primary));
   border-color: hsl(var(--primary));
   color: hsl(var(--accent));
 }
@@ -36,21 +36,21 @@
 /* Primary Button Dark Mode */
 
 .dark .fc .fc-button-primary {
-  background-color: hsl(from hsl(var(--primary)) h s 60);
-  border-color: hsl(var(--primary));
+  background-color: transparent;
+  border-color: hsl(var(--border));
   color: hsl(var(--foreground));
 }
 
 .dark .fc .fc-button-primary:hover {
-  background-color: hsl(from hsl(var(--primary)) h s 40);
+  background-color: transparent;
   border-color: hsl(var(--primary));
   color: hsl(var(--foreground));
 }
 
 .dark .fc .fc-button-primary:disabled {
-  background-color: hsl(var(--primary));
-  border-color: hsl(var(--primary));
-  color: hsl(var(--foreground));
+  background-color: hsl(var(--muted));
+  border-color: hsl(var(--border));
+  color: hsl(var(--accent-foreground));
 }
 
 .dark .fc .fc-button-primary:not(:disabled):active,
@@ -97,4 +97,16 @@
 
 .fc .fc-timegrid-slot-minor {
   border-top-style: dashed;
+}
+
+.fc .fc-timegrid-now-indicator-line,
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: hsl(var(--primary));
+}
+
+.fc-direction-ltr .fc-timegrid-now-indicator-arrow {
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  border-width: 5px 0px 5px 6px;
+  left: 0px;
 }

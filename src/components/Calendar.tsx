@@ -2,15 +2,18 @@
 
 import "@/styles/full-calendar.css";
 
-import FullCalendar from "@fullcalendar/react";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import type { CalendarOptions } from "@fullcalendar/core/index.js";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import type { CalendarOptions } from "@fullcalendar/core/index.js";
+import FullCalendar from "@fullcalendar/react";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import type { MutableRefObject } from "react";
 
-type CalendarProps = Omit<CalendarOptions, "plugins">;
+export type CalendarProps = Omit<CalendarOptions, "plugins"> & {
+  calendarRef: MutableRefObject<FullCalendar | null>;
+};
 
-const Calendar = (props: CalendarProps) => {
+const Calendar = ({ calendarRef, ...props }: CalendarProps) => {
   return (
     <FullCalendar
       {...props}
@@ -22,6 +25,7 @@ const Calendar = (props: CalendarProps) => {
         right: "dayGridMonth,timeGridWeek,timeGridDay",
       }}
       allDaySlot={false}
+      ref={calendarRef}
     />
   );
 };
