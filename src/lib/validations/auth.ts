@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 export const userRegisterSchema = z
   .object({
@@ -21,8 +21,8 @@ export const userRegisterSchema = z
     confirmPassword: z.string(),
   })
   .refine(
-    (values) => {
-      return values.password === values.confirmPassword;
+    (data: { password: string; confirmPassword: string }) => {
+      return data.password === data.confirmPassword;
     },
     {
       message: "Passwords must match!",

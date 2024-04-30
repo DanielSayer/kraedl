@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import type * as z from "zod";
+import type { z } from "zod";
 
 import { EmailField, PasswordField } from "@/components/FormFields";
 import LoadingButton from "@/components/LoadingButton";

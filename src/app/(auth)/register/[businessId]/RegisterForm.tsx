@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import type * as z from "zod";
+import type { z } from "zod";
 
 import { EmailField, NameField, PasswordField } from "@/components/FormFields";
 import LoadingButton from "@/components/LoadingButton";
