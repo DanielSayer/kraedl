@@ -39,7 +39,7 @@ const Combobox = ({
             variant="outline"
             role="combobox"
             className={cn(
-              "w-[200px] justify-between",
+              "w-full justify-between",
               !value && "text-muted-foreground",
             )}
           >
@@ -53,7 +53,7 @@ const Combobox = ({
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="min-w-1 p-0">
         <Command>
           <CommandInput
             placeholder={`Search ${description}...`}

@@ -5,6 +5,7 @@ import { Icons } from "@/components/Icons";
 import { Calendar } from "@/components/ui/calendar";
 import SchedulerCalendar from "./SchedulerCalendar";
 import useCalendar from "./useCalendar";
+import CreateEventDialog from "./CreateEventDialog";
 
 const SchedulerPage = () => {
   const { selectedDate, datesSet, handleSelectDate, calendarRef } =
@@ -22,7 +23,7 @@ const SchedulerPage = () => {
                 </>
               }
             >
-              Stuff
+              <CreateEventDialog />
             </DialogButton>
           </div>
           <Calendar
