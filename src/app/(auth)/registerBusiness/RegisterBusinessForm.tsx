@@ -27,6 +27,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../../../components/ui/form";
+import type { DropdownOption } from "@/types/components/dropdownItem";
 
 type FormData = z.infer<typeof businessRegisterSchema>;
 
@@ -135,11 +136,11 @@ const RegisterBusinessForm = () => {
                       </FormLabel>
                       <FormControl>
                         <Combobox
-                          description="state"
+                          placeholder="state"
                           options={states}
                           value={field.value}
-                          handleSelect={(value) =>
-                            form.setValue("state", value)
+                          onChange={(value: DropdownOption) =>
+                            form.setValue("state", value.value)
                           }
                         />
                       </FormControl>

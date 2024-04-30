@@ -14,10 +14,36 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createEventSchema } from "@/lib/validations/events";
+import { api } from "@/trpc/react";
+import type { DropdownOption } from "@/types/components/dropdownItem";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import type { z } from "zod";
 
+type FormData = z.infer<typeof createEventSchema>;
 const CreateEventDialog = () => {
-  const form = useForm();
+  const form = useForm<FormData>({
+    resolver: zodResolver(createEventSchema),
+    defaultValues: {
+      clientId: "",
+      date: "",
+      endTime: "",
+      startTime: "",
+    },
+  });
+
+  const { data: clients, isLoading } = api.clients.getByBusiness.useQuery();
+
+  const dropdownClients: DropdownOption[] = useMemo(() => {
+    if (!clients) return [];
+    return clients.map((c) => ({
+      value: c.id,
+      label: c.name,
+    }));
+  }, [clients]);
+
   return (
     <>
       <DialogHeader className="font-semibold">Create Event</DialogHeader>
@@ -27,7 +53,7 @@ const CreateEventDialog = () => {
             <div className="w-full">
               <FormField
                 control={form.control}
-                name="client"
+                name="clientId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="sr-only" htmlFor="client">
@@ -35,10 +61,12 @@ const CreateEventDialog = () => {
                     </FormLabel>
                     <FormControl>
                       <Combobox
-                        description="client"
-                        options={[]}
+                        isLoading={isLoading}
+                        options={dropdownClients}
                         value={field.value}
-                        handleSelect={(value) => form.setValue("client", value)}
+                        onChange={(value: DropdownOption) =>
+                          form.setValue("clientId", value.value)
+                        }
                       />
                     </FormControl>
                   </FormItem>
@@ -83,7 +111,9 @@ const CreateEventDialog = () => {
                   <FormControl>
                     <DatePicker
                       date={field.value}
-                      onChange={(date) => form.setValue("date", date)}
+                      onChange={(date) =>
+                        form.setValue("date", date.toString())
+                      }
                     />
                   </FormControl>
                 </FormItem>

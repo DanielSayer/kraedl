@@ -14,11 +14,12 @@ import {
 } from "@/components/ui/popover";
 
 type DatePickerProps = {
-  date: Date;
+  date: string | undefined;
   onChange: (date: Date) => void;
 };
 
 export function DatePicker({ date, onChange }: DatePickerProps) {
+  const selectedDate = date ? new Date(date) : undefined;
   const handleChange = (day: Date | undefined) => {
     if (!day) return;
     onChange(day);
@@ -39,7 +40,11 @@ export function DatePicker({ date, onChange }: DatePickerProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={date} onSelect={handleChange} />
+        <Calendar
+          mode="single"
+          selected={selectedDate}
+          onSelect={handleChange}
+        />
       </PopoverContent>
     </Popover>
   );

@@ -1,6 +1,6 @@
-import { type DropDownItem } from "@/types/components/dropdownItem";
+import { type DropdownOption } from "@/types/components/dropdownItem";
 
-export const states: DropDownItem[] = [
+export const states: DropdownOption[] = [
   { value: "ACT", label: "ACT" },
   { value: "NSW", label: "NSW" },
   { value: "NT", label: "NT" },
