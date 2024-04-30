@@ -1,6 +1,5 @@
 import { relations, sql } from "drizzle-orm";
 import {
-  date,
   index,
   integer,
   pgEnum,
@@ -47,6 +46,7 @@ export const businesses = createTable("businesses", {
 export const businessesRelations = relations(businesses, ({ many }) => ({
   users: many(users),
   clients: many(clients),
+  events: many(events),
 }));
 
 export const users = createTable("user", {
@@ -145,26 +145,31 @@ export const clients = createTable("clients", {
   phoneNumber: varchar("phoneNumber", { length: 255 }).notNull(),
 });
 
-export const clientsRelations = relations(clients, ({ one, many }) => ({
+export const clientsRelations = relations(clients, ({ one }) => ({
   businesses: one(businesses, {
     fields: [clients.businessId],
     references: [businesses.id],
   }),
-  events: many(events),
 }));
 
 export const events = createTable("events", {
   id: uuid("id").defaultRandom().notNull().primaryKey(),
-  clientId: uuid("clientId")
+  name: varchar("name", { length: 255 }),
+  clientId: uuid("clientId").notNull(),
+  startTime: timestamp("startTime", { mode: "string" }).notNull(),
+  endTime: timestamp("endTime", { mode: "string" }).notNull(),
+  businessId: uuid("businessId")
     .notNull()
-    .references(() => clients.id),
-  startTime: date("startTime").notNull(),
-  endTime: date("endTime").notNull(),
+    .references(() => businesses.id),
 });
 
 export const eventsRelations = relations(events, ({ one }) => ({
   clients: one(clients, {
     fields: [events.clientId],
     references: [clients.id],
+  }),
+  businesses: one(businesses, {
+    fields: [events.businessId],
+    references: [businesses.id],
   }),
 }));

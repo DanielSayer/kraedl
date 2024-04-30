@@ -1,3 +1,5 @@
+import { NameField } from "@/components/FormFields";
+import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
 import Combobox from "@/components/ui/combobox";
 import { DatePicker } from "@/components/ui/datepicker";
@@ -12,44 +14,35 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createEventSchema } from "@/lib/validations/events";
-import { api } from "@/trpc/react";
 import type { DropdownOption } from "@/types/components/dropdownItem";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
+import { format } from "date-fns";
+import useCreateEvent from "./useCreateEvent";
 
-type FormData = z.infer<typeof createEventSchema>;
 const CreateEventDialog = () => {
-  const form = useForm<FormData>({
-    resolver: zodResolver(createEventSchema),
-    defaultValues: {
-      clientId: "",
-      date: "",
-      endTime: "",
-      startTime: "",
-    },
-  });
-
-  const { data: clients, isLoading } = api.clients.getByBusiness.useQuery();
-
-  const dropdownClients: DropdownOption[] = useMemo(() => {
-    if (!clients) return [];
-    return clients.map((c) => ({
-      value: c.id,
-      label: c.name,
-    }));
-  }, [clients]);
+  const { isLoading, isCreating, form, clients, onSubmit } = useCreateEvent();
 
   return (
     <>
       <DialogHeader className="font-semibold">Create Event</DialogHeader>
       <Form {...form}>
-        <form>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4">
+            <div className="w-full">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <NameField
+                    field={field}
+                    isLoading={false}
+                    placeholder="Event Name"
+                  />
+                )}
+              />
+            </div>
             <div className="w-full">
               <FormField
                 control={form.control}
@@ -62,7 +55,7 @@ const CreateEventDialog = () => {
                     <FormControl>
                       <Combobox
                         isLoading={isLoading}
-                        options={dropdownClients}
+                        options={clients}
                         value={field.value}
                         onChange={(value: DropdownOption) =>
                           form.setValue("clientId", value.value)
@@ -83,6 +76,7 @@ const CreateEventDialog = () => {
                     <FormControl>
                       <Input id="startTime" type="time" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -112,7 +106,7 @@ const CreateEventDialog = () => {
                     <DatePicker
                       date={field.value}
                       onChange={(date) =>
-                        form.setValue("date", date.toString())
+                        form.setValue("date", format(date, "yyyy-MM-dd"))
                       }
                     />
                   </FormControl>
@@ -127,7 +121,13 @@ const CreateEventDialog = () => {
                 Close
               </Button>
             </DialogClose>
-            <Button>Submit</Button>
+            <LoadingButton
+              type="submit"
+              isLoading={isCreating}
+              loadingText="Creating..."
+            >
+              Create
+            </LoadingButton>
           </DialogFooter>
         </form>
       </Form>
