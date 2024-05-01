@@ -74,6 +74,7 @@ const CreateEventDialog = ({
                         onChange={(value: DropdownOption) =>
                           form.setValue("clientId", value.value)
                         }
+                        placeholder="Client"
                       />
                     </FormControl>
                     <FormMessage />
