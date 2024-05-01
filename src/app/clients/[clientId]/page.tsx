@@ -1,6 +1,7 @@
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import useProtectedRoute from "@/hooks/useProtectedRoute";
 import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
 import { api } from "@/trpc/server";
 
@@ -11,6 +12,7 @@ interface ClientPageProps {
 }
 
 export default async function Page({ params }: ClientPageProps) {
+  await useProtectedRoute();
   const client = await api.clients.getById({ id: params.clientId });
 
   return (
