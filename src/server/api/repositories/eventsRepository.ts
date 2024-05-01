@@ -5,8 +5,8 @@ import { single } from "../common/helperMethods/arrayHelpers";
 type EventDto = {
   name?: string;
   clientId: string;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
   businessId: string;
 };
 

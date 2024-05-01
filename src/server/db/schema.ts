@@ -156,8 +156,14 @@ export const events = createTable("events", {
   id: uuid("id").defaultRandom().notNull().primaryKey(),
   name: varchar("name", { length: 255 }),
   clientId: uuid("clientId").notNull(),
-  startTime: timestamp("startTime", { mode: "string" }).notNull(),
-  endTime: timestamp("endTime", { mode: "string" }).notNull(),
+  startTime: timestamp("startTime", {
+    mode: "date",
+    withTimezone: true,
+  }).notNull(),
+  endTime: timestamp("endTime", {
+    mode: "date",
+    withTimezone: true,
+  }).notNull(),
   businessId: uuid("businessId")
     .notNull()
     .references(() => businesses.id),

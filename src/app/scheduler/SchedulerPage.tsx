@@ -1,30 +1,38 @@
 "use client";
 
-import DialogButton from "@/components/DialogButton";
 import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import useLoadClientsOptions from "@/hooks/useLoadClientOptions";
+import { useState } from "react";
+import CreateEventDialog from "./CreateEventDialog";
 import SchedulerCalendar from "./SchedulerCalendar";
 import useCalendar from "./useCalendar";
-import CreateEventDialog from "./CreateEventDialog";
 
 const SchedulerPage = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const toggle = () => setIsOpen(!isOpen);
+  const clients = useLoadClientsOptions();
   const { selectedDate, datesSet, handleSelectDate, calendarRef } =
     useCalendar();
+
   return (
     <div className="flex gap-8">
       <div>
         <div>
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">Scheduler</h1>
-            <DialogButton
-              buttonContent={
-                <>
+            <Dialog open={isOpen} onOpenChange={toggle}>
+              <DialogTrigger asChild onClick={toggle}>
+                <Button>
                   <Icons.add className="me-2" /> Create
-                </>
-              }
-            >
-              <CreateEventDialog />
-            </DialogButton>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <CreateEventDialog {...clients} toggle={toggle} />
+              </DialogContent>
+            </Dialog>
           </div>
           <Calendar
             mode="single"

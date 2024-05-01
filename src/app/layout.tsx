@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import SessionProvider from "@/components/providers/session-provider";
 import { getServerAuthSession } from "@/server/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,6 +45,7 @@ export default async function RootLayout({
             <SessionProvider session={session}>
               <Navbar />
               {children}
+              <Toaster />
             </SessionProvider>
           </ThemeProvider>
         </TRPCReactProvider>

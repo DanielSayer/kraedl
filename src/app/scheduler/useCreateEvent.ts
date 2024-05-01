@@ -1,14 +1,18 @@
 import { createEventSchema } from "@/lib/validations/events";
 import { api } from "@/trpc/react";
-import type { DropdownOption } from "@/types/components/dropdownItem";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 type FormData = z.infer<typeof createEventSchema>;
 
-const useCreateEvent = () => {
+type UseCreateEventProps = {
+  toggle: () => void;
+};
+
+const useCreateEvent = ({ toggle }: UseCreateEventProps) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const form = useForm<FormData>({
     resolver: zodResolver(createEventSchema),
@@ -21,16 +25,16 @@ const useCreateEvent = () => {
     },
   });
 
-  const { data: clients, isLoading } = api.clients.getByBusiness.useQuery();
-  const mutation = api.events.create.useMutation();
-
-  const dropdownClients: DropdownOption[] = useMemo(() => {
-    if (!clients) return [];
-    return clients.map((c) => ({
-      value: c.id,
-      label: c.name,
-    }));
-  }, [clients]);
+  const mutation = api.events.create.useMutation({
+    onError: (error) => {
+      form.setError("root", { message: error.message });
+      setIsCreating(false);
+    },
+    onSuccess: () => {
+      toast.success("Event created");
+      toggle();
+    },
+  });
 
   const onSubmit = async (data: FormData) => {
     setIsCreating(true);
@@ -39,10 +43,8 @@ const useCreateEvent = () => {
   };
 
   return {
-    isLoading,
     isCreating,
     form,
-    clients: dropdownClients,
     onSubmit,
   };
 };

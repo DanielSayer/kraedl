@@ -22,6 +22,8 @@ export const authOptions: NextAuthOptions = {
         session.user.businessId = token.userBusinessId;
         session.user.role = token.userRole;
       }
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      session.user.timezone = timezone;
       return session;
     },
     jwt: ({ token, account, user }) => {

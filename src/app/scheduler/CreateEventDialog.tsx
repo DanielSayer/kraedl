@@ -21,15 +21,29 @@ import type { DropdownOption } from "@/types/components/dropdownItem";
 import { format } from "date-fns";
 import useCreateEvent from "./useCreateEvent";
 
-const CreateEventDialog = () => {
-  const { isLoading, isCreating, form, clients, onSubmit } = useCreateEvent();
+type CreateEventDialogProps = {
+  isLoading: boolean;
+  clients: DropdownOption[];
+  toggle: () => void;
+};
+
+const CreateEventDialog = ({
+  isLoading,
+  clients,
+  toggle,
+}: CreateEventDialogProps) => {
+  const { isCreating, form, onSubmit } = useCreateEvent({ toggle });
 
   return (
     <>
-      <DialogHeader className="font-semibold">Create Event</DialogHeader>
+      <DialogHeader className="font-semibold">
+        Create Event
+        <hr />
+      </DialogHeader>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-4">
+          <div className="grid gap-3  ">
             <div className="w-full">
               <FormField
                 control={form.control}
@@ -48,7 +62,7 @@ const CreateEventDialog = () => {
                 control={form.control}
                 name="clientId"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="space-y-0">
                     <FormLabel className="sr-only" htmlFor="client">
                       Client
                     </FormLabel>
@@ -62,6 +76,7 @@ const CreateEventDialog = () => {
                         }
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -89,6 +104,7 @@ const CreateEventDialog = () => {
                     <FormControl>
                       <Input id="startTime" type="time" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -110,10 +126,14 @@ const CreateEventDialog = () => {
                       }
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+          <FormMessage className="mt-2">
+            {form.formState.errors?.root?.message}
+          </FormMessage>
           <hr className="my-2" />
           <DialogFooter>
             <DialogClose asChild>

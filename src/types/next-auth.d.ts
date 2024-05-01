@@ -27,6 +27,7 @@ declare module "next-auth" {
       id: UserId;
       role: UserRole;
       businessId: string;
+      timezone: string;
     };
   }
 }

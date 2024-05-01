@@ -7,6 +7,7 @@ export const eventRouter = createTRPCRouter({
     .input(createEventSchema)
     .mutation(async ({ ctx, input }) => {
       const businessId = ctx.session.user.businessId;
-      return await createEventCommand(input, businessId);
+      const timezone = ctx.session.user.timezone;
+      return await createEventCommand(input, businessId, timezone);
     }),
 });

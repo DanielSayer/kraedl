@@ -33,6 +33,24 @@ const Combobox = ({ onChange, options, value, ...props }: ComboboxProps) => {
       }}
       {...props}
       value={selectedOption}
+      styles={{
+        menu: (base) => ({
+          ...base,
+          zIndex: 1000,
+        }),
+      }}
+      classNames={{
+        control: ({ isFocused }) =>
+          isFocused
+            ? "!border-input !outline-none !ring-2 !ring-ring !ring-offset-2 !ring-offset-background  "
+            : "!border-input",
+        option: ({ isSelected, isFocused }) =>
+          isSelected
+            ? "!bg-primary"
+            : isFocused
+              ? "!bg-violet-100"
+              : "active:!bg-violet-200 hover:!bg-violet-100",
+      }}
     />
   );
 };
