@@ -35,7 +35,7 @@ const UserAccountNav = ({ email, imageUrl, name }: UserAccountNavProps) => {
             ) : (
               <AvatarFallback>
                 <span className="sr-only">{name}</span>
-                <Icons.user className="text-foreground h-4 w-4" />
+                <Icons.user className="h-4 w-4 text-foreground" />
               </AvatarFallback>
             )}
           </Avatar>
@@ -46,7 +46,7 @@ const UserAccountNav = ({ email, imageUrl, name }: UserAccountNavProps) => {
           <div className="flex flex-col space-y-0.5 leading-none">
             {name && <p className="text-sm font-medium">{name}</p>}
             {email && (
-              <p className="text-foreground w-[200px] truncate text-xs">
+              <p className="w-[200px] truncate text-xs text-foreground">
                 {email}
               </p>
             )}
@@ -56,6 +56,19 @@ const UserAccountNav = ({ email, imageUrl, name }: UserAccountNavProps) => {
         <DropdownMenuItem asChild>
           <Link href="/dashboard" className="cursor-pointer hover:underline">
             Dashboard
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            href="/dashboard/clients"
+            className="cursor-pointer hover:underline"
+          >
+            Clients
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/scheduler" className="cursor-pointer hover:underline">
+            Scheduler
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

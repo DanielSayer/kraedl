@@ -27,6 +27,14 @@ export const authorizedNavOptions: NavOption[] = [
     ref: "/dashboard",
   },
   {
+    title: "Clients",
+    ref: "/dashboard/clients",
+  },
+  {
+    title: "Scheduler",
+    ref: "/scheduler",
+  },
+  {
     title: "Log out",
     ref: "/api/auth/signout",
   },
