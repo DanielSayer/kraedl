@@ -17,3 +17,10 @@ export const createEventSchema = z.object({
 });
 
 export type EventRequest = z.infer<typeof createEventSchema>;
+
+export const getEventsInRangeSchema = z.object({
+  startTime: z.string(),
+  endTime: z.string(),
+});
+
+export type GetEventsInRangeRequest = z.infer<typeof getEventsInRangeSchema>;

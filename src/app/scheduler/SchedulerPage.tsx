@@ -9,13 +9,19 @@ import { useState } from "react";
 import CreateEventDialog from "./CreateEventDialog";
 import SchedulerCalendar from "./SchedulerCalendar";
 import useCalendar from "./useCalendar";
+import { api } from "@/trpc/react";
 
 const SchedulerPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const toggle = () => setIsOpen(!isOpen);
   const clients = useLoadClientsOptions();
-  const { selectedDate, datesSet, handleSelectDate, calendarRef } =
+  const { selectedDate, datesSet, handleSelectDate, calendarRef, dateRange } =
     useCalendar();
+
+  const { data, refetch } = api.events.getInRange.useQuery({
+    startTime: dateRange.start.toString(),
+    endTime: dateRange.end.toString(),
+  });
 
   return (
     <div className="flex gap-8">
@@ -30,7 +36,11 @@ const SchedulerPage = () => {
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <CreateEventDialog {...clients} toggle={toggle} />
+                <CreateEventDialog
+                  {...clients}
+                  toggle={toggle}
+                  refetch={refetch}
+                />
               </DialogContent>
             </Dialog>
           </div>
@@ -46,6 +56,7 @@ const SchedulerPage = () => {
           calendarRef={calendarRef}
           datesSet={datesSet}
           initialDate={selectedDate}
+          events={data}
         />
       </div>
     </div>

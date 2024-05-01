@@ -17,22 +17,59 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createEventSchema } from "@/lib/validations/events";
+import { api } from "@/trpc/react";
 import type { DropdownOption } from "@/types/components/dropdownItem";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import useCreateEvent from "./useCreateEvent";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
 
+type FormData = z.infer<typeof createEventSchema>;
 type CreateEventDialogProps = {
   isLoading: boolean;
   clients: DropdownOption[];
   toggle: () => void;
+  refetch: () => void;
 };
 
 const CreateEventDialog = ({
   isLoading,
   clients,
   toggle,
+  refetch,
 }: CreateEventDialogProps) => {
-  const { isCreating, form, onSubmit } = useCreateEvent({ toggle });
+  const [isCreating, setIsCreating] = useState<boolean>(false);
+  const form = useForm<FormData>({
+    resolver: zodResolver(createEventSchema),
+    defaultValues: {
+      name: "",
+      clientId: "",
+      date: "",
+      endTime: "",
+      startTime: "",
+    },
+  });
+
+  const mutation = api.events.create.useMutation({
+    onError: (error) => {
+      form.setError("root", { message: error.message });
+      setIsCreating(false);
+    },
+    onSuccess: () => {
+      refetch();
+      toast.success("Event created");
+      toggle();
+    },
+  });
+
+  const onSubmit = async (data: FormData) => {
+    setIsCreating(true);
+    await mutation.mutateAsync({ ...data });
+    setIsCreating(false);
+  };
 
   return (
     <>
@@ -40,7 +77,6 @@ const CreateEventDialog = ({
         Create Event
         <hr />
       </DialogHeader>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-3  ">

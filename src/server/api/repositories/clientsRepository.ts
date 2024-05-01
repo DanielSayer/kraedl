@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { clients } from "@/server/db/schema";
 import { single } from "../common/helperMethods/arrayHelpers";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 type ClientDto = {
   name: string;
@@ -33,6 +33,7 @@ class ClientsRepository {
   async getClientsForBusiness(businessId: string) {
     return await db.query.clients.findMany({
       where: eq(clients.businessId, businessId),
+      orderBy: desc(clients.name),
     });
   }
 }
