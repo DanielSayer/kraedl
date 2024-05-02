@@ -30,6 +30,7 @@ const SchedulerPage = () => {
         <Calendar
           mode="single"
           selected={selectedDate}
+          month={selectedDate}
           onSelect={handleSelectDate}
         />
       </div>
