@@ -16,7 +16,7 @@ type ClientInfoProps = {
 
 const ClientPreview = ({ client }: ClientPreviewProps) => {
   return (
-    <Card className="relative mt-4 w-1/4 bg-muted">
+    <Card className="relative mt-4 hidden w-1/4 bg-muted lg:block">
       {!client ? (
         <div className="h-full">
           <div className="grid h-full place-items-center">

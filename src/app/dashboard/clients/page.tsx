@@ -11,7 +11,7 @@ export default async function Page() {
 
   return (
     <div className="mt-4 flex min-h-[calc(100vh-100px)] flex-col">
-      <div className="mx-40 flex items-center justify-between">
+      <div className="mx-6 flex items-center justify-between md:mx-40">
         <h1 className="text-2xl font-semibold">Clients</h1>
         <DialogButton
           buttonContent={
