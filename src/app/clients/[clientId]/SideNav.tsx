@@ -1,32 +1,17 @@
 "use client";
 
+import { clientNavOptions } from "@/lib/constants/ClientNavOptions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const items = [
-  {
-    label: "Profile",
-    href: "/clients/[id]",
-  },
-  {
-    label: "History",
-    href: "/clients/[id]/transactions",
-  },
-  {
-    label: "Notes",
-    href: "/clients/[id]/notes",
-  },
-];
-
-export default function SideNav() {
+export default function SideNav({ clientId }: { clientId: string }) {
   const pathname = usePathname();
-  const userId = "836ad93c-dbf4-4c86-9565-f508b9bbe5cf";
 
   return (
     <ul className="px-6 py-4">
-      {items.map((item) => {
-        const isCurrentPath = pathname === item.href.replace("[id]", userId);
+      {clientNavOptions.map((item) => {
+        const isCurrentPath = pathname === item.href.replace("[id]", clientId);
         return (
           <li
             key={item.label}
@@ -41,7 +26,7 @@ export default function SideNav() {
             <Link
               className="w-100 block"
               href={item.href}
-              as={item.href.replace("[id]", userId)}
+              as={item.href.replace("[id]", clientId)}
             >
               {item.label}
             </Link>

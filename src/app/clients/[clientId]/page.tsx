@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import useProtectedRoute from "@/hooks/useProtectedRoute";
 import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
 import { api } from "@/trpc/server";
+import { ClientHeader } from "./ClientHeader";
 
 interface ClientPageProps {
   params: {
@@ -16,8 +17,8 @@ export default async function Page({ params }: ClientPageProps) {
   const client = await api.clients.getById({ id: params.clientId });
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold">{client.name}&apos;s Profile</h1>
+    <div className="mt-4 px-2 md:p-0">
+      <ClientHeader id={client.id} title={`${client.name}'s Profile`} />
       <Card className="mt-4">
         <CardHeader>
           <div className="flex items-center justify-between font-semibold">
@@ -28,7 +29,7 @@ export default async function Page({ params }: ClientPageProps) {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="grid grid-cols-3 gap-2">
+        <CardContent className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
           <div>
             <p className="text-sm text-muted-foreground">Name</p>
             <p className="mt-2">{client.name}</p>
