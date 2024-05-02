@@ -12,9 +12,6 @@ import useCalendar from "./useCalendar";
 import { api } from "@/trpc/react";
 
 const SchedulerPage = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const toggle = () => setIsOpen(!isOpen);
-  const clients = useLoadClientsOptions();
   const { selectedDate, datesSet, handleSelectDate, calendarRef, dateRange } =
     useCalendar();
 
@@ -25,33 +22,19 @@ const SchedulerPage = () => {
 
   return (
     <div className="flex gap-8">
-      <div>
-        <div>
-          <div className="flex items-center justify-between">
-            <h1 className="text-lg font-semibold">Scheduler</h1>
-            <Dialog open={isOpen} onOpenChange={toggle}>
-              <DialogTrigger asChild onClick={toggle}>
-                <Button>
-                  <Icons.add className="me-2" /> Create
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <CreateEventDialog
-                  {...clients}
-                  toggle={toggle}
-                  refetch={refetch}
-                />
-              </DialogContent>
-            </Dialog>
-          </div>
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleSelectDate}
-          />
+      <div className="hidden lg:block">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold">Scheduler</h1>
+          <CreateEventButton refetch={refetch} />
         </div>
+        <Calendar
+          mode="single"
+          selected={selectedDate}
+          onSelect={handleSelectDate}
+        />
       </div>
       <div className="w-full">
+        <CreateEventButton refetch={refetch} className="lg:hidden" />
         <SchedulerCalendar
           calendarRef={calendarRef}
           datesSet={datesSet}
@@ -60,6 +43,37 @@ const SchedulerPage = () => {
         />
       </div>
     </div>
+  );
+};
+
+type CreateEventButtonProps = {
+  className?: string;
+  refetch: () => void;
+};
+
+const CreateEventButton = ({ refetch, className }: CreateEventButtonProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const toggle = () => setIsOpen(!isOpen);
+  const clients = useLoadClientsOptions();
+  return (
+    <Dialog open={isOpen} onOpenChange={toggle}>
+      <DialogTrigger asChild onClick={toggle}>
+        <div className={className}>
+          <Button
+            className="absolute bottom-10 right-10 z-50 aspect-square h-14 w-14 rounded-full shadow-lg md:bottom-14 md:right-14 lg:hidden"
+            size="icon"
+          >
+            <Icons.add className="h-8 w-8" />
+          </Button>
+          <Button className="hidden lg:flex">
+            <Icons.add className="me-2" /> Create
+          </Button>
+        </div>
+      </DialogTrigger>
+      <DialogContent>
+        <CreateEventDialog {...clients} toggle={toggle} refetch={refetch} />
+      </DialogContent>
+    </Dialog>
   );
 };
 

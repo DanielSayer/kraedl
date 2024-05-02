@@ -1,6 +1,6 @@
 "use client";
 
-import Calendar from "@/components/Calendar";
+import { Calendar } from "@/components/Calendar";
 import useWindowSize from "@/hooks/useWindowSize";
 import { getSchedulerCalendarHeight } from "@/lib/calendarUtils";
 import type { Event } from "@/types/events";

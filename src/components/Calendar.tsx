@@ -1,5 +1,7 @@
 "use client";
 
+import useWindowSize from "@/hooks/useWindowSize";
+import { getCalendarProps } from "@/lib/calendarUtils";
 import "@/styles/full-calendar.css";
 
 import type { CalendarOptions } from "@fullcalendar/core/index.js";
@@ -13,21 +15,25 @@ export type CalendarProps = Omit<CalendarOptions, "plugins"> & {
   calendarRef: MutableRefObject<FullCalendar | null>;
 };
 
-const Calendar = ({ calendarRef, ...props }: CalendarProps) => {
+export const Calendar = ({ calendarRef, ...props }: CalendarProps) => {
+  const { width } = useWindowSize();
+  const viewDeterministicProps = getCalendarProps(width);
+
   return (
     <FullCalendar
       {...props}
       locale="en-au"
       plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-      headerToolbar={{
-        left: "prev,next,today",
-        center: "title",
-        right: "dayGridMonth,timeGridWeek,timeGridDay",
-      }}
+      {...viewDeterministicProps}
       allDaySlot={false}
       ref={calendarRef}
+      views={{
+        timeGridThreeDay: {
+          type: "timeGrid",
+          duration: { days: 3 },
+          titleFormat: { month: "short", day: "numeric", separator: " - " },
+        },
+      }}
     />
   );
 };
-
-export default Calendar;

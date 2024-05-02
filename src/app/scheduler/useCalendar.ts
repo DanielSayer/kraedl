@@ -1,9 +1,11 @@
+import useWindowSize from "@/hooks/useWindowSize";
 import type { DateRange } from "@/types/dates";
 import type { CalendarApi, DatesSetArg } from "@fullcalendar/core/index.js";
 import type FullCalendar from "@fullcalendar/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const useCalendar = () => {
+  const { width } = useWindowSize();
   const calendarRef = useRef<FullCalendar | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [dateRange, setDateRange] = useState<DateRange>({
@@ -37,6 +39,15 @@ const useCalendar = () => {
     calendar.gotoDate(selectDate);
     setSelectedDate(selectDate);
   };
+
+  useEffect(() => {
+    const calendar = getCalendarApi();
+    if (width < 768) {
+      calendar.changeView("timeGridThreeDay");
+      return;
+    }
+    calendar.changeView("timeGridWeek");
+  }, [width]);
 
   return {
     calendarRef,
