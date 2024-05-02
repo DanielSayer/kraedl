@@ -63,7 +63,7 @@
 /* Today fills */
 
 .dark .fc .fc-daygrid-day.fc-day-today {
-  background-color: hsl(from hsl(var(--primary)) h 30 54);
+  background-color: hsl(from hsl(var(--primary)) h 50 60);
 }
 
 .fc .fc-daygrid-day.fc-day-today {
@@ -71,7 +71,7 @@
 }
 
 .dark .fc .fc-timegrid-col.fc-day-today {
-  background-color: hsl(from hsl(var(--primary)) h 30 54);
+  background-color: hsl(from hsl(var(--primary)) h 50 60);
 }
 
 .fc .fc-timegrid-col.fc-day-today {
@@ -102,6 +102,7 @@
 .fc .fc-timegrid-now-indicator-line,
 .fc .fc-timegrid-now-indicator-arrow {
   border-color: hsl(var(--primary));
+  border-width: 1.5px;
 }
 
 .fc-direction-ltr .fc-timegrid-now-indicator-arrow {

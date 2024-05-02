@@ -75,7 +75,7 @@ const CreateEventDialog = ({
     <>
       <DialogHeader className="font-semibold">
         Create Event
-        <hr />
+        <hr className="mt-2" />
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -172,7 +172,7 @@ const CreateEventDialog = ({
             {form.formState.errors?.root?.message}
           </FormMessage>
           <hr className="my-2" />
-          <DialogFooter>
+          <DialogFooter className="gap-2">
             <DialogClose asChild>
               <Button type="button" variant="secondary">
                 Close
