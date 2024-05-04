@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { clients } from "@/server/db/schema";
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, count, eq } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
 
 type ClientDto = {
@@ -35,6 +35,14 @@ class ClientsRepository {
       where: eq(clients.businessId, businessId),
       orderBy: asc(clients.name),
     });
+  }
+  async getNumberOfClientsForBusiness(businessId: string) {
+    const numberOfClients = await db
+      .select({ count: count() })
+      .from(clients)
+      .where(eq(clients.businessId, businessId));
+
+    return single(numberOfClients).count;
   }
 }
 
