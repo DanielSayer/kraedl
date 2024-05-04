@@ -8,7 +8,7 @@ const useProtectedRoute = async () => {
     redirect("/signIn");
   }
 
-  return session;
+  return { session, user: session.user };
 };
 
 export default useProtectedRoute;

@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { events } from "@/server/db/schema";
 import { single } from "../common/helperMethods/arrayHelpers";
-import { sql } from "drizzle-orm";
+import { and, eq, gt, sql } from "drizzle-orm";
 
 type EventDto = {
   name?: string;
@@ -49,6 +49,19 @@ class EventsRepository {
       OR (${events.startTime} < ${start} AND ${events.endTime} >= ${end})
       OR (${events.startTime} >= ${start} AND ${events.endTime} <= ${end})
     `)) as Event[];
+  }
+  async getUpcomingAppointments(businessId: string) {
+    return await db.query.events.findMany({
+      where: and(
+        eq(events.businessId, businessId),
+        gt(events.startTime, new Date()),
+      ),
+      limit: 5,
+      orderBy: (events, { asc }) => [asc(events.startTime)],
+      with: {
+        clients: { columns: { name: true } },
+      },
+    });
   }
 }
 

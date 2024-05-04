@@ -1,6 +1,7 @@
 import {
   ArrowDown,
   ArrowRight,
+  Calendar,
   Check,
   ChevronLeft,
   EllipsisVertical,
@@ -14,8 +15,10 @@ import {
   Pencil,
   Phone,
   Plus,
+  ReceiptText,
   Sun,
   User,
+  Users,
 } from "lucide-react";
 
 export const Icons = {
@@ -23,9 +26,11 @@ export const Icons = {
   arrowDown: ArrowDown,
   arrowRight: ArrowRight,
   back: ChevronLeft,
+  calendar: Calendar,
   check: Check,
   edit: Pencil,
   ghost: Ghost,
+  invoice: ReceiptText,
   location: MapPin,
   mail: Mail,
   menu: Menu,
@@ -36,4 +41,5 @@ export const Icons = {
   sun: Sun,
   system: Laptop,
   user: User,
+  users: Users,
 };

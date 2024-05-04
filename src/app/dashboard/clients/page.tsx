@@ -10,7 +10,7 @@ export default async function Page() {
   const clients = await api.clients.getByBusiness();
 
   return (
-    <div className="mt-4 flex min-h-[calc(100vh-100px)] flex-col">
+    <div className="container mt-4 flex min-h-[calc(100vh-100px)] flex-col p-3">
       <div className="mx-6 flex items-center justify-between md:mx-40">
         <h1 className="text-2xl font-semibold">Clients</h1>
         <DialogButton
