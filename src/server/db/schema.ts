@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  decimal,
   index,
   integer,
   pgEnum,
@@ -47,6 +48,7 @@ export const businessesRelations = relations(businesses, ({ many }) => ({
   users: many(users),
   clients: many(clients),
   events: many(events),
+  pricing: many(pricing),
 }));
 
 export const users = createTable("user", {
@@ -176,6 +178,22 @@ export const eventsRelations = relations(events, ({ one }) => ({
   }),
   businesses: one(businesses, {
     fields: [events.businessId],
+    references: [businesses.id],
+  }),
+}));
+
+export const pricing = createTable("pricing", {
+  id: uuid("id").defaultRandom().notNull().primaryKey(),
+  label: varchar("name", { length: 255 }).notNull(),
+  price: decimal("price", { precision: 2 }).notNull(),
+  businessId: uuid("businessId")
+    .notNull()
+    .references(() => businesses.id),
+});
+
+export const pricingRelations = relations(pricing, ({ one }) => ({
+  businesses: one(businesses, {
+    fields: [pricing.businessId],
     references: [businesses.id],
   }),
 }));
