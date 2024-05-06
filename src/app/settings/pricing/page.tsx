@@ -1,5 +1,4 @@
 import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
@@ -12,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/currencyUtils";
+import NewPricingPackageButton from "./NewPricingPackageButton";
 
 export default function Page() {
   return (
@@ -19,14 +19,14 @@ export default function Page() {
       <div className="text-xl">Let&apos;s look into your pricing strategy!</div>
       <RadioGroup defaultValue="set" className="mt-4 flex items-center gap-16">
         <div className="flex items-center space-x-2">
-          <Icons.info className="h-5 w-5" />
+          <Icons.info className="h-4 w-4 text-muted-foreground" />
           <RadioGroupItem value="set" id="set" />
           <Label htmlFor="set" className="text-xl">
             Set
           </Label>
         </div>
         <div className="flex items-center space-x-2">
-          <Icons.info className="h-5 w-5" />
+          <Icons.info className="h-4 w-4 text-muted-foreground" />
           <RadioGroupItem value="value" id="value" />
           <Label htmlFor="value" className="text-xl">
             Value Based
@@ -36,9 +36,7 @@ export default function Page() {
       <Separator className="my-4" />
       <h3 className="flex items-center justify-between text-2xl font-medium">
         Set Pricing Packages
-        <Button>
-          <Icons.add /> Pricing package
-        </Button>
+        <NewPricingPackageButton />
       </h3>
       <p className="mt-2 text-muted-foreground">
         The packages below are just examples, once you add one of your own these
