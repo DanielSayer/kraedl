@@ -16,6 +16,8 @@ export async function createPricingCommand(
     return Result.Failure("Price must be positive");
   }
 
+  const formattedPrice = price.toFixed(2);
+
   const trimmedName = trimString(pricing.name);
   if (trimmedName.length === 0) {
     return Result.Failure("Pricing name is required");
@@ -34,7 +36,7 @@ export async function createPricingCommand(
 
   const result = await pricingRepository.create({
     label: pricing.name,
-    price: pricing.price,
+    price: formattedPrice,
     businessId,
   });
 

@@ -185,7 +185,7 @@ export const eventsRelations = relations(events, ({ one }) => ({
 export const pricing = createTable("pricing", {
   id: uuid("id").defaultRandom().notNull().primaryKey(),
   label: varchar("name", { length: 255 }).notNull(),
-  price: decimal("price", { precision: 2 }).notNull(),
+  price: decimal("price", { precision: 12, scale: 2 }).notNull(),
   businessId: uuid("businessId")
     .notNull()
     .references(() => businesses.id),

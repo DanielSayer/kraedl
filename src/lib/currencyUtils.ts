@@ -1,7 +1,12 @@
-export function formatCurrency(amount: number) {
+export function formatCurrency(amount: string) {
   const formatter = new Intl.NumberFormat("en-AU", {
     style: "currency",
     currency: "AUD",
   });
-  return formatter.format(amount);
+
+  const currency = parseFloat(amount);
+  if (isNaN(currency)) {
+    return "---";
+  }
+  return formatter.format(currency);
 }

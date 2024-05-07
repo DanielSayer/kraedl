@@ -30,8 +30,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 
+type NewPricingPackageButtonProps = {
+  refetch: () => void;
+};
+
 type FormData = z.infer<typeof createPricingPackageSchema>;
-const NewPricingPackageButton = () => {
+const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const toggle = () => setIsOpen(!isOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const mutation = api.settings.createPricing.useMutation({
     onError: (e) => {
@@ -50,10 +56,13 @@ const NewPricingPackageButton = () => {
     await mutation.mutateAsync(data);
     toast.success(`Sucessfully created ${data.name}`);
     setIsLoading(false);
+    refetch();
+    toggle();
+    form.reset();
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={toggle}>
       <DialogTrigger asChild>
         <Button>
           <Icons.add className="me-2 h-4 w-4" /> Pricing Package
@@ -92,6 +101,7 @@ const NewPricingPackageButton = () => {
                         <Input
                           id="price"
                           type="number"
+                          step={0.01}
                           {...field}
                           defaultValue={0.0}
                           min={0}
