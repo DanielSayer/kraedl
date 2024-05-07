@@ -1,6 +1,7 @@
 import { db } from "@/server/db";
 import { pricing } from "@/server/db/schema";
 import { single } from "../common/helperMethods/arrayHelpers";
+import { eq } from "drizzle-orm";
 
 type PricingDto = {
   label: string;
@@ -9,6 +10,11 @@ type PricingDto = {
 };
 
 class PricingRepository {
+  async getByBusinessId(businessId: string) {
+    return await db.query.pricing.findMany({
+      where: eq(pricing.businessId, businessId),
+    });
+  }
   async create(req: PricingDto) {
     const id = await db
       .insert(pricing)
@@ -23,5 +29,5 @@ class PricingRepository {
   }
 }
 
-const eventsRepository = new PricingRepository();
-export default eventsRepository;
+const pricingRepository = new PricingRepository();
+export default pricingRepository;

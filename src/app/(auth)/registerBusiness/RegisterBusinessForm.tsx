@@ -45,7 +45,6 @@ const RegisterBusinessForm = () => {
       phoneNumber: "",
     },
   });
-  const { errors } = form.formState;
   const mutation = api.business.register.useMutation({
     onError: (e) => {
       form.setError("root", { message: e.message });
@@ -164,7 +163,7 @@ const RegisterBusinessForm = () => {
             <LoadingButton isLoading={isLoading} loadingText="Registering...">
               RegisterBusiness
             </LoadingButton>
-            <FormMessage>{errors?.root?.message}</FormMessage>
+            <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
           </div>
         </form>
       </Form>

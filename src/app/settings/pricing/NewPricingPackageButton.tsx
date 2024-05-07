@@ -23,23 +23,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { createPricingPackageSchema } from "@/lib/validations/settings";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 type FormData = z.infer<typeof createPricingPackageSchema>;
 const NewPricingPackageButton = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const mutation = api.settings.createPricing.useMutation({
+    onError: (e) => {
+      form.setError("root", { message: e.message });
+      setIsLoading(false);
+    },
+  });
 
   const form = useForm<FormData>({
     defaultValues: { name: "", price: "0.0" },
     resolver: zodResolver(createPricingPackageSchema),
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-    //
+    await mutation.mutateAsync(data);
+    toast.success(`Sucessfully created ${data.name}`);
     setIsLoading(false);
   };
 
@@ -73,7 +82,7 @@ const NewPricingPackageButton = () => {
                 control={form.control}
                 name="price"
                 render={({ field }) => (
-                  <FormItem className="space-y-0">
+                  <FormItem>
                     <FormLabel className="sr-only" htmlFor="price">
                       Price
                     </FormLabel>
@@ -96,6 +105,7 @@ const NewPricingPackageButton = () => {
               />
             </div>
             <Separator className="mb-2 mt-4" />
+            <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
             <DialogFooter className="gap-2">
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
