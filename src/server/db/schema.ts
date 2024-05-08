@@ -32,6 +32,7 @@ export const state = pgEnum("state", [
 ]);
 
 export const role = pgEnum("role", ["ADMIN", "USER"]);
+export const pricingModel = pgEnum("pricingModel", ["SET", "VALUE"]);
 
 export const businesses = createTable("businesses", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -42,6 +43,7 @@ export const businesses = createTable("businesses", {
   city: varchar("city", { length: 255 }).notNull(),
   postcode: varchar("postcode", { length: 8 }).notNull(),
   state: state("state").notNull(),
+  pricingModel: pricingModel("pricingModel").notNull().default("SET"),
 });
 
 export const businessesRelations = relations(businesses, ({ many }) => ({
