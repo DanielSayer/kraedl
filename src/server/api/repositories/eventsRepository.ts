@@ -75,10 +75,6 @@ class EventsRepository {
       },
     });
 
-    if (!event) {
-      throw new Error("Could not find appointment");
-    }
-
     return event;
   }
 }
