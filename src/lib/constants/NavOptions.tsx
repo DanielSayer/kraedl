@@ -35,7 +35,7 @@ export const authorizedNavOptions: NavOption[] = [
     ref: "/scheduler",
   },
   {
-    title: "Log out",
-    ref: "/api/auth/signout",
+    title: "Settings",
+    ref: "/settings",
   },
 ];

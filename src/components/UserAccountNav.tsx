@@ -10,9 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { authorizedNavOptions } from "@/lib/constants/NavOptions";
 
 interface UserAccountNavProps {
-  email: string | undefined;
+  email: string;
   imageUrl: string;
   name: string;
 }
@@ -46,31 +47,20 @@ const UserAccountNav = ({ email, imageUrl, name }: UserAccountNavProps) => {
           <div className="flex flex-col space-y-0.5 leading-none">
             {name && <p className="text-sm font-medium">{name}</p>}
             {email && (
-              <p className="w-[200px] truncate text-xs text-foreground">
+              <p className="w-[200px] truncate text-xs text-muted-foreground">
                 {email}
               </p>
             )}
           </div>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard" className="cursor-pointer hover:underline">
-            Dashboard
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link
-            href="/dashboard/clients"
-            className="cursor-pointer hover:underline"
-          >
-            Clients
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/scheduler" className="cursor-pointer hover:underline">
-            Scheduler
-          </Link>
-        </DropdownMenuItem>
+        {authorizedNavOptions.map((option) => (
+          <DropdownMenuItem asChild key={option.ref}>
+            <Link href={option.ref} className="cursor-pointer hover:underline">
+              {option.title}
+            </Link>
+          </DropdownMenuItem>
+        ))}
         <DropdownMenuSeparator />
         <DropdownMenuItem className="justify-end">
           <Link
