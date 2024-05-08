@@ -24,3 +24,7 @@ export const getEventsInRangeSchema = z.object({
 });
 
 export type GetEventsInRangeRequest = z.infer<typeof getEventsInRangeSchema>;
+
+export const getEventByIdSchema = z.object({
+  id: z.string(),
+});

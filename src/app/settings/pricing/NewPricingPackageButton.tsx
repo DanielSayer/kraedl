@@ -39,7 +39,7 @@ const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const toggle = () => setIsOpen(!isOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const mutation = api.settings.createPricing.useMutation({
+  const mutation = api.pricing.createPricing.useMutation({
     onError: (e) => {
       form.setError("root", { message: e.message });
       setIsLoading(false);

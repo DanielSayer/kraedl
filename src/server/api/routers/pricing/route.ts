@@ -1,10 +1,10 @@
 import { fromResult } from "../../common/fromResult";
-import { createPricingCommand } from "../../managers/settings/createPricingCommand";
-import { getPricingByBusinessIdQuery } from "../../managers/settings/getPricingByBusinessIdQuery";
+import { createPricingCommand } from "../../managers/pricing/createPricingCommand";
+import { getPricingByBusinessIdQuery } from "../../managers/pricing/getPricingByBusinessIdQuery";
 import { adminProcedure, createTRPCRouter } from "../../trpc";
 import { createPricingPackageSchema } from "./settingsSchemas";
 
-export const settingsRouter = createTRPCRouter({
+export const pricingRouter = createTRPCRouter({
   createPricing: adminProcedure
     .input(createPricingPackageSchema)
     .mutation(async ({ input, ctx }) => {

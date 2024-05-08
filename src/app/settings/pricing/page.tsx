@@ -22,7 +22,7 @@ export default function Page() {
     data: pricings,
     isLoading,
     refetch,
-  } = api.settings.getPricings.useQuery();
+  } = api.pricing.getPricings.useQuery();
   const isDefault = pricings?.some((x) => x.id === "1");
   return (
     <div>

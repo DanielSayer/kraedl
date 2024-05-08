@@ -63,6 +63,24 @@ class EventsRepository {
       },
     });
   }
+  async getById(eventId: string, businessId: string) {
+    const event = await db.query.events.findFirst({
+      where: and(eq(events.id, eventId), eq(events.businessId, businessId)),
+      with: {
+        clients: {
+          columns: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!event) {
+      throw new Error("Could not find appointment");
+    }
+
+    return event;
+  }
 }
 
 const eventsRepository = new EventsRepository();

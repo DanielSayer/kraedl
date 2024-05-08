@@ -2,7 +2,7 @@ import { trimString } from "../../common/helperMethods/stringHelpers";
 import Result from "../../common/result";
 import { Pricing } from "../../common/valueObjects/Pricing";
 import pricingRepository from "../../repositories/pricingRepository";
-import type { CreatePricingReq } from "../../routers/settings/settingsSchemas";
+import type { CreatePricingReq } from "../../routers/pricing/settingsSchemas";
 
 export async function createPricingCommand(
   pricingReq: CreatePricingReq,

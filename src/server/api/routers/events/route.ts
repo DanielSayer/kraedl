@@ -1,7 +1,12 @@
 import { createEventCommand } from "../../managers/events/createEventCommand";
+import { getEventById } from "../../managers/events/getEventById";
 import { getEventsInRange } from "../../managers/events/getEventsInRange";
 import { adminProcedure, createTRPCRouter } from "../../trpc";
-import { createEventSchema, getEventsInRangeSchema } from "./eventsSchemas";
+import {
+  createEventSchema,
+  getEventByIdSchema,
+  getEventsInRangeSchema,
+} from "./eventsSchemas";
 
 export const eventRouter = createTRPCRouter({
   create: adminProcedure
@@ -16,5 +21,11 @@ export const eventRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const businessId = ctx.session.user.businessId;
       return await getEventsInRange(input, businessId);
+    }),
+  getById: adminProcedure
+    .input(getEventByIdSchema)
+    .query(async ({ ctx, input }) => {
+      const businessId = ctx.session.user.businessId;
+      return await getEventById(input.id, businessId);
     }),
 });
