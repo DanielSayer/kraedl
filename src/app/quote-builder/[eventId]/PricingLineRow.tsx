@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
 import type { DropdownOption } from "@/types/components/dropdownItem";
-import type { PricingLine } from "./PricingBuilder";
+import type { PricingLine } from "./usePricingLines";
 
 type PricingLineProps = {
   priceForItem: string;

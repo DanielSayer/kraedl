@@ -11,46 +11,27 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { formatCurrency } from "@/lib/currencyUtils";
 import type { Pricing } from "@/types/pricings";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { PricingLineRow } from "./PricingLineRow";
+import usePricingLines from "./usePricingLines";
 
 type PricingBuilderProps = {
   pricings: Pricing[];
 };
-export type PricingLine = {
-  id: string;
-  pricingNameId: string;
-  quantity: string;
-};
 
 export const PricingBuilder = ({ pricings }: PricingBuilderProps) => {
-  const [pricingLines, setPricingLines] = useState<PricingLine[]>([]);
+  const {
+    pricingLines,
+    addPricingLine,
+    updatePricingLines,
+    removePricingLine,
+  } = usePricingLines();
 
   const pricingOptions = useMemo(() => {
     return pricings.map((p) => {
       return { value: p.id, label: p.label };
     });
   }, [pricings]);
-
-  const addPricingLine = () => {
-    setPricingLines((lines) => [...lines, getNewPricingLine()]);
-  };
-
-  const removePricingLine = (id: string) => {
-    const updatedPricingLines = pricingLines.filter((x) => x.id !== id);
-    setPricingLines(updatedPricingLines);
-  };
-
-  const updatePricingLines = <T extends keyof PricingLine>(
-    id: string,
-    key: T,
-    value: PricingLine[T],
-  ) => {
-    const newPricingLines = pricingLines.map((l) =>
-      l.id === id ? { ...l, [key]: value } : l,
-    );
-    setPricingLines(newPricingLines);
-  };
 
   const getPriceForItem = (selectedPriceId: string) => {
     return pricings.find((x) => x.id === selectedPriceId)?.price ?? "0";
@@ -68,14 +49,12 @@ export const PricingBuilder = ({ pricings }: PricingBuilderProps) => {
     const grandTotal = prices.reduce((c, curr) => c + curr, 0);
     return formatCurrency(grandTotal.toString());
   };
-
   return (
     <>
       <Fieldset>
         <FieldsetLegend>
           <Icons.invoice /> Pricing Builder
         </FieldsetLegend>
-
         <FieldsetContent className="grid">
           <Button className="my-4 ml-auto" onClick={addPricingLine}>
             <Icons.add className="mr-2 h-4 w-4" /> Pricing line
@@ -107,12 +86,4 @@ export const PricingBuilder = ({ pricings }: PricingBuilderProps) => {
       </div>
     </>
   );
-};
-
-const getNewPricingLine = (): PricingLine => {
-  return {
-    id: crypto.randomUUID(),
-    pricingNameId: "",
-    quantity: "1",
-  };
 };
