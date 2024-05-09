@@ -173,7 +173,7 @@ export const events = createTable("events", {
     .references(() => businesses.id),
 });
 
-export const eventsRelations = relations(events, ({ one }) => ({
+export const eventsRelations = relations(events, ({ one, many }) => ({
   clients: one(clients, {
     fields: [events.clientId],
     references: [clients.id],
@@ -182,6 +182,7 @@ export const eventsRelations = relations(events, ({ one }) => ({
     fields: [events.businessId],
     references: [businesses.id],
   }),
+  eventPricings: many(eventPricings),
 }));
 
 export const pricing = createTable("pricing", {
@@ -193,9 +194,32 @@ export const pricing = createTable("pricing", {
     .references(() => businesses.id),
 });
 
-export const pricingRelations = relations(pricing, ({ one }) => ({
+export const pricingRelations = relations(pricing, ({ one, many }) => ({
   businesses: one(businesses, {
     fields: [pricing.businessId],
     references: [businesses.id],
+  }),
+  eventPricings: many(eventPricings),
+}));
+
+export const eventPricings = createTable("eventPricings", {
+  id: uuid("id").defaultRandom().notNull().primaryKey(),
+  eventId: uuid("eventId")
+    .notNull()
+    .references(() => events.id),
+  pricingId: uuid("pricingId")
+    .notNull()
+    .references(() => pricing.id),
+  quantity: decimal("quantity", { precision: 10, scale: 1 }).notNull(),
+});
+
+export const eventPricingRelations = relations(eventPricings, ({ one }) => ({
+  events: one(events, {
+    fields: [eventPricings.eventId],
+    references: [events.id],
+  }),
+  pricing: one(pricing, {
+    fields: [eventPricings.pricingId],
+    references: [pricing.id],
   }),
 }));
