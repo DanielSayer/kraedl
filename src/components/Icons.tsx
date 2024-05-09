@@ -19,6 +19,7 @@ import {
   Plus,
   ReceiptText,
   Sun,
+  Trash,
   User,
   Users,
 } from "lucide-react";
@@ -30,6 +31,7 @@ export const Icons = {
   back: ChevronLeft,
   calendar: Calendar,
   check: Check,
+  delete: Trash,
   edit: Pencil,
   ghost: Ghost,
   info: Info,

@@ -3,6 +3,7 @@ import Select, { SingleValue } from "react-select";
 
 type SelectProps = {
   id: string;
+  className: string;
   placeholder: string;
   value: string;
   isClearable: boolean;

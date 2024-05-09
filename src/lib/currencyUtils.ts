@@ -10,3 +10,15 @@ export function formatCurrency(amount: string) {
   }
   return formatter.format(currency);
 }
+
+export function getTotalPrice(price: string, quantity: string) {
+  const priceFloat = parseFloat(price);
+  const quantityFloat = parseFloat(quantity);
+
+  if (isNaN(priceFloat) || isNaN(quantityFloat)) {
+    return "---";
+  }
+
+  const totalPrice = priceFloat * quantityFloat;
+  return formatCurrency(totalPrice.toString());
+}

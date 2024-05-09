@@ -29,11 +29,11 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
     redirect("/scheduler");
   }
   return (
-    <div className="container pt-6">
+    <div className="container mb-4 h-[calc(100vh-120px-16px)] pt-6">
       <h2 className="text-2xl font-bold tracking-tight">Quote Builder</h2>
       <p className="text-muted-foreground">Manage your event here.</p>
       <Separator className="my-2" />
-      <div className="grid gap-4">
+      <div className="grid gap-4 overflow-auto">
         <Fieldset>
           <FieldsetLegend>
             <Icons.calendar /> Event
@@ -53,12 +53,7 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
             </FieldsetContent>
           )}
         </Fieldset>
-        <Fieldset>
-          <FieldsetLegend>
-            <Icons.invoice /> Pricing Builder
-          </FieldsetLegend>
-          <PricingBuilder pricings={pricings} />
-        </Fieldset>
+        <PricingBuilder pricings={pricings} />
       </div>
     </div>
   );
