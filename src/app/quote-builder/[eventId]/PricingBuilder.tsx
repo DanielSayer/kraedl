@@ -15,6 +15,7 @@ import { useMemo } from "react";
 import { PricingLineRow } from "./PricingLineRow";
 import usePricingLines from "./usePricingLines";
 import { ErrorMessage } from "@/components/ui/errorMessage";
+import { useRouter } from "next/navigation";
 
 type PricingBuilderProps = {
   eventId: string;
@@ -42,6 +43,7 @@ export const PricingBuilder = ({
     updatePricingLines,
     removePricingLine,
   } = usePricingLines(eventId, savedPricingLines);
+  const router = useRouter();
 
   const pricingOptions = useMemo(() => {
     return pricings.map((p) => {
@@ -102,7 +104,10 @@ export const PricingBuilder = ({
         </FieldsetContent>
       </Fieldset>
       <ErrorMessage>{error}</ErrorMessage>
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
+        <Button variant="secondary" onClick={() => router.push("/scheduler")}>
+          Go back
+        </Button>
         <LoadingButton isLoading={isSaving} onClick={handleSave}>
           Save
         </LoadingButton>
