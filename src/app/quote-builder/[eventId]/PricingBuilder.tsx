@@ -9,23 +9,39 @@ import {
   FieldsetLegend,
 } from "@/components/ui/fieldset";
 import { Separator } from "@/components/ui/separator";
-import { formatCurrency } from "@/lib/currencyUtils";
+import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
 import type { Pricing } from "@/types/pricings";
 import { useMemo } from "react";
 import { PricingLineRow } from "./PricingLineRow";
 import usePricingLines from "./usePricingLines";
+import { ErrorMessage } from "@/components/ui/errorMessage";
 
 type PricingBuilderProps = {
+  eventId: string;
   pricings: Pricing[];
+  pricingLines: PricingLine[];
 };
 
-export const PricingBuilder = ({ pricings }: PricingBuilderProps) => {
+export type PricingLine = {
+  id: string;
+  pricingId: string;
+  quantity: string;
+};
+
+export const PricingBuilder = ({
+  eventId,
+  pricings,
+  pricingLines: savedPricingLines,
+}: PricingBuilderProps) => {
   const {
+    error,
+    isSaving,
     pricingLines,
+    handleSave,
     addPricingLine,
     updatePricingLines,
     removePricingLine,
-  } = usePricingLines();
+  } = usePricingLines(eventId, savedPricingLines);
 
   const pricingOptions = useMemo(() => {
     return pricings.map((p) => {
@@ -38,9 +54,13 @@ export const PricingBuilder = ({ pricings }: PricingBuilderProps) => {
   };
 
   const getQuotePrice = () => {
-    const prices = pricingLines.map((x) =>
-      parseFloat(getPriceForItem(x.pricingNameId)),
-    );
+    const prices = pricingLines.map((x) => {
+      const priceForItem = getPriceForItem(x.pricingId);
+      const totalPrice = getTotalPrice(x.quantity, priceForItem, {
+        format: false,
+      });
+      return parseFloat(totalPrice);
+    });
 
     if (prices.some((x) => isNaN(x))) {
       return "Something went wrong";
@@ -61,7 +81,7 @@ export const PricingBuilder = ({ pricings }: PricingBuilderProps) => {
           </Button>
           <div className="flex flex-col gap-4">
             {pricingLines.map((line) => {
-              const priceForItem = getPriceForItem(line.pricingNameId);
+              const priceForItem = getPriceForItem(line.pricingId);
               return (
                 <PricingLineRow
                   pricingLine={line}
@@ -81,8 +101,11 @@ export const PricingBuilder = ({ pricings }: PricingBuilderProps) => {
           </div>
         </FieldsetContent>
       </Fieldset>
+      <ErrorMessage>{error}</ErrorMessage>
       <div className="flex justify-end">
-        <LoadingButton isLoading={false}>Save</LoadingButton>
+        <LoadingButton isLoading={isSaving} onClick={handleSave}>
+          Save
+        </LoadingButton>
       </div>
     </>
   );

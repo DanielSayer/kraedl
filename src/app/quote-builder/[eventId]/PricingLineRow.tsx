@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
 import type { DropdownOption } from "@/types/components/dropdownItem";
-import type { PricingLine } from "./usePricingLines";
+import type { PricingLine } from "./PricingBuilder";
 
 type PricingLineProps = {
   priceForItem: string;
@@ -37,10 +37,10 @@ export const PricingLineRow = ({
             <Combobox
               id="pricing"
               onChange={(e) =>
-                updatePricingLines(pricingLine.id, "pricingNameId", e.value)
+                updatePricingLines(pricingLine.id, "pricingId", e.value)
               }
               options={pricingOptions}
-              value={pricingLine.pricingNameId}
+              value={pricingLine.pricingId}
             />
           </div>
           <div className="space-y-1">

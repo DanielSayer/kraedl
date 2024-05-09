@@ -11,7 +11,11 @@ export function formatCurrency(amount: string) {
   return formatter.format(currency);
 }
 
-export function getTotalPrice(price: string, quantity: string) {
+export function getTotalPrice(
+  price: string,
+  quantity: string,
+  config?: { format: boolean },
+) {
   const priceFloat = parseFloat(price);
   const quantityFloat = parseFloat(quantity);
 
@@ -20,5 +24,9 @@ export function getTotalPrice(price: string, quantity: string) {
   }
 
   const totalPrice = priceFloat * quantityFloat;
-  return formatCurrency(totalPrice.toString());
+
+  if (!config || config.format) {
+    return formatCurrency(totalPrice.toString());
+  }
+  return totalPrice.toString();
 }

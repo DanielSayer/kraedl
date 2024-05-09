@@ -1,21 +1,35 @@
 import { useState } from "react";
-
-export type PricingLine = {
-  id: string;
-  pricingNameId: string;
-  quantity: string;
-};
+import type { PricingLine } from "./PricingBuilder";
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
 
 const getNewPricingLine = (): PricingLine => {
   return {
     id: crypto.randomUUID(),
-    pricingNameId: "",
+    pricingId: "",
     quantity: "1",
   };
 };
 
-const usePricingLines = () => {
-  const [pricingLines, setPricingLines] = useState<PricingLine[]>([]);
+const usePricingLines = (eventId: string, savedPricingLines: PricingLine[]) => {
+  const [pricingLines, setPricingLines] =
+    useState<PricingLine[]>(savedPricingLines);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
+  const save = api.eventPricing.save.useMutation({
+    onError: (e) => {
+      let errorMessage = e.message;
+
+      const isZodError = !!e.shape?.data.zodError;
+      if (isZodError) {
+        errorMessage =
+          "Something went wrong, maybe you forgot to select a pricing name";
+      }
+      setError(errorMessage);
+      setIsSaving(false);
+    },
+  });
 
   const addPricingLine = () => {
     setPricingLines((lines) => [...lines, getNewPricingLine()]);
@@ -37,8 +51,18 @@ const usePricingLines = () => {
     setPricingLines(newPricingLines);
   };
 
+  const handleSave = async () => {
+    setIsSaving(true);
+    await save.mutateAsync({ eventId: eventId, eventPricings: pricingLines });
+    setIsSaving(false);
+    toast.success("Successfully saved");
+  };
+
   return {
+    error,
+    isSaving,
     pricingLines,
+    handleSave,
     addPricingLine,
     updatePricingLines,
     removePricingLine,

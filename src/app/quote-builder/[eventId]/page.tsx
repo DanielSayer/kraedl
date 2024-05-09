@@ -28,6 +28,9 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
   if (!event) {
     redirect("/scheduler");
   }
+
+  const pricingLines = await api.eventPricing.getById({ eventId: event.id });
+
   return (
     <div className="container mb-4 h-[calc(100vh-120px-16px)] pt-6">
       <h2 className="text-2xl font-bold tracking-tight">Quote Builder</h2>
@@ -53,7 +56,11 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
             </FieldsetContent>
           )}
         </Fieldset>
-        <PricingBuilder pricings={pricings} />
+        <PricingBuilder
+          pricings={pricings}
+          pricingLines={pricingLines}
+          eventId={event.id}
+        />
       </div>
     </div>
   );
