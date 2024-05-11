@@ -1,5 +1,7 @@
 import { formatCurrency } from "@/lib/currencyUtils";
-import { Card, CardContent } from "./ui/card";
+import { format } from "date-fns";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Separator } from "./ui/separator";
 import {
   Table,
   TableBody,
@@ -8,69 +10,94 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { format } from "date-fns";
-import { Separator } from "./ui/separator";
 
 export const Invoice = () => {
   return (
     <Card>
-      <CardContent>
+      <CardContent className="p-6">
         <div className="grid grid-cols-2">
           <div>
-            <h1>Invoice</h1>
+            <h1 className="text-3xl font-semibold leading-tight">Invoice</h1>
             <p className="text-muted-foreground">Invoice Number</p>
             <p>{invoiceNumber}</p>
             <p className="text-muted-foreground">Issue Date</p>
             <p>{format(invoiceDate, "dd MMM yyyy")}</p>
           </div>
-          <div>
+          <div className="flex flex-col items-end">
             <h2>{businessName}</h2>
             <p>{businessEmail}</p>
             <p>{businessPhone}</p>
             <p>{billerAddress}</p>
           </div>
         </div>
-        <Separator />
+        <Separator className="my-4" />
         <div className="grid grid-cols-2">
           <div>
             <p className="text-muted-foreground">Client</p>
             <p>{clientName}</p>
             <p>{clientEmail}</p>
           </div>
-          <div>
-            <p>Balance Due</p>
-            <h2>{grandTotal}</h2>
-            <h3>Due date: {format(dueDate, "dd MMM yyyy")}</h3>
-          </div>
+          <Card className="flex flex-col items-center p-4">
+            <p>Balance Due:</p>
+            <h2 className="text-2xl font-bold">{formatCurrency(grandTotal)}</h2>
+            <h3 className="font-semibold ">
+              Due date: {format(dueDate, "dd MMM yyyy")}
+            </h3>
+          </Card>
         </div>
-
+        <Separator className="my-4" />
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Description</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Price per</TableHead>
-              <TableHead>Total</TableHead>
+              <TableHead className="w-1/2">Description</TableHead>
+              <TableHead className="text-end">Quantity</TableHead>
+              <TableHead className="text-end">Price per</TableHead>
+              <TableHead className="text-end">Total</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {lineItems.map((d) => (
               <TableRow key={d.id}>
                 <TableCell>{d.description}</TableCell>
-                <TableCell>{d.quantity}</TableCell>
-                <TableCell>{formatCurrency(d.pricePer)}</TableCell>
-                <TableCell>{formatCurrency(d.total)}</TableCell>
+                <TableCell className="text-end">{d.quantity}</TableCell>
+                <TableCell className="text-end">
+                  {formatCurrency(d.pricePer)}
+                </TableCell>
+                <TableCell className="text-end">
+                  {formatCurrency(d.total)}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        <Separator />
-        <div>Total: {grandTotal}</div>
-        <Separator />
+        <Separator className="my-2" />
+        <div className="text-end text-lg font-bold">
+          Total: {formatCurrency(grandTotal)}
+        </div>
+        <Separator className="mb-4 mt-2" />
         <div>
-          <p>PaymentDetails</p>
-          <p>BSB: {paymentDetails.bsb}</p>
-          <p>Account: {paymentDetails.account}</p>
+          <Card>
+            <CardHeader className="space-y-0">
+              <h3 className="font-semibold">Payment Information</h3>
+              <p className="text-sm text-muted-foreground">
+                Please pay in cash or direct deposit to the details below
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="flex gap-2">
+                <div className="text-muted-foreground">
+                  <p>Account Name:</p>
+                  <p>BSB:</p>
+                  <p>Account:</p>
+                </div>
+                <div>
+                  <p>{businessName}</p>
+                  <p>{paymentDetails.bsb}</p>
+                  <p>{paymentDetails.account}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </CardContent>
     </Card>
@@ -78,7 +105,7 @@ export const Invoice = () => {
 };
 
 const invoiceNumber = "INV-001";
-const businessName = "Jims Whorehouse";
+const businessName = "Jim's Whorehouse";
 const businessEmail = "kindasus@jims.com";
 const businessPhone = "0469 420 069";
 const billerAddress = "5 Epic Street, Springfield California";
