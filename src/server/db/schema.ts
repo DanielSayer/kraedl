@@ -154,6 +154,10 @@ export const clientsRelations = relations(clients, ({ one }) => ({
     fields: [clients.businessId],
     references: [businesses.id],
   }),
+  clientAddresses: one(clientAddresses, {
+    fields: [clients.id],
+    references: [clientAddresses.clientId],
+  }),
 }));
 
 export const events = createTable("events", {
@@ -223,3 +227,25 @@ export const eventPricingRelations = relations(eventPricings, ({ one }) => ({
     references: [pricing.id],
   }),
 }));
+
+export const clientAddresses = createTable("clientAddresses", {
+  clientId: uuid("clientId")
+    .notNull()
+    .references(() => clients.id)
+    .primaryKey(),
+  streetAddress: varchar("streetAddress", { length: 255 }).notNull(),
+  suburb: varchar("suburb", { length: 255 }).notNull(),
+  city: varchar("city", { length: 255 }).notNull(),
+  postcode: varchar("postcode", { length: 8 }).notNull(),
+  state: state("state").notNull(),
+});
+
+export const clientAddressesRelations = relations(
+  clientAddresses,
+  ({ one }) => ({
+    clients: one(clients, {
+      fields: [clientAddresses.clientId],
+      references: [clients.id],
+    }),
+  }),
+);
