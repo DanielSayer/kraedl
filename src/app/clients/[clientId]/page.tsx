@@ -5,6 +5,7 @@ import useProtectedRoute from "@/hooks/useProtectedRoute";
 import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
 import { api } from "@/trpc/server";
 import { ClientHeader } from "./ClientHeader";
+import { EditAddressDialog } from "@/components/clients/EditAddressDialog";
 
 interface ClientPageProps {
   params: {
@@ -49,10 +50,7 @@ export default async function Page({ params }: ClientPageProps) {
         <CardHeader>
           <div className="flex items-center justify-between font-semibold">
             Address Information
-            <Button variant="outline" className="flex rounded-3xl">
-              <Icons.edit className="me-2 h-4 w-4" />
-              Edit
-            </Button>
+            <EditAddressDialog />
           </div>
         </CardHeader>
         <CardContent>

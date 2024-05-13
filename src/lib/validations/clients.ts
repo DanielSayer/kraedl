@@ -15,3 +15,17 @@ export const registerClientSchema = z.object({
     .min(8, "Must be a valid phone number")
     .max(15, "Must be a valid phone number"),
 });
+
+export const editClientAddressSchema = z.object({
+  streetAddress: z
+    .string()
+    .min(1, "Street address is required")
+    .max(255, "Invalid street address"),
+  suburb: z.string().min(1, "Suburb is required").max(255, "Invalid suburb"),
+  city: z.string().min(1, "City is required").max(255, "Invalid city"),
+  state: z.string().min(1, "State is required").max(255, "Invalid state"),
+  postcode: z
+    .string()
+    .min(1, "Postcode is required")
+    .max(255, "Invalid postcode"),
+});
