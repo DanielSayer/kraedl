@@ -34,11 +34,25 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Separator } from "../ui/separator";
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
 
 type FormData = z.infer<typeof editClientAddressSchema>;
 
-export const EditAddressDialog = () => {
+type EditAddressDialogProps = {
+  clientId: string;
+};
+
+export const EditAddressDialog = ({ clientId }: EditAddressDialogProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const toggle = () => setIsOpen(!isOpen);
+  const mutation = api.clients.updateClientAddress.useMutation({
+    onError: (e) => {
+      form.setError("root", { message: e.message });
+      setIsLoading(false);
+    },
+  });
   const form = useForm<FormData>({
     resolver: zodResolver(editClientAddressSchema),
     defaultValues: {
@@ -49,8 +63,17 @@ export const EditAddressDialog = () => {
       state: "",
     },
   });
+
+  const handleSubmit = async (data: FormData) => {
+    setIsLoading(true);
+    await mutation.mutateAsync({ id: clientId, ...data });
+    setIsLoading(false);
+    toast.success("Successfully updated address");
+    toggle();
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={toggle}>
       <DialogTrigger asChild>
         <Button variant="outline" className="flex rounded-3xl">
           <Icons.edit className="me-2 h-4 w-4" />
@@ -59,7 +82,7 @@ export const EditAddressDialog = () => {
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
-          <form>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
             <DialogHeader>Edit Client Address</DialogHeader>
             <div className="mt-2 grid gap-2">
               <FormField
@@ -126,6 +149,7 @@ export const EditAddressDialog = () => {
               />
             </div>
             <Separator className="my-2" />
+            <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
             <DialogFooter className="gap-2">
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
@@ -134,7 +158,7 @@ export const EditAddressDialog = () => {
               </DialogClose>
               <LoadingButton
                 type="submit"
-                isLoading={false}
+                isLoading={isLoading}
                 loadingText="Updating..."
               >
                 Update

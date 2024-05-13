@@ -50,7 +50,7 @@ export default async function Page({ params }: ClientPageProps) {
         <CardHeader>
           <div className="flex items-center justify-between font-semibold">
             Address Information
-            <EditAddressDialog />
+            <EditAddressDialog clientId={client.id} />
           </div>
         </CardHeader>
         <CardContent>
