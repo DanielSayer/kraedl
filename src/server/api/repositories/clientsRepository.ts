@@ -33,6 +33,14 @@ class ClientsRepository {
   async getClientsForBusiness(businessId: string) {
     return await db.query.clients.findMany({
       where: eq(clients.businessId, businessId),
+      with: {
+        clientAddresses: {
+          columns: {
+            streetAddress: true,
+            suburb: true,
+          },
+        },
+      },
       orderBy: asc(clients.name),
     });
   }

@@ -12,17 +12,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
-import type { Client } from "@/types/clients";
+import type { ClientWithAddress } from "@/types/clients";
 import Link from "next/link";
 import { useState } from "react";
 import ClientPreview from "./ClientPreview";
 
 type ClientViewProps = {
-  clients: Client[];
+  clients: ClientWithAddress[];
 };
 
 const ClientView = ({ clients }: ClientViewProps) => {
-  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [selectedClient, setSelectedClient] =
+    useState<ClientWithAddress | null>(null);
   return (
     <div className="mt-6 flex flex-1">
       <MobileClientsView clients={clients} />
@@ -47,7 +48,9 @@ const ClientView = ({ clients }: ClientViewProps) => {
                 <TableCell>{client.email}</TableCell>
                 <TableCell>{formatPhoneNumber(client.phoneNumber)}</TableCell>
                 <TableCell>
-                  <span className="hidden lg:inline">Coming soon!</span>
+                  <span className="hidden lg:inline">
+                    {client.clientAddresses?.suburb ?? "Not set up"}
+                  </span>
                   <Link
                     href={`/clients/${client.id}`}
                     className="inline lg:hidden"

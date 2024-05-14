@@ -4,14 +4,14 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
 import { cn } from "@/lib/utils";
-import type { Client } from "@/types/clients";
+import type { ClientWithAddress } from "@/types/clients";
 import Link from "next/link";
 
 type ClientPreviewProps = {
-  client: Client | null;
+  client: ClientWithAddress | null;
 };
 type ClientInfoProps = {
-  client: Client;
+  client: ClientWithAddress;
 };
 
 const ClientPreview = ({ client }: ClientPreviewProps) => {
@@ -34,6 +34,9 @@ const ClientPreview = ({ client }: ClientPreviewProps) => {
 };
 
 const ClientInfo = ({ client }: ClientInfoProps) => {
+  const clientAddress = client.clientAddresses
+    ? `${client.clientAddresses.streetAddress}, ${client.clientAddresses.suburb}`
+    : "Please set up address";
   return (
     <>
       <Link
@@ -66,12 +69,12 @@ const ClientInfo = ({ client }: ClientInfoProps) => {
         <hr className="my-4" />
         <span className="ms-4 flex items-center text-muted-foreground">
           <Icons.phone className="me-2" />
-          {formatPhoneNumber(client?.phoneNumber)}
+          {formatPhoneNumber(client.phoneNumber)}
         </span>
         <hr className="my-4" />
         <span className="ms-4 flex items-center text-muted-foreground">
           <Icons.location className="me-2" />
-          10 Epic Ave, Oakland
+          {clientAddress}
         </span>
         <hr className="my-4" />
 
