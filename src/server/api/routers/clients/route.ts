@@ -1,4 +1,5 @@
 import createClientCommand from "../../managers/clients/createClientCommand";
+import { getClientAddressByIdQuery } from "../../managers/clients/getClientAddressByIdQuery";
 import getClientByIdQuery from "../../managers/clients/getClientByIdQuery";
 import getClientsForBusinessQuery from "../../managers/clients/getClientsForBusinessQuery";
 import updateClientAddressCommand from "../../managers/clients/updateClientAddressCommand";
@@ -27,6 +28,12 @@ export const clientRouter = createTRPCRouter({
     const businessId = ctx.session.user.businessId;
     return await getClientsForBusinessQuery.get(businessId);
   }),
+  getClientAddress: adminProcedure
+    .input(clientIdSchema)
+    .query(async ({ ctx, input }) => {
+      const businessId = ctx.session.user.businessId;
+      return await getClientAddressByIdQuery(businessId, input.id);
+    }),
   updateClientAddress: adminProcedure
     .input(clientAddressSchema)
     .mutation(async ({ ctx, input }) => {

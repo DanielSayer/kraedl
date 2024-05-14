@@ -1,6 +1,7 @@
 import { db } from "@/server/db";
 import { clientAddresses } from "@/server/db/schema";
 import type { State } from "../common/valueObjects/state";
+import { eq } from "drizzle-orm";
 
 type ClientAddressDto = {
   clientId: string;
@@ -26,6 +27,11 @@ class ClientAddressesRepository {
           state: clientAddress.state,
         },
       });
+  }
+  async getByClientId(clientId: string) {
+    return await db.query.clientAddresses.findFirst({
+      where: eq(clientAddresses.clientId, clientId),
+    });
   }
 }
 
