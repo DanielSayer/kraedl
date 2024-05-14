@@ -1,11 +1,11 @@
 import { Icons } from "@/components/Icons";
+import { EditAddressDialog } from "@/components/clients/EditAddressDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import useProtectedRoute from "@/hooks/useProtectedRoute";
 import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
 import { api } from "@/trpc/server";
 import { ClientHeader } from "./ClientHeader";
-import { EditAddressDialog } from "@/components/clients/EditAddressDialog";
 
 interface ClientPageProps {
   params: {
@@ -16,6 +16,9 @@ interface ClientPageProps {
 export default async function Page({ params }: ClientPageProps) {
   await useProtectedRoute();
   const client = await api.clients.getById({ id: params.clientId });
+  const clientAddress = await api.clients.getClientAddress({
+    id: params.clientId,
+  });
 
   return (
     <div className="mt-4 px-2 md:p-0">
@@ -50,17 +53,48 @@ export default async function Page({ params }: ClientPageProps) {
         <CardHeader>
           <div className="flex items-center justify-between font-semibold">
             Address Information
-            <EditAddressDialog clientId={client.id} />
+            <EditAddressDialog
+              clientId={client.id}
+              clientAddress={clientAddress}
+            />
           </div>
         </CardHeader>
         <CardContent>
-          <div>
-            <p className="text-sm text-muted-foreground">Address</p>
-            <p className="mt-2">5 Very Awesome St, Testville</p>
-            <p className="mt-2">Testburb, QLD, 4000</p>
-          </div>
+          <ClientAddressBlock clientAddress={clientAddress} />
         </CardContent>
       </Card>
     </div>
   );
 }
+
+type ClientAddressBlock = {
+  clientAddress: Awaited<ReturnType<typeof api.clients.getClientAddress>>;
+};
+
+const ClientAddressBlock = ({ clientAddress }: ClientAddressBlock) => {
+  if (!clientAddress) {
+    return (
+      <div>
+        <p className="text-sm text-muted-foreground">Address</p>
+        <p className="text-sm text-muted-foreground">
+          This client does not have an address set up, once they do: it will
+          appear below, here is an example address!
+        </p>
+        <p className="mt-2">3 Generic St, Samplecity</p>
+        <p className="mt-2">QuietSuburb, SA, 1234</p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <p className="text-sm text-muted-foreground">Address</p>
+      <p className="mt-2">
+        {clientAddress.streetAddress}, {clientAddress.city}
+      </p>
+      <p className="mt-2">
+        {clientAddress.suburb}, {clientAddress.state}, {clientAddress.postcode}
+      </p>
+    </div>
+  );
+};

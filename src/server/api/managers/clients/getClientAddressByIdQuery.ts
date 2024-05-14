@@ -10,5 +10,5 @@ export async function getClientAddressByIdQuery(
     throw new Error("Unable to fetch client for update");
   }
 
-  await clientAddressesRepository.getByClientId(clientId);
+  return await clientAddressesRepository.getByClientId(clientId);
 }

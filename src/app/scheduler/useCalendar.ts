@@ -1,5 +1,5 @@
 import useWindowSize from "@/hooks/useWindowSize";
-import type { DateRange } from "@/types/dates";
+import type { DateRange } from "@/types/misc";
 import type { CalendarApi, DatesSetArg } from "@fullcalendar/core/index.js";
 import type FullCalendar from "@fullcalendar/react";
 import { useEffect, useRef, useState } from "react";

@@ -2,11 +2,11 @@
 
 import { states } from "@/lib/constants/states";
 import { editClientAddressSchema } from "@/lib/validations/clients";
-import type { DropdownOption } from "@/types/components/dropdownItem";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
+import { toast } from "sonner";
 import {
   AddressField,
   CityField,
@@ -34,16 +34,22 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Separator } from "../ui/separator";
-import { api } from "@/trpc/react";
-import { toast } from "sonner";
+
+import type { ClientAddresss } from "@/types/clients";
+import type { DropdownOption } from "@/types/components/dropdownItem";
+import type { z } from "zod";
 
 type FormData = z.infer<typeof editClientAddressSchema>;
 
 type EditAddressDialogProps = {
   clientId: string;
+  clientAddress?: ClientAddresss;
 };
 
-export const EditAddressDialog = ({ clientId }: EditAddressDialogProps) => {
+export const EditAddressDialog = ({
+  clientId,
+  clientAddress,
+}: EditAddressDialogProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -56,11 +62,11 @@ export const EditAddressDialog = ({ clientId }: EditAddressDialogProps) => {
   const form = useForm<FormData>({
     resolver: zodResolver(editClientAddressSchema),
     defaultValues: {
-      streetAddress: "",
-      suburb: "",
-      city: "",
-      postcode: "",
-      state: "",
+      streetAddress: clientAddress?.streetAddress ?? "",
+      suburb: clientAddress?.suburb ?? "",
+      city: clientAddress?.city ?? "",
+      postcode: clientAddress?.postcode ?? "",
+      state: clientAddress?.state ?? "",
     },
   });
 
