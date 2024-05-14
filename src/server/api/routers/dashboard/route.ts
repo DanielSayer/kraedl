@@ -4,11 +4,9 @@ import { adminProcedure, createTRPCRouter } from "../../trpc";
 
 export const dashboardRouter = createTRPCRouter({
   getUpcomingEvents: adminProcedure.query(async ({ ctx }) => {
-    const businessId = ctx.session.user.businessId;
-    return await getUpcomingEventsCommand(businessId);
+    return await getUpcomingEventsCommand(ctx.businessId);
   }),
   getNumberOfClientsForBusiness: adminProcedure.query(async ({ ctx }) => {
-    const businessId = ctx.session.user.businessId;
-    return await getNumberOfClientsForBusinessQuery(businessId);
+    return await getNumberOfClientsForBusinessQuery(ctx.businessId);
   }),
 });

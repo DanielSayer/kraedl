@@ -101,7 +101,8 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   }
   return next({
     ctx: {
-      // infers the `session` as non-nullable
+      userId: ctx.session.user.id,
+      businessId: ctx.session.user.businessId,
       session: { ...ctx.session, user: ctx.session.user },
     },
   });
@@ -118,6 +119,8 @@ export const adminProcedure = t.procedure.use(({ ctx, next }) => {
 
   return next({
     ctx: {
+      userId: ctx.session.user.id,
+      businessId: ctx.session.user.businessId,
       session: { ...ctx.session, user: ctx.session.user },
     },
   });

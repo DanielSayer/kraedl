@@ -14,30 +14,25 @@ export const clientRouter = createTRPCRouter({
   create: adminProcedure
     .input(registerClientSchema)
     .mutation(async ({ ctx, input }) => {
-      const businessId = ctx.session.user.businessId;
-      return await createClientCommand.create(input, businessId);
+      return await createClientCommand.create(input, ctx.businessId);
     }),
   getById: adminProcedure
     .input(clientIdSchema)
     .query(async ({ ctx, input }) => {
-      const businessId = ctx.session.user.businessId;
-      const client = await getClientByIdQuery.get(input.id, businessId);
+      const client = await getClientByIdQuery.get(input.id, ctx.businessId);
       return client;
     }),
   getByBusiness: adminProcedure.query(async ({ ctx }) => {
-    const businessId = ctx.session.user.businessId;
-    return await getClientsForBusinessQuery.get(businessId);
+    return await getClientsForBusinessQuery.get(ctx.businessId);
   }),
   getClientAddress: adminProcedure
     .input(clientIdSchema)
     .query(async ({ ctx, input }) => {
-      const businessId = ctx.session.user.businessId;
-      return await getClientAddressByIdQuery(businessId, input.id);
+      return await getClientAddressByIdQuery(input.id, ctx.businessId);
     }),
   updateClientAddress: adminProcedure
     .input(clientAddressSchema)
     .mutation(async ({ ctx, input }) => {
-      const businessId = ctx.session.user.businessId;
-      await updateClientAddressCommand.update(input, businessId);
+      await updateClientAddressCommand.update(input, ctx.businessId);
     }),
 });

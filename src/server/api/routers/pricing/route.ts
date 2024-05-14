@@ -8,12 +8,10 @@ export const pricingRouter = createTRPCRouter({
   createPricing: adminProcedure
     .input(createPricingPackageSchema)
     .mutation(async ({ input, ctx }) => {
-      const businessId = ctx.session.user.businessId;
-      const result = await createPricingCommand(input, businessId);
+      const result = await createPricingCommand(input, ctx.businessId);
       return fromResult(result);
     }),
   getPricings: adminProcedure.query(async ({ ctx }) => {
-    const businessId = ctx.session.user.businessId;
-    return await getPricingByBusinessIdQuery(businessId);
+    return await getPricingByBusinessIdQuery(ctx.businessId);
   }),
 });

@@ -12,20 +12,17 @@ export const eventRouter = createTRPCRouter({
   create: adminProcedure
     .input(createEventSchema)
     .mutation(async ({ ctx, input }) => {
-      const businessId = ctx.session.user.businessId;
       const timezone = ctx.session.user.timezone;
-      return await createEventCommand(input, businessId, timezone);
+      return await createEventCommand(input, ctx.businessId, timezone);
     }),
   getInRange: adminProcedure
     .input(getEventsInRangeSchema)
     .query(async ({ ctx, input }) => {
-      const businessId = ctx.session.user.businessId;
-      return await getEventsInRange(input, businessId);
+      return await getEventsInRange(input, ctx.businessId);
     }),
   getById: adminProcedure
     .input(getEventByIdSchema)
     .query(async ({ ctx, input }) => {
-      const businessId = ctx.session.user.businessId;
-      return await getEventById(input.id, businessId);
+      return await getEventById(input.id, ctx.businessId);
     }),
 });
