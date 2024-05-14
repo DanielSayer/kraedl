@@ -26,7 +26,7 @@ export default function Page() {
   const isDefault = pricings?.some((x) => x.id === "1");
   return (
     <div>
-      <div className="text-xl">Let&apos;s look into your pricing strategy!</div>
+      <div className="text-lg">Let&apos;s look into your pricing strategy!</div>
       <RadioGroup defaultValue="set" className="mt-4 flex items-center gap-16">
         <div className="flex items-center space-x-2">
           <Icons.info className="h-4 w-4 text-muted-foreground" />

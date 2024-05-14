@@ -38,6 +38,7 @@
     "cmdk": "^0.2.0",
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.30.10",
+    "input-otp": "^1.2.4",
     "lucide-react": "^0.372.0",
     "luxon": "^3.4.4",
     "next": "^14.2.1",

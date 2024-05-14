@@ -10,6 +10,10 @@ const sidebarNavItems = [
     title: "Pricing",
     href: "/settings/pricing",
   },
+  {
+    title: "Bank Accounts",
+    href: "/settings/bank-accounts",
+  },
 ];
 
 interface SettingsLayoutProps {
@@ -31,7 +35,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <aside className="-mx-4 border-r pr-5 lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
+          <div className="flex-1">{children}</div>
         </div>
       </div>
     </div>
