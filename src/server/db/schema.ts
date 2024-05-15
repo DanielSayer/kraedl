@@ -46,11 +46,15 @@ export const businesses = createTable("businesses", {
   pricingModel: pricingModel("pricingModel").notNull().default("SET"),
 });
 
-export const businessesRelations = relations(businesses, ({ many }) => ({
+export const businessesRelations = relations(businesses, ({ one, many }) => ({
   users: many(users),
   clients: many(clients),
   events: many(events),
   pricing: many(pricing),
+  bankAccounts: one(bankAccounts, {
+    fields: [businesses.id],
+    references: [bankAccounts.businessId],
+  }),
 }));
 
 export const users = createTable("user", {
@@ -249,3 +253,20 @@ export const clientAddressesRelations = relations(
     }),
   }),
 );
+
+export const bankAccounts = createTable("bankAccounts", {
+  businessId: uuid("businessId")
+    .notNull()
+    .references(() => businesses.id)
+    .primaryKey(),
+  accountName: varchar("accountName", { length: 255 }).notNull(),
+  bsb: varchar("bsb").notNull(),
+  accountNumber: varchar("accountNumber").notNull(),
+});
+
+export const bankAccountRelations = relations(bankAccounts, ({ one }) => ({
+  businesses: one(businesses, {
+    fields: [bankAccounts.businessId],
+    references: [businesses.id],
+  }),
+}));
