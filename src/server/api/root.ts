@@ -6,6 +6,7 @@ import { eventRouter } from "./routers/events/route";
 import { dashboardRouter } from "./routers/dashboard/route";
 import { pricingRouter } from "./routers/pricing/route";
 import { eventPricingRouter } from "./routers/eventPricing/route";
+import { bankAccountsRouter } from "./routers/bankAccounts/route";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ import { eventPricingRouter } from "./routers/eventPricing/route";
  */
 export const appRouter = createTRPCRouter({
   auth: authRouter,
+  bankAccounts: bankAccountsRouter,
   business: businessRouter,
   clients: clientRouter,
   dashboard: dashboardRouter,

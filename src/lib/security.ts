@@ -1,32 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { env } from "@/env";
-import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
+import cryptoJs from "crypto-js";
 
-export function encrypt(data: string) {
-  const iv = randomBytes(16);
-  const cipher = createCipheriv(
-    "aes-256-gcm",
-    Buffer.from(env.ENCRYPTION_KEY),
-    iv,
-  );
-  let encryptedData = cipher.update(data, "utf-8", "hex");
-  encryptedData += cipher.final("hex");
-
-  return iv.toString("hex") + ":" + encryptedData;
+export function encrypt(data: string): string {
+  return cryptoJs.AES.encrypt(data, env.ENCRYPTION_KEY).toString();
 }
 
-export function decrypt(encryptedData: string) {
-  const [ivHex, encryptedDataHex] = encryptedData.split(":");
-  if (!ivHex || !encryptedDataHex) {
-    return "";
-  }
-  const iv = Buffer.from(ivHex, "hex");
-  const decipher = createDecipheriv(
-    "aes-256-gcm",
-    Buffer.from(env.ENCRYPTION_KEY),
-    iv,
-  );
-  let decryptedData = decipher.update(encryptedDataHex, "hex", "utf-8");
-  decryptedData += decipher.final("utf-8");
-
-  return decryptedData;
+export function decrypt(encryptedData: string): string {
+  const decrypted = cryptoJs.AES.decrypt(encryptedData, env.ENCRYPTION_KEY);
+  return decrypted.toString(cryptoJs.enc.Utf8);
 }

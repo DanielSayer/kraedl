@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,22 +19,47 @@ import {
 } from "@/components/ui/input-otp";
 import { Separator } from "@/components/ui/separator";
 import { bankDetailsSchema } from "@/lib/validations/settings";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
+import type { BankAccount } from "@/types/bankAccounts";
 import type { z } from "zod";
 
-type FormData = z.infer<typeof bankDetailsSchema>;
-export const BankDetailsForm = () => {
-  const form = useForm<FormData>({ resolver: zodResolver(bankDetailsSchema) });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+type BankDetailsFormProps = {
+  bankAccount: BankAccount | undefined;
+};
 
-  const saveBankDetails = (data: FormData) => {
+type FormData = z.infer<typeof bankDetailsSchema>;
+export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const form = useForm<FormData>({
+    resolver: zodResolver(bankDetailsSchema),
+    defaultValues: {
+      accountName: bankAccount?.accountName ?? "",
+      accountNumber: bankAccount?.accountNumber ?? "",
+      bsb: bankAccount?.bsb ?? "",
+    },
+  });
+
+  const mutation = api.bankAccounts.updateBankAccountDetails.useMutation({
+    onSuccess: () => {
+      toast.success("Successfully updated bank account");
+    },
+    onError: (e) => {
+      form.setError("root", { message: e.message });
+      setIsLoading(false);
+    },
+  });
+
+  const saveBankDetails = async (data: FormData) => {
     setIsLoading(true);
-    console.log(data);
+    await mutation.mutateAsync(data);
     setIsLoading(false);
   };
+
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(saveBankDetails)}>
@@ -113,7 +139,13 @@ export const BankDetailsForm = () => {
         <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
         <div className="flex items-center justify-end gap-2">
           <Button variant="secondary">Cancel</Button>
-          <Button type="submit">Save</Button>
+          <LoadingButton
+            isLoading={isLoading}
+            loadingText="Saving..."
+            type="submit"
+          >
+            Save
+          </LoadingButton>
         </div>
       </form>
     </Form>

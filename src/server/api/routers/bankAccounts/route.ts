@@ -1,3 +1,4 @@
+import { fromResult } from "../../common/fromResult";
 import { getBankAccountQuery } from "../../managers/bankAccounts/getBankAccountQuery";
 import { updateBankAccountCommand } from "../../managers/bankAccounts/updateBankAccountCommand";
 import { adminProcedure, createTRPCRouter } from "../../trpc";
@@ -10,6 +11,7 @@ export const bankAccountsRouter = createTRPCRouter({
   updateBankAccountDetails: adminProcedure
     .input(bankDetailsSchema)
     .mutation(async ({ input, ctx }) => {
-      return await updateBankAccountCommand(input, ctx.businessId);
+      const result = await updateBankAccountCommand(input, ctx.businessId);
+      return fromResult(result);
     }),
 });

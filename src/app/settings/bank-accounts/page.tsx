@@ -1,7 +1,9 @@
 import { Separator } from "@/components/ui/separator";
 import { BankDetailsForm } from "./BankDetailsForm";
+import { api } from "@/trpc/server";
 
-export default function Page() {
+export default async function Page() {
+  const bankAccount = await api.bankAccounts.getByBusinessId();
   return (
     <div>
       <div className="text-xl">Banking Details</div>
@@ -9,7 +11,7 @@ export default function Page() {
         Bank details are encrypted and only used for displaying on invoices
       </p>
       <Separator className="mb-4 mt-2" />
-      <BankDetailsForm />
+      <BankDetailsForm bankAccount={bankAccount} />
     </div>
   );
 }
