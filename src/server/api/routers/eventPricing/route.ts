@@ -1,12 +1,13 @@
+import { eventIdSchema } from "@/lib/validations/events";
 import { fromResult } from "../../common/fromResult";
 import { getEventPricingsByEventIdQuery } from "../../managers/eventPricing/getByEventIdQuery";
 import { saveEventPricingsCommand } from "../../managers/eventPricing/saveEventPricingsCommand";
 import { adminProcedure, createTRPCRouter } from "../../trpc";
-import { eventIdSchema, saveEventPricingsSchema } from "./eventPricingSchemas";
+import { saveEventPricingsSchema } from "@/lib/validations/eventPricing";
 
 export const eventPricingRouter = createTRPCRouter({
   getById: adminProcedure.input(eventIdSchema).query(async ({ input }) => {
-    return await getEventPricingsByEventIdQuery(input.eventId);
+    return await getEventPricingsByEventIdQuery(input.id);
   }),
   save: adminProcedure
     .input(saveEventPricingsSchema)

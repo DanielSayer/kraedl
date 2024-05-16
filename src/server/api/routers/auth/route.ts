@@ -1,10 +1,10 @@
+import { userRegisterSchema } from "@/lib/validations/auth";
 import registerAdminCommand from "../../managers/auth/registerAdminCommand";
 import { createTRPCRouter, publicProcedure } from "../../trpc";
-import { userAuthSchema } from "./authSchemas";
 
 export const authRouter = createTRPCRouter({
   registerAdmin: publicProcedure
-    .input(userAuthSchema)
+    .input(userRegisterSchema)
     .mutation(async ({ input }) => {
       await registerAdminCommand.register(input);
     }),

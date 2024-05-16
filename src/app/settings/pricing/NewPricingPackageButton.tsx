@@ -22,12 +22,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { createPricingPackageSchema } from "@/lib/validations/settings";
+import { createPricingPackageSchema } from "@/lib/validations/pricing";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
 import type { z } from "zod";
 
 type NewPricingPackageButtonProps = {

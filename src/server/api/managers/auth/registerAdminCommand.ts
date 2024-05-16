@@ -1,8 +1,12 @@
 import { TRPCClientError } from "@trpc/client";
-import businessRepository from "../../repositories/businessesRepository";
-import type { AdminRequest } from "../../routers/auth/authSchemas";
-import { usersRepository } from "../../repositories/userRepository";
 import { hash } from "bcryptjs";
+import businessRepository from "../../repositories/businessesRepository";
+import { usersRepository } from "../../repositories/userRepository";
+
+import type { userRegisterSchema } from "@/lib/validations/auth";
+import type { z } from "zod";
+
+type AdminRequest = z.infer<typeof userRegisterSchema>;
 
 class RegisterAdminCommand {
   async register(user: AdminRequest): Promise<void> {

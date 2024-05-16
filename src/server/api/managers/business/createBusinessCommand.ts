@@ -1,6 +1,9 @@
+import type { z } from "zod";
 import { type State, state } from "../../common/valueObjects/state";
 import businessRepository from "../../repositories/businessesRepository";
-import type { BusinessRequest } from "../../routers/business/businessSchemas";
+import type { businessRegisterSchema } from "@/lib/validations/businesses";
+
+type BusinessRequest = z.infer<typeof businessRegisterSchema>;
 
 class CreateBusinessCommand {
   async create(business: BusinessRequest): Promise<{ id: string }> {

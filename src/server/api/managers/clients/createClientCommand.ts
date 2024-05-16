@@ -1,5 +1,8 @@
+import type { z } from "zod";
 import clientsRepository from "../../repositories/clientsRepository";
-import type { ClientRequest } from "../../routers/clients/clientsSchemas";
+import type { registerClientSchema } from "@/lib/validations/clients";
+
+type ClientRequest = z.infer<typeof registerClientSchema>;
 
 class CreateClientCommand {
   async create(client: ClientRequest, businessId: string) {

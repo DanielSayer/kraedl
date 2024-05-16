@@ -17,6 +17,7 @@ export const registerClientSchema = z.object({
 });
 
 export const editClientAddressSchema = z.object({
+  id: z.string().min(1, "Something went wrong"),
   streetAddress: z
     .string()
     .min(1, "Street address is required")
@@ -26,6 +27,10 @@ export const editClientAddressSchema = z.object({
   state: z.string().min(1, "State is required").max(255, "Invalid state"),
   postcode: z
     .string()
-    .min(1, "Postcode is required")
-    .max(255, "Invalid postcode"),
+    .min(4, "Postcode is required")
+    .max(4, "Invalid postcode"),
+});
+
+export const clientIdSchema = z.object({
+  id: z.string(),
 });

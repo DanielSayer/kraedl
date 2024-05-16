@@ -18,6 +18,13 @@ type FormData = z.infer<typeof userRegisterSchema>;
 const RegisterForm = (props: { businessId: string }) => {
   const form = useForm<FormData>({
     resolver: zodResolver(userRegisterSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      businessId: props.businessId,
+    },
   });
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,7 +38,7 @@ const RegisterForm = (props: { businessId: string }) => {
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-    await mutation.mutateAsync({ ...data, businessId: props.businessId });
+    await mutation.mutateAsync(data);
     const signInResult = await signIn("credentials", {
       ...data,
       redirect: false,

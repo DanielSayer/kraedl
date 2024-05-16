@@ -14,8 +14,8 @@ export const businessRegisterSchema = z.object({
   state: z.string().min(1, "State is required").max(255, "Invalid state"),
   postcode: z
     .string()
-    .min(1, "Postcode is required")
-    .max(255, "Invalid postcode"),
+    .min(4, "Postcode is required")
+    .max(4, "Invalid postcode"),
   phoneNumber: z
     .string()
     .regex(
@@ -24,4 +24,8 @@ export const businessRegisterSchema = z.object({
     )
     .min(8, "Must be a valid phone number")
     .max(15, "Must be a valid phone number"),
+});
+
+export const businessIdSchema = z.object({
+  businessId: z.string(),
 });

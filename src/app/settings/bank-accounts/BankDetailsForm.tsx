@@ -18,7 +18,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Separator } from "@/components/ui/separator";
-import { bankDetailsSchema } from "@/lib/validations/settings";
+import { bankDetailsSchema } from "@/lib/validations/bankAccounts";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";

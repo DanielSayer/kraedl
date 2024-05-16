@@ -2,7 +2,11 @@ import { trimString } from "../../common/helperMethods/stringHelpers";
 import Result from "../../common/result";
 import { Pricing } from "../../common/valueObjects/Pricing";
 import pricingRepository from "../../repositories/pricingRepository";
-import type { CreatePricingReq } from "../../routers/pricing/settingsSchemas";
+
+import type { createPricingPackageSchema } from "@/lib/validations/pricing";
+import type { z } from "zod";
+
+type CreatePricingReq = z.infer<typeof createPricingPackageSchema>;
 
 export async function createPricingCommand(
   pricingReq: CreatePricingReq,

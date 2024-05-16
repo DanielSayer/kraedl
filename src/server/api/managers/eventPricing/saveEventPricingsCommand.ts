@@ -1,6 +1,9 @@
+import type { z } from "zod";
 import Result from "../../common/result";
 import eventPricingRepository from "../../repositories/eventPricingRepository";
-import type { SaveEventPricingsRequest } from "../../routers/eventPricing/eventPricingSchemas";
+import type { saveEventPricingsSchema } from "@/lib/validations/eventPricing";
+
+type SaveEventPricingsRequest = z.infer<typeof saveEventPricingsSchema>;
 
 export async function saveEventPricingsCommand(
   req: SaveEventPricingsRequest,

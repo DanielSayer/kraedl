@@ -7,5 +7,3 @@ export const createPricingPackageSchema = z.object({
     .max(255, "Package name must be less than 255 characters."),
   price: z.string().min(1, "Price is required"),
 });
-
-export type CreatePricingReq = z.infer<typeof createPricingPackageSchema>;

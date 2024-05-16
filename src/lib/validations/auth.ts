@@ -19,18 +19,19 @@ export const userRegisterSchema = z
       )
       .max(255, "Password must be less that 256 characters"),
     confirmPassword: z.string(),
+    businessId: z.string(),
   })
   .refine(
-    (data: { password: string; confirmPassword: string }) => {
-      return data.password === data.confirmPassword;
+    (values) => {
+      return values.password === values.confirmPassword;
     },
     {
-      message: "Passwords must match!",
+      message: "Passwords must match",
       path: ["confirmPassword"],
     },
   );
 
-export const userSignInSchema = z.object({
-  email: z.string(),
-  password: z.string(),
+export const loginSchema = z.object({
+  email: z.string().min(1, "Email is required"),
+  password: z.string().min(1, "Password is required"),
 });

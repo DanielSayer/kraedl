@@ -2,7 +2,10 @@ import { TRPCClientError } from "@trpc/client";
 import { convertDateAndTimeToDate } from "../../common/helperMethods/dateHelpers";
 import DateRange from "../../common/valueObjects/DateRange";
 import eventsRepository from "../../repositories/eventsRepository";
-import type { EventRequest } from "../../routers/events/eventsSchemas";
+import type { z } from "zod";
+import type { createEventSchema } from "@/lib/validations/events";
+
+type EventRequest = z.infer<typeof createEventSchema>;
 
 export async function createEventCommand(
   request: EventRequest,

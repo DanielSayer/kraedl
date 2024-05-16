@@ -62,6 +62,7 @@ export const EditAddressDialog = ({
   const form = useForm<FormData>({
     resolver: zodResolver(editClientAddressSchema),
     defaultValues: {
+      id: clientId,
       streetAddress: clientAddress?.streetAddress ?? "",
       suburb: clientAddress?.suburb ?? "",
       city: clientAddress?.city ?? "",
@@ -72,7 +73,7 @@ export const EditAddressDialog = ({
 
   const handleSubmit = async (data: FormData) => {
     setIsLoading(true);
-    await mutation.mutateAsync({ id: clientId, ...data });
+    await mutation.mutateAsync(data);
     setIsLoading(false);
     toast.success("Successfully updated address");
     toggle();

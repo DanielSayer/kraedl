@@ -11,5 +11,3 @@ export const bankDetailsSchema = z.object({
     .min(6, "Incomplete account number")
     .max(9, "Account number has too many digits."),
 });
-
-export type BankAccount = z.infer<typeof bankDetailsSchema>;

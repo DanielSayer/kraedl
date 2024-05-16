@@ -1,12 +1,12 @@
+import {
+  createEventSchema,
+  eventIdSchema,
+  getEventsInRangeSchema,
+} from "@/lib/validations/events";
 import { createEventCommand } from "../../managers/events/createEventCommand";
 import { getEventById } from "../../managers/events/getEventById";
 import { getEventsInRange } from "../../managers/events/getEventsInRange";
 import { adminProcedure, createTRPCRouter } from "../../trpc";
-import {
-  createEventSchema,
-  getEventByIdSchema,
-  getEventsInRangeSchema,
-} from "./eventsSchemas";
 
 export const eventRouter = createTRPCRouter({
   create: adminProcedure
@@ -20,9 +20,7 @@ export const eventRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return await getEventsInRange(input, ctx.businessId);
     }),
-  getById: adminProcedure
-    .input(getEventByIdSchema)
-    .query(async ({ ctx, input }) => {
-      return await getEventById(input.id, ctx.businessId);
-    }),
+  getById: adminProcedure.input(eventIdSchema).query(async ({ ctx, input }) => {
+    return await getEventById(input.id, ctx.businessId);
+  }),
 });

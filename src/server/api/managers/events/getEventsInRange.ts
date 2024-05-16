@@ -1,5 +1,8 @@
+import type { getEventsInRangeSchema } from "@/lib/validations/events";
 import eventsRepository from "../../repositories/eventsRepository";
-import type { GetEventsInRangeRequest } from "../../routers/events/eventsSchemas";
+import type { z } from "zod";
+
+type GetEventsInRangeRequest = z.infer<typeof getEventsInRangeSchema>;
 
 export async function getEventsInRange(
   range: GetEventsInRangeRequest,

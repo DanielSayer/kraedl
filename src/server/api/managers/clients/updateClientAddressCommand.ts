@@ -1,7 +1,11 @@
 import { state, type State } from "../../common/valueObjects/state";
 import clientAddressesRepository from "../../repositories/clientAddressesRepository";
 import clientsRepository from "../../repositories/clientsRepository";
-import type { ClientAddressRequest } from "../../routers/clients/clientsSchemas";
+
+import type { editClientAddressSchema } from "@/lib/validations/clients";
+import type { z } from "zod";
+
+type ClientAddressRequest = z.infer<typeof editClientAddressSchema>;
 
 class UpdateClientAddressCommand {
   async update(client: ClientAddressRequest, businessId: string) {
