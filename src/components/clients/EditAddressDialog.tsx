@@ -51,14 +51,8 @@ export const EditAddressDialog = ({
   clientAddress,
 }: EditAddressDialogProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const toggle = () => setIsOpen(!isOpen);
-  const mutation = api.clients.updateClientAddress.useMutation({
-    onError: (e) => {
-      form.setError("root", { message: e.message });
-      setIsLoading(false);
-    },
-  });
+
   const form = useForm<FormData>({
     resolver: zodResolver(editClientAddressSchema),
     defaultValues: {
@@ -71,12 +65,19 @@ export const EditAddressDialog = ({
     },
   });
 
+  const { mutateAsync, isPending } =
+    api.clients.updateClientAddress.useMutation({
+      onError: (e) => {
+        form.setError("root", { message: e.message });
+      },
+      onSuccess: () => {
+        toast.success("Successfully updated address");
+        toggle();
+      },
+    });
+
   const handleSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    await mutation.mutateAsync(data);
-    setIsLoading(false);
-    toast.success("Successfully updated address");
-    toggle();
+    await mutateAsync(data);
   };
 
   return (
@@ -98,7 +99,7 @@ export const EditAddressDialog = ({
                 render={({ field }) => (
                   <AddressField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     label="Customer street address"
                   />
                 )}
@@ -109,7 +110,7 @@ export const EditAddressDialog = ({
                 render={({ field }) => (
                   <SuburbField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     label="Suburb"
                   />
                 )}
@@ -118,7 +119,7 @@ export const EditAddressDialog = ({
                 control={form.control}
                 name="city"
                 render={({ field }) => (
-                  <CityField field={field} isLoading={isLoading} label="City" />
+                  <CityField field={field} isLoading={isPending} label="City" />
                 )}
               />
               <FormField
@@ -127,7 +128,7 @@ export const EditAddressDialog = ({
                 render={({ field }) => (
                   <PostcodeField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     label="Postcode"
                   />
                 )}
@@ -165,7 +166,7 @@ export const EditAddressDialog = ({
               </DialogClose>
               <LoadingButton
                 type="submit"
-                isLoading={isLoading}
+                isLoading={isPending}
                 loadingText="Updating..."
               >
                 Update

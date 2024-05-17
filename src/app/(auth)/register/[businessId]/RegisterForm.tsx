@@ -1,17 +1,16 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
-
 import { EmailField, NameField, PasswordField } from "@/components/FormFields";
 import LoadingButton from "@/components/LoadingButton";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { userRegisterSchema } from "@/lib/validations/auth";
 import { api } from "@/trpc/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+
+import type { z } from "zod";
 
 type FormData = z.infer<typeof userRegisterSchema>;
 
@@ -27,18 +26,15 @@ const RegisterForm = (props: { businessId: string }) => {
     },
   });
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const mutation = api.auth.registerAdmin.useMutation({
+  const { mutateAsync, isPending } = api.auth.registerAdmin.useMutation({
     onError: (e) => {
       form.setError("root", { message: e.message });
-      setIsLoading(false);
     },
   });
 
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    await mutation.mutateAsync(data);
+    await mutateAsync(data);
     const signInResult = await signIn("credentials", {
       ...data,
       redirect: false,
@@ -47,7 +43,6 @@ const RegisterForm = (props: { businessId: string }) => {
       form.setError("root", {
         message: "Something went wrong, please contact support",
       });
-      setIsLoading(false);
       return;
     }
     router.push("/dashboard");
@@ -63,7 +58,7 @@ const RegisterForm = (props: { businessId: string }) => {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <NameField field={field} isLoading={isLoading} />
+                  <NameField field={field} isLoading={isPending} />
                 )}
               />
 
@@ -71,7 +66,7 @@ const RegisterForm = (props: { businessId: string }) => {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <EmailField field={field} isLoading={isLoading} />
+                  <EmailField field={field} isLoading={isPending} />
                 )}
               />
 
@@ -79,7 +74,7 @@ const RegisterForm = (props: { businessId: string }) => {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <PasswordField field={field} isLoading={isLoading} />
+                  <PasswordField field={field} isLoading={isPending} />
                 )}
               />
 
@@ -89,14 +84,14 @@ const RegisterForm = (props: { businessId: string }) => {
                 render={({ field }) => (
                   <PasswordField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     isConfirm
                   />
                 )}
               />
             </div>
             <LoadingButton
-              isLoading={isLoading}
+              isLoading={isPending}
               loadingText="Creating account..."
             >
               Create Account

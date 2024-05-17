@@ -21,7 +21,6 @@ import { Separator } from "@/components/ui/separator";
 import { bankDetailsSchema } from "@/lib/validations/bankAccounts";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -34,7 +33,6 @@ type BankDetailsFormProps = {
 
 type FormData = z.infer<typeof bankDetailsSchema>;
 export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<FormData>({
     resolver: zodResolver(bankDetailsSchema),
     defaultValues: {
@@ -44,20 +42,18 @@ export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
     },
   });
 
-  const mutation = api.bankAccounts.updateBankAccountDetails.useMutation({
-    onSuccess: () => {
-      toast.success("Successfully updated bank account");
-    },
-    onError: (e) => {
-      form.setError("root", { message: e.message });
-      setIsLoading(false);
-    },
-  });
+  const { mutateAsync, isPending } =
+    api.bankAccounts.updateBankAccountDetails.useMutation({
+      onSuccess: () => {
+        toast.success("Successfully updated bank account");
+      },
+      onError: (e) => {
+        form.setError("root", { message: e.message });
+      },
+    });
 
   const saveBankDetails = async (data: FormData) => {
-    setIsLoading(true);
-    await mutation.mutateAsync(data);
-    setIsLoading(false);
+    await mutateAsync(data);
   };
 
   return (
@@ -76,7 +72,7 @@ export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
                   type="text"
                   autoCapitalize="none"
                   autoCorrect="off"
-                  disabled={isLoading}
+                  disabled={isPending}
                   {...field}
                 />
               </FormControl>
@@ -95,7 +91,7 @@ export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
                   maxLength={6}
                   {...field}
                   id="bsb"
-                  disabled={isLoading}
+                  disabled={isPending}
                 >
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />
@@ -126,7 +122,7 @@ export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
                   placeholder="123456789"
                   type="text"
                   maxLength={9}
-                  disabled={isLoading}
+                  disabled={isPending}
                   {...field}
                 />
               </FormControl>
@@ -140,7 +136,7 @@ export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
         <div className="flex items-center justify-end gap-2">
           <Button variant="secondary">Cancel</Button>
           <LoadingButton
-            isLoading={isLoading}
+            isLoading={isPending}
             loadingText="Saving..."
             type="submit"
           >

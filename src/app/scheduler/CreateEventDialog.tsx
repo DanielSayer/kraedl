@@ -1,3 +1,5 @@
+"use client";
+
 import { NameField } from "@/components/FormFields";
 import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
@@ -19,12 +21,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { createEventSchema } from "@/lib/validations/events";
 import { api } from "@/trpc/react";
-import type { DropdownOption } from "@/types/components/dropdownItem";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import type { DropdownOption } from "@/types/components/dropdownItem";
 import type { z } from "zod";
 
 type FormData = z.infer<typeof createEventSchema>;
@@ -41,7 +43,6 @@ const CreateEventDialog = ({
   toggle,
   refetch,
 }: CreateEventDialogProps) => {
-  const [isCreating, setIsCreating] = useState<boolean>(false);
   const form = useForm<FormData>({
     resolver: zodResolver(createEventSchema),
     defaultValues: {
@@ -56,7 +57,6 @@ const CreateEventDialog = ({
   const mutation = api.events.create.useMutation({
     onError: (error) => {
       form.setError("root", { message: error.message });
-      setIsCreating(false);
     },
     onSuccess: () => {
       refetch();
@@ -66,9 +66,7 @@ const CreateEventDialog = ({
   });
 
   const onSubmit = async (data: FormData) => {
-    setIsCreating(true);
     await mutation.mutateAsync({ ...data });
-    setIsCreating(false);
   };
 
   return (
@@ -180,7 +178,7 @@ const CreateEventDialog = ({
             </DialogClose>
             <LoadingButton
               type="submit"
-              isLoading={isCreating}
+              isLoading={mutation.isPending}
               loadingText="Creating..."
             >
               Create

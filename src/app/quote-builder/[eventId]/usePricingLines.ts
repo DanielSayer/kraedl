@@ -14,7 +14,6 @@ const getNewPricingLine = (): PricingLine => {
 const usePricingLines = (eventId: string, savedPricingLines: PricingLine[]) => {
   const [pricingLines, setPricingLines] =
     useState<PricingLine[]>(savedPricingLines);
-  const [isSaving, setIsSaving] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const save = api.eventPricing.save.useMutation({
@@ -27,7 +26,6 @@ const usePricingLines = (eventId: string, savedPricingLines: PricingLine[]) => {
           "Something went wrong, maybe you forgot to select a pricing name";
       }
       setError(errorMessage);
-      setIsSaving(false);
     },
   });
 
@@ -52,15 +50,13 @@ const usePricingLines = (eventId: string, savedPricingLines: PricingLine[]) => {
   };
 
   const handleSave = async () => {
-    setIsSaving(true);
     await save.mutateAsync({ eventId: eventId, eventPricings: pricingLines });
-    setIsSaving(false);
     toast.success("Successfully saved");
   };
 
   return {
     error,
-    isSaving,
+    isSaving: save.isPending,
     pricingLines,
     handleSave,
     addPricingLine,

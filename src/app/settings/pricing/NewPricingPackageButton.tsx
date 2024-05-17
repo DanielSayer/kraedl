@@ -39,11 +39,9 @@ type FormData = z.infer<typeof createPricingPackageSchema>;
 const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const toggle = () => setIsOpen(!isOpen);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const mutation = api.pricing.createPricing.useMutation({
+  const { mutateAsync, isPending } = api.pricing.createPricing.useMutation({
     onError: (e) => {
       form.setError("root", { message: e.message });
-      setIsLoading(false);
     },
   });
 
@@ -53,10 +51,8 @@ const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
   });
 
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    await mutation.mutateAsync(data);
+    await mutateAsync(data);
     toast.success(`Sucessfully created ${data.name}`);
-    setIsLoading(false);
     refetch();
     toggle();
     form.reset();
@@ -83,7 +79,7 @@ const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
                 render={({ field }) => (
                   <NameField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     placeholder="Package Name"
                   />
                 )}
@@ -106,7 +102,7 @@ const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
                           {...field}
                           defaultValue={0.0}
                           min={0}
-                          disabled={isLoading}
+                          disabled={isPending}
                         />
                       </div>
                     </FormControl>
@@ -125,7 +121,7 @@ const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
               </DialogClose>
               <LoadingButton
                 type="submit"
-                isLoading={isLoading}
+                isLoading={isPending}
                 loadingText="Creating..."
               >
                 Create

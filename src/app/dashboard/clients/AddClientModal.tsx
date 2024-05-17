@@ -17,15 +17,14 @@ import { registerClientSchema } from "@/lib/validations/clients";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+
 import type { z } from "zod";
 
 type FormData = z.infer<typeof registerClientSchema>;
 
 const AddClientModalContent = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<FormData>({
     resolver: zodResolver(registerClientSchema),
     defaultValues: {
@@ -35,17 +34,14 @@ const AddClientModalContent = () => {
     },
   });
 
-  const mutation = api.clients.create.useMutation({
+  const { isPending, mutateAsync } = api.clients.create.useMutation({
     onError: (e) => {
       form.setError("root", { message: e.message });
-      setIsLoading(false);
     },
   });
 
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    const { id } = await mutation.mutateAsync(data);
-    setIsLoading(false);
+    const { id } = await mutateAsync(data);
     router.push(`/clients/${id}`);
   };
 
@@ -65,7 +61,7 @@ const AddClientModalContent = () => {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <NameField field={field} isLoading={isLoading} />
+                  <NameField field={field} isLoading={isPending} />
                 )}
               />
 
@@ -73,14 +69,14 @@ const AddClientModalContent = () => {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <EmailField field={field} isLoading={isLoading} />
+                  <EmailField field={field} isLoading={isPending} />
                 )}
               />
               <FormField
                 control={form.control}
                 name="phoneNumber"
                 render={({ field }) => (
-                  <PhoneNumberField field={field} isLoading={isLoading} />
+                  <PhoneNumberField field={field} isLoading={isPending} />
                 )}
               />
               <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
@@ -88,7 +84,7 @@ const AddClientModalContent = () => {
           </div>
 
           <DialogFooter className="mt-3">
-            <LoadingButton isLoading={isLoading} loadingText="Creating...">
+            <LoadingButton isLoading={isPending} loadingText="Creating...">
               Create Client
             </LoadingButton>
           </DialogFooter>

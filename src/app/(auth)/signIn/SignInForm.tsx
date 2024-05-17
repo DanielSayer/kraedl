@@ -1,16 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import * as React from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
-
 import { EmailField, PasswordField } from "@/components/FormFields";
 import LoadingButton from "@/components/LoadingButton";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { signIn } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/lib/validations/auth";
+
+import type { z } from "zod";
 
 type FormData = z.infer<typeof loginSchema>;
 
@@ -20,8 +20,7 @@ const SignInForm = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     const signInResult = await signIn("credentials", {

@@ -1,10 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
-
 import {
   AddressField,
   CityField,
@@ -18,7 +13,9 @@ import Combobox from "@/components/ui/combobox";
 import { states } from "@/lib/constants/states";
 import { businessRegisterSchema } from "@/lib/validations/businesses";
 import { api } from "@/trpc/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -27,7 +24,9 @@ import {
   FormLabel,
   FormMessage,
 } from "../../../components/ui/form";
+
 import type { DropdownOption } from "@/types/components/dropdownItem";
+import type { z } from "zod";
 
 type FormData = z.infer<typeof businessRegisterSchema>;
 
@@ -45,19 +44,14 @@ const RegisterBusinessForm = () => {
       phoneNumber: "",
     },
   });
-  const mutation = api.business.register.useMutation({
+  const { mutateAsync, isPending } = api.business.register.useMutation({
     onError: (e) => {
       form.setError("root", { message: e.message });
-      setIsLoading(false);
     },
   });
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    const { id } = await mutation.mutateAsync(data);
-    setIsLoading(false);
+    const { id } = await mutateAsync(data);
     router.push(`/register/${id}`);
   };
 
@@ -72,7 +66,7 @@ const RegisterBusinessForm = () => {
                 name="name"
                 render={({ field }) => (
                   <NameField
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     field={field}
                     label="Business name"
                     placeholder="My Epic Company"
@@ -86,7 +80,7 @@ const RegisterBusinessForm = () => {
                 render={({ field }) => (
                   <AddressField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     label="Business street address"
                   />
                 )}
@@ -97,7 +91,7 @@ const RegisterBusinessForm = () => {
                 render={({ field }) => (
                   <SuburbField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     label="Business suburb"
                   />
                 )}
@@ -108,7 +102,7 @@ const RegisterBusinessForm = () => {
                 render={({ field }) => (
                   <CityField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     label="Business city"
                   />
                 )}
@@ -120,7 +114,7 @@ const RegisterBusinessForm = () => {
                   render={({ field }) => (
                     <PostcodeField
                       field={field}
-                      isLoading={isLoading}
+                      isLoading={isPending}
                       label="Business postcode"
                     />
                   )}
@@ -154,13 +148,13 @@ const RegisterBusinessForm = () => {
                 render={({ field }) => (
                   <PhoneNumberField
                     field={field}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     label="Business phone number"
                   />
                 )}
               />
             </div>
-            <LoadingButton isLoading={isLoading} loadingText="Registering...">
+            <LoadingButton isLoading={isPending} loadingText="Registering...">
               RegisterBusiness
             </LoadingButton>
             <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
