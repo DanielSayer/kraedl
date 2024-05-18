@@ -280,6 +280,7 @@ export const bankAccountRelations = relations(bankAccounts, ({ one }) => ({
 
 export const invoices = createTable("invoices", {
   id: uuid("id").defaultRandom().notNull().primaryKey(),
+  invoiceNumber: integer("invoiceNumber").notNull(),
   clientId: uuid("clientId")
     .notNull()
     .references(() => clients.id),
