@@ -297,7 +297,7 @@ export const invoices = createTable("invoices", {
   paidAt: timestamp("paidAt", { mode: "date", withTimezone: true }),
 });
 
-export const invoiceRelations = relations(invoices, ({ one, many }) => ({
+export const invoiceRelations = relations(invoices, ({ one }) => ({
   clients: one(clients, {
     fields: [invoices.clientId],
     references: [clients.id],
@@ -306,7 +306,10 @@ export const invoiceRelations = relations(invoices, ({ one, many }) => ({
     fields: [invoices.businessId],
     references: [businesses.id],
   }),
-  invoices: many(invoiceEventLink),
+  invoices: one(invoiceEventLink, {
+    fields: [invoices.id],
+    references: [invoiceEventLink.invoiceId],
+  }),
 }));
 
 export const invoiceEventLink = createTable("invoiceEventLink", {
