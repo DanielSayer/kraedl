@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  date,
   decimal,
   index,
   integer,
@@ -55,6 +56,7 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
     fields: [businesses.id],
     references: [bankAccounts.businessId],
   }),
+  inovices: many(invoices),
 }));
 
 export const users = createTable("user", {
@@ -153,7 +155,7 @@ export const clients = createTable("clients", {
   phoneNumber: varchar("phoneNumber", { length: 255 }).notNull(),
 });
 
-export const clientsRelations = relations(clients, ({ one }) => ({
+export const clientsRelations = relations(clients, ({ one, many }) => ({
   businesses: one(businesses, {
     fields: [clients.businessId],
     references: [businesses.id],
@@ -162,6 +164,7 @@ export const clientsRelations = relations(clients, ({ one }) => ({
     fields: [clients.id],
     references: [clientAddresses.clientId],
   }),
+  invoice: many(invoices),
 }));
 
 export const events = createTable("events", {
@@ -191,6 +194,10 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
     references: [businesses.id],
   }),
   eventPricings: many(eventPricings),
+  invoice: one(invoiceEventLink, {
+    fields: [events.id],
+    references: [invoiceEventLink.eventId],
+  }),
 }));
 
 export const pricing = createTable("pricing", {
@@ -270,3 +277,55 @@ export const bankAccountRelations = relations(bankAccounts, ({ one }) => ({
     references: [businesses.id],
   }),
 }));
+
+export const invoices = createTable("invoices", {
+  id: uuid("id").defaultRandom().notNull().primaryKey(),
+  clientId: uuid("clientId")
+    .notNull()
+    .references(() => clients.id),
+  businessId: uuid("businessId")
+    .notNull()
+    .references(() => businesses.id),
+  invoiceAmount: decimal("invoiceAmount", {
+    precision: 12,
+    scale: 2,
+  }).notNull(),
+  dueDate: date("dueDate", { mode: "string" }).notNull(),
+  invoicedAt: timestamp("invoicedAt", { mode: "date", withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  paidAt: timestamp("paidAt", { mode: "date", withTimezone: true }),
+});
+
+export const invoiceRelations = relations(invoices, ({ one, many }) => ({
+  clients: one(clients, {
+    fields: [invoices.clientId],
+    references: [clients.id],
+  }),
+  businesses: one(businesses, {
+    fields: [invoices.businessId],
+    references: [businesses.id],
+  }),
+  invoices: many(invoiceEventLink),
+}));
+
+export const invoiceEventLink = createTable("invoiceEventLink", {
+  id: uuid("id").defaultRandom().notNull().primaryKey(),
+  invoiceId: uuid("invoiceId")
+    .notNull()
+    .references(() => invoices.id),
+  eventId: uuid("eventId")
+    .notNull()
+    .references(() => events.id),
+});
+
+export const invoiceEventLinkRelations = relations(
+  invoiceEventLink,
+  ({ one, many }) => ({
+    invoices: many(invoices),
+    events: one(events, {
+      fields: [invoiceEventLink.eventId],
+      references: [events.id],
+    }),
+  }),
+);
