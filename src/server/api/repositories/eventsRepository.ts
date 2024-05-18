@@ -34,7 +34,7 @@ class EventsRepository {
 
     return single(id);
   }
-  async getAppointmentsInRange(start: Date, end: Date, businessId: string) {
+  async getEventsInDateRange(start: string, end: string, businessId: string) {
     return (await db.execute(sql`
       SELECT 
         ${events.id},

@@ -11,11 +11,11 @@ export async function getEventsInRange(
   const start = new Date(range.startTime);
   const end = new Date(range.endTime);
 
-  const a = await eventsRepository.getAppointmentsInRange(
-    start,
-    end,
+  const events = await eventsRepository.getEventsInDateRange(
+    start.toISOString(),
+    end.toISOString(),
     businessId,
   );
 
-  return a;
+  return events;
 }
