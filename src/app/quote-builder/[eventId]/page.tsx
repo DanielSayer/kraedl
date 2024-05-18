@@ -29,7 +29,7 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
     redirect("/scheduler");
   }
 
-  const pricingLines = await api.eventPricing.getById({ eventId: event.id });
+  const pricingLines = await api.eventPricing.getById({ id: event.id });
 
   return (
     <div className="container mb-4 h-[calc(100vh-120px-16px)] pt-6">

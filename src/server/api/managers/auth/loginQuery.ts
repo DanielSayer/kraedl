@@ -1,8 +1,12 @@
-import type { LoginRequest } from "../../routers/auth/authSchemas";
-import { usersRepository } from "../../repositories/userRepository";
 import { compare } from "bcryptjs";
+import { usersRepository } from "../../repositories/userRepository";
+
+import type { loginSchema } from "@/lib/validations/auth";
+import type { z } from "zod";
 
 const error = "Email or password is incorrect";
+
+type LoginRequest = z.infer<typeof loginSchema>;
 
 class LoginQuery {
   async login(request: LoginRequest) {

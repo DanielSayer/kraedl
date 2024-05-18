@@ -1,5 +1,7 @@
-import { DropdownOption } from "@/types/components/dropdownItem";
-import Select, { SingleValue } from "react-select";
+import Select from "react-select";
+
+import type { DropdownOption } from "@/types/components/dropdownItem";
+import type { SingleValue } from "react-select";
 
 type SelectProps = {
   id: string;

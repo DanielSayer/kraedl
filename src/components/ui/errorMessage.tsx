@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+
+import type { HTMLAttributes } from "react";
 
 export function ErrorMessage({
   children,

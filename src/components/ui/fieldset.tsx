@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
-import React, { PropsWithChildren, ReactNode } from "react";
+import React from "react";
+
+import type { PropsWithChildren, ReactNode } from "react";
 
 type FieldsetProps = {
   children: ReactNode[];
