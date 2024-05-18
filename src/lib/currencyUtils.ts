@@ -1,4 +1,7 @@
-export function formatCurrency(amount: string) {
+export function formatCurrency(
+  amount: string,
+  config?: { removeSign?: boolean },
+) {
   const formatter = new Intl.NumberFormat("en-AU", {
     style: "currency",
     currency: "AUD",
@@ -8,13 +11,18 @@ export function formatCurrency(amount: string) {
   if (isNaN(currency)) {
     return "---";
   }
-  return formatter.format(currency);
+  const result = formatter.format(currency);
+
+  if (config?.removeSign) {
+    return result.substring(1);
+  }
+  return result;
 }
 
 export function getTotalPrice(
   price: string,
   quantity: string,
-  config?: { format: boolean },
+  config?: { format: boolean; removeSign: boolean },
 ) {
   const priceFloat = parseFloat(price);
   const quantityFloat = parseFloat(quantity);
@@ -26,7 +34,9 @@ export function getTotalPrice(
   const totalPrice = priceFloat * quantityFloat;
 
   if (!config || config.format) {
-    return formatCurrency(totalPrice.toString());
+    return formatCurrency(totalPrice.toString(), {
+      removeSign: config?.removeSign,
+    });
   }
   return totalPrice.toString();
 }

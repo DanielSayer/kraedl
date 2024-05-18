@@ -2,7 +2,8 @@
 
 import { Icons } from "@/components/Icons";
 import LoadingButton from "@/components/LoadingButton";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { ErrorMessage } from "@/components/ui/errorMessage";
 import {
   Fieldset,
   FieldsetContent,
@@ -10,12 +11,12 @@ import {
 } from "@/components/ui/fieldset";
 import { Separator } from "@/components/ui/separator";
 import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
-import type { Pricing } from "@/types/pricings";
+import Link from "next/link";
 import { useMemo } from "react";
 import { PricingLineRow } from "./PricingLineRow";
 import usePricingLines from "./usePricingLines";
-import { ErrorMessage } from "@/components/ui/errorMessage";
-import { useRouter } from "next/navigation";
+
+import type { Pricing } from "@/types/pricings";
 
 type PricingBuilderProps = {
   eventId: string;
@@ -43,7 +44,6 @@ export const PricingBuilder = ({
     updatePricingLines,
     removePricingLine,
   } = usePricingLines(eventId, savedPricingLines);
-  const router = useRouter();
 
   const pricingOptions = useMemo(() => {
     return pricings.map((p) => {
@@ -105,9 +105,12 @@ export const PricingBuilder = ({
       </Fieldset>
       <ErrorMessage>{error}</ErrorMessage>
       <div className="flex justify-end gap-2">
-        <Button variant="secondary" onClick={() => router.push("/scheduler")}>
+        <Link
+          href="/scheduler"
+          className={buttonVariants({ variant: "secondary" })}
+        >
           Go back
-        </Button>
+        </Link>
         <LoadingButton isLoading={isSaving} onClick={handleSave}>
           Save
         </LoadingButton>

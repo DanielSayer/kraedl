@@ -63,7 +63,7 @@ export const PricingLineRow = ({
               id="price_per"
               readOnly
               disabled
-              value={formatCurrency(priceForItem)}
+              value={formatCurrency(priceForItem, { removeSign: true })}
             />
           </div>
           <div className="space-y-1">
@@ -73,7 +73,10 @@ export const PricingLineRow = ({
               id="total"
               readOnly
               disabled
-              value={getTotalPrice(pricingLine.quantity, priceForItem)}
+              value={getTotalPrice(pricingLine.quantity, priceForItem, {
+                format: true,
+                removeSign: true,
+              })}
             />
           </div>
         </div>

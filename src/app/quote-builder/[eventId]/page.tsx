@@ -32,11 +32,11 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
   const pricingLines = await api.eventPricing.getById({ id: event.id });
 
   return (
-    <div className="container mb-4 h-[calc(100vh-120px-16px)] pt-6">
+    <div className="container mb-20 pt-6">
       <h2 className="text-2xl font-bold tracking-tight">Quote Builder</h2>
       <p className="text-muted-foreground">Manage your event here.</p>
       <Separator className="my-2" />
-      <div className="grid gap-4 overflow-auto">
+      <div className="grid gap-4">
         <Fieldset>
           <FieldsetLegend>
             <Icons.calendar /> Event
