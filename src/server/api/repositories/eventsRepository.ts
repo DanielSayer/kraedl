@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { clients, events, invoiceEventLink } from "@/server/db/schema";
+import { and, count, desc, eq, gt, lte, sql } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
-import { and, eq, gt, lte, sql, desc, count } from "drizzle-orm";
 
 type EventDto = {
   name?: string;
@@ -106,6 +106,7 @@ class EventsRepository {
         id: events.id,
         name: events.name,
         clientName: clients.name,
+        clientId: clients.id,
         startTime: events.startTime,
         endTime: events.endTime,
       })

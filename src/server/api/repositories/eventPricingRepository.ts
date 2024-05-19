@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { eventPricings } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 type EventPricingDto = {
   id: string;
@@ -24,6 +24,22 @@ class EventPricingRepository {
     await db
       .insert(eventPricings)
       .values(req.map((x) => ({ ...x, eventId: eventId })));
+  }
+  async getEventPricingsByEventIds(eventIds: string[]) {
+    return await db.query.eventPricings.findMany({
+      columns: {
+        eventId: true,
+        quantity: true,
+      },
+      where: inArray(eventPricings.eventId, eventIds),
+      with: {
+        pricing: {
+          columns: {
+            price: true,
+          },
+        },
+      },
+    });
   }
 }
 

@@ -60,6 +60,7 @@ export const PricingBuilder = ({
       const priceForItem = getPriceForItem(x.pricingId);
       const totalPrice = getTotalPrice(x.quantity, priceForItem, {
         format: false,
+        removeSign: true,
       });
       return parseFloat(totalPrice);
     });

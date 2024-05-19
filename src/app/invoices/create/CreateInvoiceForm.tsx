@@ -1,23 +1,15 @@
 "use client";
 
-import { Icons } from "@/components/Icons";
 import { DataTable } from "@/components/data-table";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { formatDateRange } from "@/lib/dateRangeUtils";
 import { api } from "@/trpc/react";
 import type { PaginationState } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
+import CreateInvoiceCard from "./CreateInvoiceCard";
 import { columns, type CreateEventTableRow } from "./createInvoiceColumns";
-import LoadingButton from "@/components/LoadingButton";
 
 export function CreateInvoiceForm() {
   const [selectedEventId, setSelectedEventId] = useState<string>("");
@@ -86,24 +78,7 @@ export function CreateInvoiceForm() {
           rowCount: data?.count ?? 1,
         }}
       />
-      {selectedEventId && selectedEvent && (
-        <Card className="mt-4 w-fit">
-          <CardHeader className="pb-2 font-semibold">
-            {selectedEvent.name || selectedEvent.clientName}
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div>
-              {formatDateRange(selectedEvent.startTime, selectedEvent.endTime)}
-            </div>
-            <p>Client: {selectedEvent.clientName}</p>
-          </CardContent>
-          <CardFooter className="flex justify-end">
-            <LoadingButton isLoading={false}>
-              <Icons.add className="me-2 h-4 w-4" /> Create Invoice
-            </LoadingButton>
-          </CardFooter>
-        </Card>
-      )}
+      <CreateInvoiceCard event={selectedEvent} />
     </div>
   );
 }

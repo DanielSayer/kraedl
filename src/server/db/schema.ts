@@ -292,9 +292,10 @@ export const invoices = createTable("invoices", {
     scale: 2,
   }).notNull(),
   dueDate: date("dueDate", { mode: "string" }).notNull(),
-  invoicedAt: timestamp("invoicedAt", { mode: "date", withTimezone: true })
+  createdAt: timestamp("createdAt", { mode: "date", withTimezone: true })
     .notNull()
     .defaultNow(),
+  invoicedAt: timestamp("invoicedAt", { mode: "date", withTimezone: true }),
   paidAt: timestamp("paidAt", { mode: "date", withTimezone: true }),
 });
 
