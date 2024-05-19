@@ -1,6 +1,7 @@
 import {
   ArrowDown,
   ArrowRight,
+  ArrowUpRight,
   Calendar,
   Check,
   ChevronLeft,
@@ -28,6 +29,7 @@ export const Icons = {
   add: Plus,
   arrowDown: ArrowDown,
   arrowRight: ArrowRight,
+  arrowUpRight: ArrowUpRight,
   back: ChevronLeft,
   calendar: Calendar,
   check: Check,

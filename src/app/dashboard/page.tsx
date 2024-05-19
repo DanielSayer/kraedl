@@ -1,3 +1,4 @@
+import { Icons } from "@/components/Icons";
 import { BusinessQuickStats } from "@/components/dashboard/BusinessQuickStats";
 import { UpcomingEvents } from "@/components/dashboard/UpcomingEvents";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +20,6 @@ import {
 } from "@/components/ui/table";
 import useProtectedRoute from "@/hooks/useProtectedRoute";
 import { getGreeting } from "@/lib/greetings";
-import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page() {
@@ -39,7 +39,7 @@ export default async function Page() {
             <Button asChild size="sm" className="ml-auto gap-1">
               <Link href="/invoices">
                 View All
-                <ArrowUpRight className="h-4 w-4" />
+                <Icons.arrowUpRight className="h-4 w-4" />
               </Link>
             </Button>
           </CardHeader>
