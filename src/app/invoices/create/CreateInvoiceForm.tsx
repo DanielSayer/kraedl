@@ -6,21 +6,29 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { columns, type CreateEventTableRow } from "./createInvoiceColumns";
 import { api } from "@/trpc/react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { format } from "date-fns";
+import type { PaginationState } from "@tanstack/react-table";
 
 export function CreateInvoiceForm() {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
   const { isLoading, data } = api.events.getPastEvents.useQuery({
     currentTime: new Date().toString(),
+    pageSize: pagination.pageSize,
+    pageIndex: pagination.pageIndex,
   });
 
   const tableData: CreateEventTableRow[] = useMemo(() => {
     return (
-      data?.map((x) => ({
+      data?.events.map((x) => ({
         id: x.id,
         startDate: format(x.startTime, "dd MMM yy - hh:mm a"),
         endDate: format(x.endTime, "dd MMM yy - hh:mm a"),
-        clientName: x.clients.name,
+        clientName: x.clientName,
         eventName: x.name ?? "---",
       })) ?? []
     );
@@ -43,7 +51,16 @@ export function CreateInvoiceForm() {
       </RadioGroup>
       <Separator className="my-4" />
       <h2 className="mb-2 text-lg font-semibold tracking-tight">Past Events</h2>
-      <DataTable columns={columns} data={tableData} isLoading={isLoading} />
+      <DataTable
+        columns={columns}
+        data={tableData}
+        isLoading={isLoading}
+        paginationConfig={{
+          pagination,
+          setPagination,
+          rowCount: data?.count ?? 1,
+        }}
+      />
     </div>
   );
 }

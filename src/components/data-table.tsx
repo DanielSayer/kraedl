@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
   type ColumnDef,
+  type PaginationState,
 } from "@tanstack/react-table";
 
 import {
@@ -15,23 +16,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { Dispatch, SetStateAction } from "react";
+import { DataTablePagination } from "./data-table-pagination";
 import { Skeleton } from "./ui/skeleton";
 
 interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  paginationConfig: {
+    rowCount: number;
+    pagination: PaginationState;
+    setPagination: Dispatch<SetStateAction<PaginationState>>;
+  };
 }
 
 export function DataTable<TData, TValue>({
   isLoading,
   columns,
   data,
+  paginationConfig,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    state: {
+      pagination: paginationConfig.pagination,
+    },
+    rowCount: paginationConfig.rowCount,
+    onPaginationChange: paginationConfig.setPagination,
   });
 
   return (
@@ -60,7 +75,7 @@ export function DataTable<TData, TValue>({
             Array.from("abcde").map((x) => (
               <TableRow key={x}>
                 <TableCell colSpan={columns.length}>
-                  <Skeleton className="h-4" />
+                  <Skeleton className="h-5" />
                 </TableCell>
               </TableRow>
             ))
@@ -86,6 +101,7 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <DataTablePagination table={table} />
     </div>
   );
 }

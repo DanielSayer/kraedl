@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
-import { events } from "@/server/db/schema";
+import { clients, events, invoiceEventLink } from "@/server/db/schema";
 import { single } from "../common/helperMethods/arrayHelpers";
-import { and, eq, gt, lte, sql } from "drizzle-orm";
+import { and, eq, gt, lte, sql, desc, count } from "drizzle-orm";
 
 type EventDto = {
   name?: string;
@@ -77,29 +77,51 @@ class EventsRepository {
 
     return event;
   }
+  async countNonInvoicedEventsInThePast(currentTime: Date, businessId: string) {
+    const amount = await db
+      .select({ count: count() })
+      .from(events)
+      .innerJoin(clients, eq(events.clientId, clients.id))
+      .leftJoin(invoiceEventLink, eq(events.id, invoiceEventLink.eventId))
+      .where(
+        and(
+          lte(events.endTime, currentTime),
+          eq(events.businessId, businessId),
+          sql`${invoiceEventLink.invoiceId} IS NULL`,
+        ),
+      );
+
+    return single(amount).count;
+  }
   async getPastEvents(
     currentTime: Date,
     businessId: string,
+    pageSize: number,
     pageNumber: number,
   ) {
-    const pageSize = 5;
-    const offset = pageSize * (pageNumber - 1);
-    return await db.query.events.findMany({
-      where: and(
-        eq(events.businessId, businessId),
-        lte(events.endTime, currentTime),
-      ),
-      with: {
-        clients: {
-          columns: {
-            name: true,
-          },
-        },
-      },
-      offset: offset,
-      limit: pageSize,
-      orderBy: (events, { desc }) => [desc(events.endTime)],
-    });
+    const offset = pageSize * pageNumber;
+
+    return await db
+      .select({
+        id: events.id,
+        name: events.name,
+        clientName: clients.name,
+        startTime: events.startTime,
+        endTime: events.endTime,
+      })
+      .from(events)
+      .innerJoin(clients, eq(events.clientId, clients.id))
+      .leftJoin(invoiceEventLink, eq(events.id, invoiceEventLink.eventId))
+      .where(
+        and(
+          eq(events.businessId, businessId),
+          lte(events.endTime, currentTime),
+          sql`${invoiceEventLink.invoiceId} IS NULL`,
+        ),
+      )
+      .offset(offset)
+      .limit(pageSize)
+      .orderBy(desc(events.endTime));
   }
 }
 

@@ -4,16 +4,23 @@ import eventsRepository from "../../repositories/eventsRepository";
 export async function getPastEventsForInvoice(
   currentTime: Date,
   businessId: string,
+  pageSize: number,
   pageNumber: number,
 ) {
-  if (pageNumber <= 0) {
+  if (pageNumber < 0) {
     throw new TRPCClientError("Invalid page number");
   }
-  //Will need to return total pages
-
-  return await eventsRepository.getPastEvents(
+  const count = await eventsRepository.countNonInvoicedEventsInThePast(
     currentTime,
     businessId,
+  );
+
+  const events = await eventsRepository.getPastEvents(
+    currentTime,
+    businessId,
+    pageSize,
     pageNumber,
   );
+
+  return { events: events, count: count };
 }

@@ -1,6 +1,6 @@
 import {
   createEventSchema,
-  currentTimeSchema,
+  getEventsForInvoicesSchema,
   eventIdSchema,
   getEventsInRangeSchema,
 } from "@/lib/validations/events";
@@ -26,12 +26,13 @@ export const eventRouter = createTRPCRouter({
     return await getEventById(input.id, ctx.businessId);
   }),
   getPastEvents: adminProcedure
-    .input(currentTimeSchema)
+    .input(getEventsForInvoicesSchema)
     .query(async ({ ctx, input }) => {
       return await getPastEventsForInvoice(
         new Date(input.currentTime),
         ctx.businessId,
-        1,
+        input.pageSize,
+        input.pageIndex,
       );
     }),
 });

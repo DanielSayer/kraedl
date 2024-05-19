@@ -25,6 +25,8 @@ export const eventIdSchema = z.object({
   id: z.string(),
 });
 
-export const currentTimeSchema = z.object({
+export const getEventsForInvoicesSchema = z.object({
   currentTime: z.string(),
+  pageIndex: z.number(),
+  pageSize: z.number(),
 });
