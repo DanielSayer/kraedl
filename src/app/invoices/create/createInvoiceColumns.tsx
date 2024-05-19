@@ -4,8 +4,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 export type CreateEventTableRow = {
   id: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   eventName: string;
   clientName: string;
 };

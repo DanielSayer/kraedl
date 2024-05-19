@@ -24,3 +24,7 @@ export const getEventsInRangeSchema = z.object({
 export const eventIdSchema = z.object({
   id: z.string(),
 });
+
+export const currentTimeSchema = z.object({
+  currentTime: z.string(),
+});

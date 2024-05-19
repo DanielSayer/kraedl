@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { events } from "@/server/db/schema";
 import { single } from "../common/helperMethods/arrayHelpers";
-import { and, eq, gt, sql } from "drizzle-orm";
+import { and, eq, gt, lte, sql } from "drizzle-orm";
 
 type EventDto = {
   name?: string;
@@ -76,6 +76,30 @@ class EventsRepository {
     });
 
     return event;
+  }
+  async getPastEvents(
+    currentTime: Date,
+    businessId: string,
+    pageNumber: number,
+  ) {
+    const pageSize = 5;
+    const offset = pageSize * (pageNumber - 1);
+    return await db.query.events.findMany({
+      where: and(
+        eq(events.businessId, businessId),
+        lte(events.endTime, currentTime),
+      ),
+      with: {
+        clients: {
+          columns: {
+            name: true,
+          },
+        },
+      },
+      offset: offset,
+      limit: pageSize,
+      orderBy: (events, { desc }) => [desc(events.endTime)],
+    });
   }
 }
 

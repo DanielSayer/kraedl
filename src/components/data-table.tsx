@@ -15,13 +15,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "./ui/skeleton";
 
 interface DataTableProps<TData, TValue> {
+  isLoading?: boolean;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
 export function DataTable<TData, TValue>({
+  isLoading,
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -53,7 +56,15 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {isLoading ? (
+            Array.from("abcde").map((x) => (
+              <TableRow key={x}>
+                <TableCell colSpan={columns.length}>
+                  <Skeleton className="h-4" />
+                </TableCell>
+              </TableRow>
+            ))
+          ) : table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
