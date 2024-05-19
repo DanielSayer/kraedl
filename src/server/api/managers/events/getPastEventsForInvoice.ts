@@ -22,5 +22,9 @@ export async function getPastEventsForInvoice(
     pageNumber,
   );
 
-  return { events: events, count: count };
+  //Drizzle returns "" instead of null but still types it as null
+  return {
+    events: events.map((x) => ({ ...x, name: x.name ?? "" })),
+    count: count,
+  };
 }

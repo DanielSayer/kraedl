@@ -1,5 +1,6 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export type CreateEventTableRow = {
@@ -11,6 +12,16 @@ export type CreateEventTableRow = {
 };
 
 export const columns: ColumnDef<CreateEventTableRow>[] = [
+  {
+    id: "select",
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+  },
   {
     accessorKey: "startDate",
     header: "Start Date",

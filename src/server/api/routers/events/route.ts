@@ -29,7 +29,7 @@ export const eventRouter = createTRPCRouter({
     .input(getEventsForInvoicesSchema)
     .query(async ({ ctx, input }) => {
       return await getPastEventsForInvoice(
-        new Date(input.currentTime),
+        new Date(),
         ctx.businessId,
         input.pageSize,
         input.pageIndex,

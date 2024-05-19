@@ -7,11 +7,19 @@ export const formatTimeRange = (startTime: Date, endTime: Date) => {
   return `${fomattedStart} - ${formattedEnd}`;
 };
 
-export const formatDateRange = (startTime: Date, endTime: Date) => {
-  const isSameDay = startTime.toDateString() === endTime.toDateString();
+export function formatDateRange(startTime: string, endTime: string): string;
+export function formatDateRange(startTime: Date, endTime: Date): string;
+export function formatDateRange(
+  startTime: string | Date,
+  endTime: string | Date,
+) {
+  const startDate = new Date(startTime);
+  const endDate = new Date(endTime);
+  const isSameDay = startDate.toDateString() === endDate.toDateString();
 
+  console.log(startTime);
   if (isSameDay) {
-    return `${format(startTime, "dd MMM yyyy")} | ${formatTimeRange(startTime, endTime)}`;
+    return `${format(startTime, "dd MMM yyyy")} | ${formatTimeRange(startDate, endDate)}`;
   }
   return "Multi day range, not implemented yet :)";
-};
+}

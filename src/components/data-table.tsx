@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { DataTablePagination } from "./data-table-pagination";
 import { Skeleton } from "./ui/skeleton";
 
@@ -24,6 +24,7 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onRowSelect: (id: string) => void;
   paginationConfig: {
     rowCount: number;
     pagination: PaginationState;
@@ -31,23 +32,38 @@ interface DataTableProps<TData, TValue> {
   };
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends { id: string }, TValue>({
   isLoading,
   columns,
+  onRowSelect,
   data,
   paginationConfig,
 }: DataTableProps<TData, TValue>) {
+  const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
     state: {
+      rowSelection,
       pagination: paginationConfig.pagination,
     },
     rowCount: paginationConfig.rowCount,
     onPaginationChange: paginationConfig.setPagination,
+    onRowSelectionChange: setRowSelection,
+    getRowId: (row) => row.id,
+    enableRowSelection: true,
+    enableMultiRowSelection: false,
   });
+
+  useEffect(() => {
+    if (Object.keys(rowSelection).length === 1) {
+      onRowSelect(Object.keys(rowSelection)[0] ?? "");
+      return;
+    }
+    onRowSelect("");
+  }, [rowSelection, onRowSelect]);
 
   return (
     <div className="rounded-md border">
