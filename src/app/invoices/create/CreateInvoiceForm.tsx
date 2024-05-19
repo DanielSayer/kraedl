@@ -1,9 +1,10 @@
 "use client";
 
+import { DataTable } from "@/components/data-table";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { columns } from "./createInvoiceColumns";
 
 export function CreateInvoiceForm() {
   return (
@@ -23,18 +24,8 @@ export function CreateInvoiceForm() {
         </div>
       </RadioGroup>
       <Separator className="my-4" />
-      <h2 className="text-lg font-semibold tracking-tight">Past Events</h2>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Start Date</TableHead>
-            <TableHead>End Date</TableHead>
-            <TableHead>Event Name</TableHead>
-            <TableHead>Client</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-      </Table>
+      <h2 className="mb-2 text-lg font-semibold tracking-tight">Past Events</h2>
+      <DataTable columns={columns} data={[]} />
     </div>
   );
 }

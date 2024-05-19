@@ -31,6 +31,10 @@ export const authorizedNavOptions: NavOption[] = [
     ref: "/dashboard/clients",
   },
   {
+    title: "Invoices",
+    ref: "/invoices",
+  },
+  {
     title: "Scheduler",
     ref: "/scheduler",
   },
