@@ -1,4 +1,4 @@
-import { Invoice } from "@/components/Invoice";
+import { Invoice } from "@/app/invoices/[invoiceId]/Invoice";
 import { api } from "@/trpc/server";
 
 interface InvoicePageProps {

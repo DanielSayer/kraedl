@@ -29,11 +29,13 @@ export const getInvoiceByIdQuery = async (
   const business = await businessRepository.getBillingInfo(businessId);
   const businessDecoded = {
     ...business,
-    bankAccount: {
-      ...business.bankAccount,
-      bsb: decrypt(business.bankAccount?.bsb ?? ""),
-      accountNumber: decrypt(business.bankAccount?.accountNumber ?? ""),
-    },
+    bankAccount: business.bankAccount
+      ? {
+          accountName: business.bankAccount.accountName,
+          bsb: decrypt(business.bankAccount.bsb),
+          accountNumber: decrypt(business.bankAccount.accountNumber),
+        }
+      : undefined,
   };
   return {
     ...invoice,

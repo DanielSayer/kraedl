@@ -2,8 +2,8 @@ import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
 import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
 import type { api } from "@/trpc/server";
 import { format } from "date-fns";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { Separator } from "./ui/separator";
+import { Card, CardContent } from "../../../components/ui/card";
+import { Separator } from "../../../components/ui/separator";
 import {
   Table,
   TableBody,
@@ -11,7 +11,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "../../../components/ui/table";
+import { BankDetails } from "./BankDetails";
+import { formatInvoiceNumber } from "@/lib/invoiceUtils";
 
 type InvoiceProps = {
   invoice: Awaited<ReturnType<typeof api.invoices.getById>>;
@@ -25,7 +27,7 @@ export const Invoice = ({ invoice }: InvoiceProps) => {
           <div>
             <h1 className="text-3xl font-semibold leading-tight">Invoice</h1>
             <p className="text-muted-foreground">Invoice Number</p>
-            <p>{invoice.invoiceNumber}</p>
+            <p>{formatInvoiceNumber(invoice.invoiceNumber)}</p>
             <p className="text-muted-foreground">Issue Date</p>
             <p>To do</p>
             {/* <p>{format(, "dd MMM yyyy")}</p> */}
@@ -84,30 +86,7 @@ export const Invoice = ({ invoice }: InvoiceProps) => {
           Total: {formatCurrency(invoice.total)}
         </div>
         <Separator className="mb-4 mt-2" />
-        <div>
-          <Card>
-            <CardHeader className="space-y-0">
-              <h3 className="font-semibold">Payment Information</h3>
-              <p className="text-sm text-muted-foreground">
-                Please pay in cash or direct deposit to the details below
-              </p>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-2">
-                <div className="text-muted-foreground">
-                  <p>Account Name:</p>
-                  <p>BSB:</p>
-                  <p>Account:</p>
-                </div>
-                <div>
-                  <p>{invoice.business.bankAccount?.accountName}</p>
-                  <p>{invoice.business.bankAccount?.bsb}</p>
-                  <p>{invoice.business.bankAccount?.accountNumber}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <BankDetails bankDetails={invoice.business.bankAccount} />
       </CardContent>
     </Card>
   );
