@@ -1,4 +1,4 @@
-import { Invoice } from "@/app/invoices/[invoiceId]/Invoice";
+import { InvoiceWithControls } from "@/app/invoices/[invoiceId]/InvoiceWithControls";
 import { api } from "@/trpc/server";
 
 interface InvoicePageProps {
@@ -13,7 +13,7 @@ export default async function Page({ params }: InvoicePageProps) {
   const invoice = await api.invoices.getById({ invoiceId });
   return (
     <div className="container pt-10">
-      <Invoice invoice={invoice} />
+      <InvoiceWithControls invoice={invoice} />
     </div>
   );
 }
