@@ -1,5 +1,5 @@
 import { db } from "@/server/db/index";
-import { businesses, users } from "@/server/db/schema";
+import { bankAccounts, businesses, users } from "@/server/db/schema";
 import { count, eq } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
 import type { State } from "../common/valueObjects/state";
@@ -61,6 +61,24 @@ class BusinessesRepository {
     });
 
     return business;
+  }
+  async getBillingInfo(businessId: string) {
+    const business = await db
+      .select({
+        name: businesses.name,
+        address: businesses.streetAddress,
+        suburb: businesses.suburb,
+        city: businesses.city,
+        postcode: businesses.postcode,
+        state: businesses.state,
+        phoneNumber: businesses.phoneNumber,
+        bankAccount: bankAccounts,
+      })
+      .from(businesses)
+      .leftJoin(bankAccounts, eq(businesses.id, bankAccounts.businessId))
+      .where(eq(businesses.id, businessId));
+
+    return single(business);
   }
 }
 

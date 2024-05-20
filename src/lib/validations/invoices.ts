@@ -5,4 +5,8 @@ export const createInvoiceSchema = z.object({
   clientId: z.string(),
 });
 
+export const invoiceIdSchema = z.object({
+  invoiceId: z.string(),
+});
+
 export type CreateInvoiceRequest = z.infer<typeof createInvoiceSchema>;
