@@ -25,6 +25,7 @@ export const useCreatePdf = () => {
       orientation: "portrait",
       unit: "mm",
       format: "a4",
+      compress: true,
     });
 
     const imgProperties = pdf.getImageProperties(data);
