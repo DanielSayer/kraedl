@@ -7,6 +7,8 @@ interface InvoicePageProps {
   };
 }
 
+export type InvoiceFromApi = Awaited<ReturnType<typeof api.invoices.getById>>;
+
 export default async function Page({ params }: InvoicePageProps) {
   const { invoiceId } = params;
 

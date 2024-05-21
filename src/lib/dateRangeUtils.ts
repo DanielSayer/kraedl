@@ -17,7 +17,6 @@ export function formatDateRange(
   const endDate = new Date(endTime);
   const isSameDay = startDate.toDateString() === endDate.toDateString();
 
-  console.log(startTime);
   if (isSameDay) {
     return `${format(startTime, "dd MMM yyyy")} | ${formatTimeRange(startDate, endDate)}`;
   }

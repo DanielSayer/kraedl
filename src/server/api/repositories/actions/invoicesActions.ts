@@ -3,7 +3,7 @@ type Invoice = {
   clientId: string;
   invoiceNumber: number;
   total: string;
-  issueDate: Date | null;
+  issueDate: string | null;
   dueDate: string;
   pricingId: string;
   pricingLine: string;

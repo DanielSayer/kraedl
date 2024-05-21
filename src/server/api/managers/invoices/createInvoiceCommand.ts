@@ -1,11 +1,20 @@
 import type { CreateInvoiceRequest } from "@/lib/validations/invoices";
 import eventPricingRepository from "../../repositories/eventPricingRepository";
 import { invoicesRepository } from "../../repositories/invoicesRepository";
+import { format } from "date-fns";
+import eventInvoiceLinksRepository from "../../repositories/eventInvoiceLinksRepository";
 
 export async function createInvoiceCommand(
   request: CreateInvoiceRequest,
   businessId: string,
 ) {
+  const invoiceIds = await eventInvoiceLinksRepository.getEventsInvoiceId(
+    request.eventIds,
+  );
+  if (invoiceIds.length !== 0) {
+    throw new Error("Event has already been invoiced");
+  }
+
   const pricings = await eventPricingRepository.getEventPricingsByEventIds(
     request.eventIds,
   );
@@ -28,7 +37,7 @@ export async function createInvoiceCommand(
   return await invoicesRepository.create(
     {
       clientId: request.clientId,
-      dueDate: dueDate.toDateString(),
+      dueDate: format(dueDate, "yyyy-MM-dd"),
       invoiceAmount: totalInvoicePrice,
       invoiceNumber,
       businessId,

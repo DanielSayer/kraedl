@@ -2,7 +2,6 @@
 
 import { DatePicker } from "@/components/ui/datepicker";
 import { Label } from "@/components/ui/label";
-import type { api } from "@/trpc/server";
 import {
   Card,
   CardContent,
@@ -13,8 +12,11 @@ import { InvoicePreview } from "./Invoice";
 import { useState } from "react";
 import type { Invoice } from "@/types/invoices";
 import LoadingButton from "@/components/LoadingButton";
+import type { InvoiceFromApi } from "./page";
+import { api } from "@/trpc/react";
+import { ErrorMessage } from "@/components/ui/errorMessage";
+import { format } from "date-fns";
 
-type InvoiceFromApi = Awaited<ReturnType<typeof api.invoices.getById>>;
 type InvoiceProps = {
   invoice: InvoiceFromApi;
 };
@@ -27,7 +29,7 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
   const handleChangeIssueDate = (date: Date) => {
     const updatedInvoiceFields: Invoice = {
       ...invoiceFields,
-      issueDate: date.toDateString(),
+      issueDate: format(date, "yyyy-MM-dd"),
     };
     setInvoiceFields(updatedInvoiceFields);
   };
@@ -35,9 +37,20 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
   const handleChangeDueDate = (date: Date) => {
     const updatedInvoiceFields: Invoice = {
       ...invoiceFields,
-      dueDate: date.toDateString(),
+      dueDate: format(date, "yyyy-MM-dd"),
     };
     setInvoiceFields(updatedInvoiceFields);
+  };
+
+  const issueInvoice = api.invoices.invoice.useMutation();
+
+  const onIssueInvoice = async () => {
+    console.log(invoiceFields.dueDate);
+    await issueInvoice.mutateAsync({
+      invoiceId: invoiceFields.id,
+      dueDate: invoiceFields.dueDate,
+      issueDate: invoiceFields.issueDate,
+    });
   };
 
   return (
@@ -69,8 +82,14 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
             be changed
           </p>
           <div className="flex justify-end">
-            <LoadingButton isLoading={false}>Issue Invoice</LoadingButton>
+            <LoadingButton
+              isLoading={issueInvoice.isPending}
+              onClick={onIssueInvoice}
+            >
+              Issue Invoice
+            </LoadingButton>
           </div>
+          <ErrorMessage>{issueInvoice.error?.message}</ErrorMessage>
         </CardFooter>
       </Card>
       <div className="w-2/3">
@@ -90,7 +109,7 @@ function mapInvoice(invoice: InvoiceFromApi): Invoice {
     invoiceNumber: invoice.invoiceNumber,
     clientId: invoice.clientId,
     dueDate: invoice.dueDate,
-    issueDate: invoice.issueDate ?? new Date().toDateString(),
+    issueDate: invoice.issueDate ?? format(new Date(), "yyyy-MM-dd"),
     lineItems: invoice.lineItems,
     total: invoice.total,
   };

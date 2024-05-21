@@ -10,6 +10,11 @@ import { eq, count, and } from "drizzle-orm";
 import { mapInvoiceToLineItems } from "./actions/invoicesActions";
 
 type NewInvoice = typeof invoices.$inferInsert;
+type UpdateInvoiceRequest = {
+  invoiceId: string;
+  dueDate: string;
+  issueDate: string;
+};
 
 class InvoicesRepository {
   async create(invoice: NewInvoice, eventIds: string[]) {
@@ -37,7 +42,7 @@ class InvoicesRepository {
         clientId: invoices.clientId,
         invoiceNumber: invoices.invoiceNumber,
         total: invoices.invoiceAmount,
-        issueDate: invoices.invoicedAt,
+        issueDate: invoices.issueDate,
         dueDate: invoices.dueDate,
         pricingId: pricing.id,
         pricingLine: pricing.label,
@@ -56,6 +61,38 @@ class InvoicesRepository {
       );
 
     return mapInvoiceToLineItems(res);
+  }
+  async invoice(invoiceId: string, businessId: string) {
+    await db
+      .update(invoices)
+      .set({ invoicedAt: new Date() })
+      .where(
+        and(eq(invoices.id, invoiceId), eq(invoices.businessId, businessId)),
+      );
+  }
+  async update(req: UpdateInvoiceRequest, businessId: string) {
+    await db
+      .update(invoices)
+      .set({
+        issueDate: req.issueDate,
+        dueDate: req.dueDate,
+      })
+      .where(
+        and(
+          eq(invoices.id, req.invoiceId),
+          eq(invoices.businessId, businessId),
+        ),
+      );
+  }
+  async isInvoiced(invoiceId: string, businessId: string) {
+    const invoicedAt = await db
+      .select({ invoicedAt: invoices.invoicedAt })
+      .from(invoices)
+      .where(
+        and(eq(invoices.id, invoiceId), eq(invoices.businessId, businessId)),
+      );
+
+    return single(invoicedAt).invoicedAt !== null;
   }
 }
 

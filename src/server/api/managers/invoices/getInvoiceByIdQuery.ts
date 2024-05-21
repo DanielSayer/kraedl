@@ -39,7 +39,6 @@ export const getInvoiceByIdQuery = async (
   };
   return {
     ...invoice,
-    issueDate: invoice.issueDate ? invoice.issueDate.toDateString() : null,
     business: businessDecoded,
     client: {
       ...client,

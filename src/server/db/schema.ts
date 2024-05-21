@@ -291,6 +291,7 @@ export const invoices = createTable("invoices", {
     precision: 12,
     scale: 2,
   }).notNull(),
+  issueDate: date("issueDate", { mode: "string" }),
   dueDate: date("dueDate", { mode: "string" }).notNull(),
   createdAt: timestamp("createdAt", { mode: "date", withTimezone: true })
     .notNull()
