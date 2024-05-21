@@ -1,7 +1,20 @@
 "use client";
 
+import LoadingButton from "@/components/LoadingButton";
 import { DatePicker } from "@/components/ui/datepicker";
+import { ErrorMessage } from "@/components/ui/errorMessage";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCreatePdf } from "@/hooks/useCreatePdf";
+import {
+  getDefaultInvoiceName,
+  isDefaultInvoiceName,
+} from "@/lib/invoiceUtils";
+import { api } from "@/trpc/react";
+import type { Invoice } from "@/types/invoices";
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -9,22 +22,29 @@ import {
   CardHeader,
 } from "../../../components/ui/card";
 import { InvoicePreview } from "./Invoice";
-import { useState } from "react";
-import type { Invoice } from "@/types/invoices";
-import LoadingButton from "@/components/LoadingButton";
 import type { InvoiceFromApi } from "./page";
-import { api } from "@/trpc/react";
-import { ErrorMessage } from "@/components/ui/errorMessage";
-import { format } from "date-fns";
 
 type InvoiceProps = {
   invoice: InvoiceFromApi;
 };
 
 export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
+  const { printRef, handleDownloadPdf } = useCreatePdf();
+  const [invoiceName, setInvoiceName] = useState<string>("");
   const [invoiceFields, setInvoiceFields] = useState<Invoice>(
     mapInvoice(invoice),
   );
+
+  useEffect(() => {
+    if (!isDefaultInvoiceName(invoiceName)) return;
+    const defaultInvoiceName = getDefaultInvoiceName(
+      invoice.invoiceNumber,
+      invoice.client.name,
+      invoiceFields.issueDate,
+    );
+    setInvoiceName(defaultInvoiceName);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [invoice.invoiceNumber, invoice.client.name, invoiceFields.issueDate]);
 
   const handleChangeIssueDate = (date: Date) => {
     const updatedInvoiceFields: Invoice = {
@@ -42,10 +62,14 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
     setInvoiceFields(updatedInvoiceFields);
   };
 
-  const issueInvoice = api.invoices.invoice.useMutation();
+  const issueInvoice = api.invoices.invoice.useMutation({
+    onSuccess: async () => {
+      toast.success("Invoiced, downloading...");
+      await handleDownloadPdf(invoiceName);
+    },
+  });
 
   const onIssueInvoice = async () => {
-    console.log(invoiceFields.dueDate);
     await issueInvoice.mutateAsync({
       invoiceId: invoiceFields.id,
       dueDate: invoiceFields.dueDate,
@@ -74,6 +98,13 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
               onChange={handleChangeDueDate}
             />
           </div>
+          <div>
+            <Label>Invoice Name</Label>
+            <Input
+              value={invoiceName}
+              onChange={(e) => setInvoiceName(e.currentTarget.value)}
+            />
+          </div>
         </CardContent>
         <CardFooter className="block space-y-2">
           <p className="text-sm text-muted-foreground">
@@ -94,6 +125,7 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
       </Card>
       <div className="w-2/3">
         <InvoicePreview
+          printRef={printRef}
           invoice={invoiceFields}
           business={invoice.business}
           client={invoice.client}
