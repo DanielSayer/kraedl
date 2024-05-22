@@ -44,6 +44,7 @@ class InvoicesRepository {
         invoiceNumber: invoices.invoiceNumber,
         total: invoices.invoiceAmount,
         issueDate: invoices.issueDate,
+        invoicedAt: invoices.invoicedAt,
         dueDate: invoices.dueDate,
         pricingId: pricing.id,
         pricingLine: pricing.label,

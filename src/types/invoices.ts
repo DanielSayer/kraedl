@@ -37,6 +37,7 @@ export type Invoice = {
   invoiceNumber: number;
   total: string;
   issueDate: string;
+  invoicedAt: Date | null;
   dueDate: string;
   lineItems: LineItem[];
 };

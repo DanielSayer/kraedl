@@ -4,6 +4,7 @@ type Invoice = {
   invoiceNumber: number;
   total: string;
   issueDate: string | null;
+  invoicedAt: Date | null;
   dueDate: string;
   pricingId: string;
   pricingLine: string;
@@ -26,6 +27,7 @@ export function mapInvoiceToLineItems(res: Invoice[]) {
     id: res[0].id,
     clientId: res[0].clientId,
     invoiceNumber: res[0].invoiceNumber,
+    invoicedAt: res[0].invoicedAt,
     total: res[0].total,
     issueDate: res[0].issueDate,
     dueDate: res[0].dueDate,
