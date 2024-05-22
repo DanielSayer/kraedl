@@ -1,5 +1,5 @@
-import eventsRepository from "../../repositories/eventsRepository";
+import dashboardRepository from "../../repositories/dashboardRespository";
 
 export const getUpcomingEventsCommand = async (businessId: string) => {
-  return await eventsRepository.getUpcomingAppointments(businessId);
+  return await dashboardRepository.getUpcomingAppointments(businessId);
 };

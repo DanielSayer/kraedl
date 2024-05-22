@@ -5,10 +5,13 @@ import { Icons } from "../Icons";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import Link from "next/link";
 import { api } from "@/trpc/react";
+import { formatCurrency } from "@/lib/currencyUtils";
 
 export const BusinessQuickStats = () => {
   const numberOfClients =
     api.dashboard.getNumberOfClientsForBusiness.useQuery();
+
+  const sales = api.dashboard.getMonthlyIncome.useQuery();
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
@@ -30,9 +33,11 @@ export const BusinessQuickStats = () => {
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$12,234</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(sales.data?.total.toString() ?? "")}
+            </div>
             <p className="text-xs text-muted-foreground">
-              +19% from last month (TODO)
+              {sales.data?.comparison}
             </p>
           </CardContent>
         </Card>

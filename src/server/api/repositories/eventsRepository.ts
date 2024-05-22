@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { clients, events, invoiceEventLink } from "@/server/db/schema";
-import { and, count, desc, eq, gt, lte, sql, gte } from "drizzle-orm";
+import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
 
 type EventDto = {
@@ -55,19 +55,6 @@ class EventsRepository {
           lte(events.endTime, new Date(end)),
         ),
       );
-  }
-  async getUpcomingAppointments(businessId: string) {
-    return await db.query.events.findMany({
-      where: and(
-        eq(events.businessId, businessId),
-        gt(events.startTime, new Date()),
-      ),
-      limit: 5,
-      orderBy: (events, { asc }) => [asc(events.startTime)],
-      with: {
-        clients: { columns: { name: true } },
-      },
-    });
   }
   async getById(eventId: string, businessId: string) {
     const event = await db.query.events.findFirst({
