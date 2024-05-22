@@ -6,6 +6,7 @@ type Invoice = {
   issueDate: string | null;
   invoicedAt: Date | null;
   dueDate: string;
+  paidAt: Date | null;
   pricingId: string;
   pricingLine: string;
   quantity: string;
@@ -31,6 +32,7 @@ export function mapInvoiceToLineItems(res: Invoice[]) {
     total: res[0].total,
     issueDate: res[0].issueDate,
     dueDate: res[0].dueDate,
+    paidAt: res[0].paidAt,
     lineItems: [] as LineItem[],
   };
 

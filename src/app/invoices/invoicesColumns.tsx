@@ -5,11 +5,13 @@ import { formatCurrency } from "@/lib/currencyUtils";
 import { formatInvoiceNumber } from "@/lib/invoiceUtils";
 import type { InvoiceStatus } from "@/types/invoices";
 import type { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 
 export type InvoicesTableRow = {
   id: string;
   invoiceNumber: number;
   clientName: string;
+  dueDate: string;
   status: InvoiceStatus;
   total: string;
 };
@@ -28,6 +30,14 @@ export const columns: ColumnDef<InvoicesTableRow>[] = [
     },
   },
   {
+    accessorKey: "dueDate",
+    header: "Due Date",
+    cell: ({ row }) => {
+      const dueDate = row.getValue<string>("dueDate");
+      return format(dueDate, "dd MMM yyyy");
+    },
+  },
+  {
     accessorKey: "total",
     header: "Invoice Total",
     cell: ({ row }) => {
@@ -40,7 +50,19 @@ export const columns: ColumnDef<InvoicesTableRow>[] = [
     header: "Invoice Status",
     cell: ({ row }) => {
       const status = row.getValue<InvoiceStatus>("status");
-      return <Badge>{status}</Badge>;
+      if (status === "DRAFT") {
+        return <Badge variant="outline">{status}</Badge>;
+      }
+
+      if (status === "OVERDUE") {
+        return <Badge variant="destructive">{status}</Badge>;
+      }
+
+      if (status === "PAID") {
+        return <Badge variant="success">{status}</Badge>;
+      }
+
+      return <Badge variant="secondary">{status}</Badge>;
     },
   },
 ];

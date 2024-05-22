@@ -9,6 +9,7 @@ import { createInvoiceCommand } from "../../managers/invoices/createInvoiceComma
 import { getInvoiceByIdQuery } from "../../managers/invoices/getInvoiceByIdQuery";
 import { invoiceCommand } from "../../managers/invoices/invoiceCommand";
 import { getInvoicesQuery } from "../../managers/invoices/getInvoicesQuery";
+import { markInvoiceAsPaidCommand } from "../../managers/invoices/markInvoiceAsPaidCommand";
 
 export const invoicesRouter = createTRPCRouter({
   create: adminProcedure
@@ -34,5 +35,10 @@ export const invoicesRouter = createTRPCRouter({
         input.pageSize,
         ctx.businessId,
       );
+    }),
+  markAsPaid: adminProcedure
+    .input(invoiceIdSchema)
+    .mutation(async ({ input, ctx }) => {
+      return await markInvoiceAsPaidCommand(input.invoiceId, ctx.businessId);
     }),
 });

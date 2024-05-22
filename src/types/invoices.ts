@@ -1,6 +1,9 @@
 //Note these are all in the context of an invoice
+import type { api } from "@/trpc/server";
 import type { BankAccount } from "./bankAccounts";
 import type { State } from "./misc";
+
+export type InvoiceFromApi = Awaited<ReturnType<typeof api.invoices.getById>>;
 
 export type Business = {
   name: string;

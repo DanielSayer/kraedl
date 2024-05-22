@@ -1,7 +1,7 @@
+"use client";
 import { InvoiceWithControls } from "@/app/invoices/[invoiceId]/InvoiceWithControls";
-import { buttonVariants } from "@/components/ui/button";
-import { api } from "@/trpc/server";
-import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/trpc/react";
 
 interface InvoicePageProps {
   params: {
@@ -9,28 +9,19 @@ interface InvoicePageProps {
   };
 }
 
-export type InvoiceFromApi = Awaited<ReturnType<typeof api.invoices.getById>>;
-
-export default async function Page({ params }: InvoicePageProps) {
+export default function Page({ params }: InvoicePageProps) {
   const { invoiceId } = params;
+  const { data, isLoading } = api.invoices.getById.useQuery({ invoiceId });
 
-  const invoice = await api.invoices.getById({ invoiceId });
-  return (
-    <div className="container pt-10">
-      {!!invoice.invoicedAt && (
-        <div className="mb-4 space-x-6 text-center text-sm uppercase text-muted-foreground">
-          <Link
-            href="/invoices"
-            className={buttonVariants({
-              variant: "secondary",
-            })}
-          >
-            Go back
-          </Link>
-          <span>This invoice has been invoiced and is in read only mode</span>
-        </div>
-      )}
-      <InvoiceWithControls invoice={invoice} />
-    </div>
-  );
+  if (isLoading || !data) {
+    return (
+      <div className="container mt-20 space-y-6">
+        {Array.from({ length: 5 }, (_, i) => i + 1).map((row) => (
+          <Skeleton key={row} className="h-10 w-full" />
+        ))}
+      </div>
+    );
+  }
+
+  return <InvoiceWithControls invoice={data} />;
 }

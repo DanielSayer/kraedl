@@ -46,6 +46,7 @@ class InvoicesRepository {
         issueDate: invoices.issueDate,
         invoicedAt: invoices.invoicedAt,
         dueDate: invoices.dueDate,
+        paidAt: invoices.paidAt,
         pricingId: pricing.id,
         pricingLine: pricing.label,
         quantity: eventPricings.quantity,
@@ -121,6 +122,14 @@ class InvoicesRepository {
       .from(invoices)
       .where(eq(invoices.businessId, businessId));
     return single(amount).count;
+  }
+  async markAsPaid(invoiceId: string, businessId: string) {
+    await db
+      .update(invoices)
+      .set({ paidAt: new Date() })
+      .where(
+        and(eq(invoices.businessId, businessId), eq(invoices.id, invoiceId)),
+      );
   }
 }
 
