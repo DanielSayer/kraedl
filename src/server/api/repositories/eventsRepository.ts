@@ -78,6 +78,16 @@ class EventsRepository {
             name: true,
           },
         },
+        invoice: {
+          columns: {},
+          with: {
+            invoices: {
+              columns: {
+                issueDate: true,
+              },
+            },
+          },
+        },
       },
     });
 

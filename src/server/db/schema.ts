@@ -322,7 +322,8 @@ export const invoiceEventLink = createTable("invoiceEventLink", {
     .references(() => invoices.id),
   eventId: uuid("eventId")
     .notNull()
-    .references(() => events.id),
+    .references(() => events.id)
+    .unique(),
 });
 
 export const invoiceEventLinkRelations = relations(

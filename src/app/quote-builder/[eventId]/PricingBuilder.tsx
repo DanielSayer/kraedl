@@ -17,8 +17,10 @@ import { PricingLineRow } from "./PricingLineRow";
 import usePricingLines from "./usePricingLines";
 
 import type { Pricing } from "@/types/pricings";
+import { cn } from "@/lib/utils";
 
 type PricingBuilderProps = {
+  isReadOnly: boolean;
   eventId: string;
   pricings: Pricing[];
   pricingLines: PricingLine[];
@@ -31,6 +33,7 @@ export type PricingLine = {
 };
 
 export const PricingBuilder = ({
+  isReadOnly,
   eventId,
   pricings,
   pricingLines: savedPricingLines,
@@ -78,8 +81,11 @@ export const PricingBuilder = ({
         <FieldsetLegend>
           <Icons.invoice /> Pricing Builder
         </FieldsetLegend>
-        <FieldsetContent className="grid">
-          <Button className="my-4 ml-auto" onClick={addPricingLine}>
+        <FieldsetContent className={cn("grid", { "pt-6": isReadOnly })}>
+          <Button
+            className={cn("my-4 ml-auto", { hidden: isReadOnly })}
+            onClick={addPricingLine}
+          >
             <Icons.add className="mr-2 h-4 w-4" /> Pricing line
           </Button>
           <div className="flex flex-col gap-4">
@@ -112,7 +118,11 @@ export const PricingBuilder = ({
         >
           Go back
         </Link>
-        <LoadingButton isLoading={isSaving} onClick={handleSave}>
+        <LoadingButton
+          isLoading={isSaving}
+          onClick={handleSave}
+          disabled={isReadOnly}
+        >
           Save
         </LoadingButton>
       </div>

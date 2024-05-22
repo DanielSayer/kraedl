@@ -8,6 +8,10 @@ type SaveEventPricingsRequest = z.infer<typeof saveEventPricingsSchema>;
 export async function saveEventPricingsCommand(
   req: SaveEventPricingsRequest,
 ): Promise<Result<boolean>> {
+  if (req.eventPricings.length === 0) {
+    return Result.Failure("Event must have at least one line item");
+  }
+
   for (const pricing of req.eventPricings) {
     const computedQuantity = parseFloat(pricing.quantity);
     if (isNaN(computedQuantity) || !isFinite(computedQuantity)) {

@@ -114,7 +114,7 @@ class InvoicesRepository {
       .where(eq(invoices.businessId, businessId))
       .offset(offset)
       .limit(pageNumber)
-      .orderBy(desc(invoices.createdAt));
+      .orderBy(desc(invoices.issueDate));
   }
   async getNumberOfInvoices(businessId: string) {
     const amount = await db

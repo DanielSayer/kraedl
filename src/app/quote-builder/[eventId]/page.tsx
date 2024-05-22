@@ -31,10 +31,26 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
 
   const pricingLines = await api.eventPricing.getById({ id: event.id });
 
+  const isInvoiced = () => {
+    if (!event.invoice?.invoices) {
+      return false;
+    }
+    if (event.invoice.invoices.length === 0) {
+      return false;
+    }
+    return event.invoice.invoices[0]?.issueDate !== null;
+  };
+
   return (
     <div className="container mb-20 pt-6">
       <h2 className="text-2xl font-bold tracking-tight">Quote Builder</h2>
-      <p className="text-muted-foreground">Manage your event here.</p>
+      {isInvoiced() ? (
+        <p className="text-muted-foreground">
+          Event has been invoiced. This is now read only
+        </p>
+      ) : (
+        <p className="text-muted-foreground">Manage your event here.</p>
+      )}
       <Separator className="my-2" />
       <div className="grid gap-4">
         <Fieldset>
@@ -57,6 +73,7 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
           )}
         </Fieldset>
         <PricingBuilder
+          isReadOnly={isInvoiced()}
           pricings={pricings}
           pricingLines={pricingLines}
           eventId={event.id}
