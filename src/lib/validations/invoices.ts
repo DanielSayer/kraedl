@@ -19,3 +19,8 @@ export const updateInvoiceSchema = z.object({
 });
 
 export type UpdateInvoiceRequest = z.infer<typeof updateInvoiceSchema>;
+
+export const invoicesRequest = z.object({
+  pageIndex: z.number(),
+  pageSize: z.number(),
+});

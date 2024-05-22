@@ -1,12 +1,13 @@
 import { db } from "@/server/db";
 import {
+  clients,
   eventPricings,
   invoiceEventLink,
   invoices,
   pricing,
 } from "@/server/db/schema";
+import { and, count, desc, eq } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
-import { eq, count, and } from "drizzle-orm";
 import { mapInvoiceToLineItems } from "./actions/invoicesActions";
 
 type NewInvoice = typeof invoices.$inferInsert;
@@ -93,6 +94,32 @@ class InvoicesRepository {
       );
 
     return single(invoicedAt).invoicedAt !== null;
+  }
+  async getInvoices(businessId: string, pageSize: number, pageNumber: number) {
+    const offset = pageSize * pageNumber;
+    return await db
+      .select({
+        id: invoices.id,
+        invoiceNumber: invoices.invoiceNumber,
+        clientName: clients.name,
+        total: invoices.invoiceAmount,
+        dueDate: invoices.dueDate,
+        invoicedAt: invoices.invoicedAt,
+        paidAt: invoices.paidAt,
+      })
+      .from(invoices)
+      .innerJoin(clients, eq(clients.id, invoices.clientId))
+      .where(eq(invoices.businessId, businessId))
+      .offset(offset)
+      .limit(pageNumber)
+      .orderBy(desc(invoices.createdAt));
+  }
+  async getNumberOfInvoices(businessId: string) {
+    const amount = await db
+      .select({ count: count() })
+      .from(invoices)
+      .where(eq(invoices.businessId, businessId));
+    return single(amount).count;
   }
 }
 

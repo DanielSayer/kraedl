@@ -23,6 +23,8 @@ import {
 } from "../../../components/ui/card";
 import { InvoicePreview } from "./Invoice";
 import type { InvoiceFromApi } from "./page";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 type InvoiceProps = {
   invoice: InvoiceFromApi;
@@ -112,7 +114,13 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
             for you to send to your client, the invoice, once generated cannot
             be changed
           </p>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <Link
+              href="/invoices"
+              className={buttonVariants({ variant: "secondary" })}
+            >
+              Back
+            </Link>
             <LoadingButton
               isLoading={issueInvoice.isPending}
               onClick={onIssueInvoice}

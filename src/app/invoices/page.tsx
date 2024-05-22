@@ -1,6 +1,7 @@
 import { Icons } from "@/components/Icons";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import { InvoicesTable } from "./InvoicesTable";
 
 const Page = () => {
   return (
@@ -18,6 +19,7 @@ const Page = () => {
         </Link>
       </div>
       <hr className="my-6" />
+      <InvoicesTable />
     </div>
   );
 };

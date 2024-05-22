@@ -47,3 +47,5 @@ type LineItem = {
   quantity: string;
   pricePer: string;
 };
+
+export type InvoiceStatus = "DRAFT" | "PAID" | "OVERDUE" | "INVOICED";

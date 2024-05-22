@@ -24,7 +24,8 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onRowSelect: (id: string) => void;
+  onRowClick?: (id: string) => void;
+  onRowSelect?: (id: string) => void;
   paginationConfig: {
     rowCount: number;
     pagination: PaginationState;
@@ -36,6 +37,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   isLoading,
   columns,
   onRowSelect,
+  onRowClick,
   data,
   paginationConfig,
 }: DataTableProps<TData, TValue>) {
@@ -58,12 +60,18 @@ export function DataTable<TData extends { id: string }, TValue>({
   });
 
   useEffect(() => {
+    if (!onRowSelect) return;
     if (Object.keys(rowSelection).length === 1) {
       onRowSelect(Object.keys(rowSelection)[0] ?? "");
       return;
     }
     onRowSelect("");
   }, [rowSelection, onRowSelect]);
+
+  const handleRowClick = (id: string) => {
+    if (!onRowClick) return;
+    onRowClick(id);
+  };
 
   return (
     <div className="rounded-md border">
@@ -100,6 +108,7 @@ export function DataTable<TData extends { id: string }, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                onClick={() => handleRowClick(row.id)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
