@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { clients, events, invoiceEventLink } from "@/server/db/schema";
-import { and, count, desc, eq, gt, lte, sql } from "drizzle-orm";
+import { and, count, desc, eq, gt, lte, sql, gte } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
 
 type EventDto = {
@@ -13,7 +13,7 @@ type EventDto = {
 
 type Event = {
   id: string;
-  name?: string;
+  name: string | null;
   clientId: string;
   startTime: Date;
   endTime: Date;
@@ -34,21 +34,27 @@ class EventsRepository {
 
     return single(id);
   }
-  async getEventsInDateRange(start: string, end: string, businessId: string) {
-    return (await db.execute(sql`
-      SELECT 
-        ${events.id},
-        ${events.name},
-        ${events.clientId},
-        ${events.startTime},
-        ${events.endTime}
-      FROM ${events}
-      WHERE ${events.businessId} = ${businessId}
-      AND (${events.startTime} >= ${start} AND ${events.startTime} < ${end})
-      OR (${events.endTime} >= ${start} AND ${events.endTime} < ${end})
-      OR (${events.startTime} < ${start} AND ${events.endTime} >= ${end})
-      OR (${events.startTime} >= ${start} AND ${events.endTime} <= ${end})
-    `)) as Event[];
+  async getEventsInDateRange(
+    start: string,
+    end: string,
+    businessId: string,
+  ): Promise<Event[]> {
+    return await db
+      .select({
+        id: events.id,
+        name: events.name,
+        clientId: events.clientId,
+        startTime: events.startTime,
+        endTime: events.endTime,
+      })
+      .from(events)
+      .where(
+        and(
+          eq(events.businessId, businessId),
+          gte(events.startTime, new Date(start)),
+          lte(events.endTime, new Date(end)),
+        ),
+      );
   }
   async getUpcomingAppointments(businessId: string) {
     return await db.query.events.findMany({

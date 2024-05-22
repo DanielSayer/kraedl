@@ -42,7 +42,7 @@ function getInvoiceStatus(
 
   const now = new Date().getTime();
   const due = new Date(dueDate).getTime();
-  if (due > now) {
+  if (due < now) {
     return "OVERDUE";
   }
 
