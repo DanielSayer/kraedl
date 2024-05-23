@@ -1,4 +1,4 @@
-import { addDays, addMonths, lastDayOfWeek } from "date-fns";
+import { addDays, addMonths, lastDayOfWeek, startOfMonth } from "date-fns";
 import dashboardRepository from "../../repositories/dashboardRespository";
 
 export const getUpcomingEventsQuery = async (businessId: string) => {
@@ -17,20 +17,21 @@ export const getNumberOfEventsLeftInWeekQuery = async (businessId: string) => {
 
 export const getNumberOfEventsInLastMonth = async (businessId: string) => {
   const today = new Date();
-  const lastMonth = addMonths(today, -1);
-  const twoMonthsAgo = addMonths(lastMonth, -1);
+  const startOfTheMonth = startOfMonth(today);
+  const thisTimeLastMonth = addMonths(today, -1);
+  const startOfLastMonth = startOfMonth(thisTimeLastMonth);
 
   const thisMonthsEvents =
     await dashboardRepository.getNumberOfEventsInDateRange(
-      lastMonth,
+      startOfTheMonth,
       today,
       businessId,
     );
 
   const lastMonthsEvents =
     await dashboardRepository.getNumberOfEventsInDateRange(
-      twoMonthsAgo,
-      lastMonth,
+      startOfLastMonth,
+      thisTimeLastMonth,
       businessId,
     );
 

@@ -22,6 +22,7 @@ export async function getInvoicesQuery(
       invoiceNumber: i.invoiceNumber,
       clientName: i.clientName,
       clientEmail: i.clientEmail,
+      issueDate: i.issueDate,
       dueDate: i.dueDate,
       status: getInvoiceStatus(i.invoicedAt, i.dueDate, i.paidAt),
       total: i.total,

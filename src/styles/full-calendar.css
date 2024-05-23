@@ -1,9 +1,9 @@
 /* Primary Button */
 
 .fc .fc-button-primary {
-  background-color: transparent;
-  border-color: hsl(var(--border));
-  color: hsl(var(--foreground));
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--accent));
 }
 
 .fc .fc-button-primary:hover {
@@ -24,7 +24,7 @@
 
 .fc .fc-button-primary:not(:disabled):active,
 .fc .fc-button-primary:not(:disabled).fc-button-active {
-  background-color: hsl(var(--primary));
+  background-color: hsl(from hsl(var(--primary)) h s 54.5);
   border-color: hsl(var(--primary));
   color: hsl(var(--accent));
 }

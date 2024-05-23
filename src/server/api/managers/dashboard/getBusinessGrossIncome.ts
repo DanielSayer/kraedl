@@ -1,13 +1,14 @@
-import { addMonths } from "date-fns";
+import { addMonths, startOfMonth } from "date-fns";
 import dashboardRepository from "../../repositories/dashboardRespository";
 
 export const getBusinsessGrossIncome = async (businessId: string) => {
   const today = new Date();
-  const lastMonth = addMonths(today, -1);
-  const twoMonthsAgo = addMonths(lastMonth, -1);
+  const startOfTheMonth = startOfMonth(today);
+  const thisTimeLastMonth = addMonths(today, -1);
+  const startOfLastMonth = startOfMonth(thisTimeLastMonth);
 
   const thisMonthsTotals = await dashboardRepository.getInvoiceTotalsInRange(
-    lastMonth,
+    startOfTheMonth,
     today,
     businessId,
   );
@@ -17,8 +18,8 @@ export const getBusinsessGrossIncome = async (businessId: string) => {
   );
 
   const lastMonthsTotals = await dashboardRepository.getInvoiceTotalsInRange(
-    twoMonthsAgo,
-    lastMonth,
+    startOfLastMonth,
+    thisTimeLastMonth,
     businessId,
   );
 

@@ -12,13 +12,12 @@ export type InvoicesTableRow = {
   invoiceNumber: number;
   clientName: string;
   clientEmail: string;
-  issueDate: string | null;
   dueDate: string;
   status: InvoiceStatus;
   total: string;
 };
 
-export const columns: ColumnDef<InvoicesTableRow>[] = [
+export const invoiceTableColumns: ColumnDef<InvoicesTableRow>[] = [
   {
     accessorKey: "clientName",
     header: "Client",
@@ -40,17 +39,6 @@ export const columns: ColumnDef<InvoicesTableRow>[] = [
     cell: ({ row }) => {
       const invoiceNumber = row.getValue<number>("invoiceNumber");
       return formatInvoiceNumber(invoiceNumber);
-    },
-  },
-  {
-    accessorKey: "issueDate",
-    header: "Issue Date",
-    cell: ({ row }) => {
-      const issueDate = row.getValue<string | null>("issueDate");
-      if (!issueDate) {
-        return "Not issued";
-      }
-      return format(issueDate, "dd MMM yyyy");
     },
   },
   {

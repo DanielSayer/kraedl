@@ -2,9 +2,9 @@
 
 import { api } from "@/trpc/react";
 import { DataTable } from "../data-table";
-import { columns } from "@/app/invoices/invoicesColumns";
 import { Card } from "../ui/card";
 import { Icons } from "../Icons";
+import { invoiceTableColumns } from "./invoicesTableComuns";
 
 export const InvoicePreview = () => {
   const { isLoading, data } = api.invoices.getInvoices.useQuery({
@@ -22,7 +22,7 @@ export const InvoicePreview = () => {
   }
   return (
     <DataTable
-      columns={columns}
+      columns={invoiceTableColumns}
       data={data?.invoices ?? []}
       isLoading={isLoading}
     />
