@@ -37,12 +37,14 @@ const UpcomingEventsContent = ({
 
   if (data.length === 0) {
     return (
-      <div className="grid place-items-center pt-6">
-        <div className="flex flex-col items-center gap-4">
-          <Icons.ghost className="h-6 w-6 text-muted-foreground" />
-          No upcoming events, create some!
+      <Card className="border-dashed py-10">
+        <div className="grid place-items-center">
+          <div className="flex flex-col items-center gap-4">
+            <Icons.ghost className="h-6 w-6 text-muted-foreground" />
+            No upcoming events, create some!
+          </div>
         </div>
-      </div>
+      </Card>
     );
   }
   return data.map((event) => (

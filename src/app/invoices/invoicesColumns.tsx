@@ -11,6 +11,7 @@ export type InvoicesTableRow = {
   id: string;
   invoiceNumber: number;
   clientName: string;
+  clientEmail: string;
   dueDate: string;
   status: InvoiceStatus;
   total: string;
@@ -19,7 +20,18 @@ export type InvoicesTableRow = {
 export const columns: ColumnDef<InvoicesTableRow>[] = [
   {
     accessorKey: "clientName",
-    header: "Client Name",
+    header: "Client",
+    cell: ({ row }) => {
+      const clientName = row.getValue<string>("clientName");
+      return (
+        <>
+          <div className="font-medium">{clientName}</div>
+          <div className="text-sm text-muted-foreground">
+            {row.original.clientEmail}
+          </div>
+        </>
+      );
+    },
   },
   {
     accessorKey: "invoiceNumber",

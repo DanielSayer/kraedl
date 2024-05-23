@@ -26,7 +26,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   onRowClick?: (id: string) => void;
   onRowSelect?: (id: string) => void;
-  paginationConfig: {
+  paginationConfig?: {
     rowCount: number;
     pagination: PaginationState;
     setPagination: Dispatch<SetStateAction<PaginationState>>;
@@ -49,10 +49,10 @@ export function DataTable<TData extends { id: string }, TValue>({
     manualPagination: true,
     state: {
       rowSelection,
-      pagination: paginationConfig.pagination,
+      pagination: paginationConfig?.pagination,
     },
-    rowCount: paginationConfig.rowCount,
-    onPaginationChange: paginationConfig.setPagination,
+    rowCount: paginationConfig?.rowCount,
+    onPaginationChange: paginationConfig?.setPagination,
     onRowSelectionChange: setRowSelection,
     getRowId: (row) => row.id,
     enableRowSelection: true,
@@ -126,7 +126,7 @@ export function DataTable<TData extends { id: string }, TValue>({
           )}
         </TableBody>
       </Table>
-      <DataTablePagination table={table} />
+      {!!paginationConfig && <DataTablePagination table={table} />}
     </div>
   );
 }

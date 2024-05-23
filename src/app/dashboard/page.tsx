@@ -1,7 +1,7 @@
 import { Icons } from "@/components/Icons";
 import { BusinessQuickStats } from "@/components/dashboard/BusinessQuickStats";
+import { InvoicePreview } from "@/components/dashboard/InvoicePreview";
 import { UpcomingEvents } from "@/components/dashboard/UpcomingEvents";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,14 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import useProtectedRoute from "@/hooks/useProtectedRoute";
 import { getGreeting } from "@/lib/greetings";
 import Link from "next/link";
@@ -44,35 +36,7 @@ export default async function Page() {
             </Button>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Amount</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invoiceData.map((invoice) => (
-                  <TableRow key={invoice.id}>
-                    <TableCell>
-                      <div className="font-medium">{invoice.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {invoice.email}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className="text-xs" variant="outline">
-                        {invoice.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{invoice.date}</TableCell>
-                    <TableCell>{invoice.amount}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <InvoicePreview />
           </CardContent>
         </Card>
       </div>
@@ -84,46 +48,3 @@ export default async function Page() {
     </main>
   );
 }
-
-const invoiceData = [
-  {
-    id: 1,
-    name: "Liam Johnson",
-    email: "liam@example.com",
-    status: "Approved",
-    date: "27 June 2023",
-    amount: "$250.00",
-  },
-  {
-    id: 2,
-    name: "Olivia Smith",
-    email: "olivia@example.com",
-    status: "Declined",
-    date: "27 June 2023",
-    amount: "$150.00",
-  },
-  {
-    id: 3,
-    name: "Noah Williams",
-    email: "noah@example.com",
-    status: "Approved",
-    date: "26 June 2023",
-    amount: "$350.00",
-  },
-  {
-    id: 4,
-    name: "Emma Brown",
-    email: "emma@example.com",
-    status: "Approved",
-    date: "26 June 2023",
-    amount: "$450.00",
-  },
-  {
-    id: 5,
-    name: "Liam Johnson",
-    email: "liam@example.com",
-    status: "Approved",
-    date: "25 June 2023",
-    amount: "$420.00",
-  },
-];

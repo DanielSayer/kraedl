@@ -104,6 +104,7 @@ class InvoicesRepository {
         id: invoices.id,
         invoiceNumber: invoices.invoiceNumber,
         clientName: clients.name,
+        clientEmail: clients.email,
         total: invoices.invoiceAmount,
         dueDate: invoices.dueDate,
         invoicedAt: invoices.invoicedAt,
