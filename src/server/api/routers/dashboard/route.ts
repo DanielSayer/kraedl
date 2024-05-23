@@ -1,6 +1,7 @@
 import { getBusinsessGrossIncome } from "../../managers/dashboard/getBusinessGrossIncome";
 import { getNumberOfClientsForBusinessQuery } from "../../managers/dashboard/getNumberOfClientsForBusiness";
 import {
+  getNumberOfEventsInLastMonth,
   getNumberOfEventsLeftInWeekQuery,
   getUpcomingEventsQuery,
 } from "../../managers/dashboard/getEventsQueries";
@@ -22,5 +23,8 @@ export const dashboardRouter = createTRPCRouter({
   }),
   getNumberOfUnpaidInvoices: adminProcedure.query(async ({ ctx }) => {
     return await getNumberOfUnpaidInvoicesQuery(ctx.businessId);
+  }),
+  getNumberOfEventsThisMonth: adminProcedure.query(async ({ ctx }) => {
+    return await getNumberOfEventsInLastMonth(ctx.businessId);
   }),
 });

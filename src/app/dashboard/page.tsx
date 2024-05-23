@@ -26,7 +26,7 @@ export default async function Page() {
           <CardHeader className="flex flex-row items-center">
             <div className="grid gap-2">
               <CardTitle>Recent Invoices</CardTitle>
-              <CardDescription>Invoices at a glace.</CardDescription>
+              <CardDescription>Last 5 invoices at a glace.</CardDescription>
             </div>
             <Button asChild size="sm" className="ml-auto gap-1">
               <Link href="/invoices">
