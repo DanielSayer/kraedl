@@ -53,12 +53,12 @@ class InvoicesRepository {
         pricePer: pricing.price,
       })
       .from(invoices)
-      .innerJoin(invoiceEventLink, eq(invoiceEventLink.invoiceId, invoices.id))
-      .innerJoin(
+      .leftJoin(invoiceEventLink, eq(invoiceEventLink.invoiceId, invoices.id))
+      .leftJoin(
         eventPricings,
         eq(invoiceEventLink.eventId, eventPricings.eventId),
       )
-      .innerJoin(pricing, eq(pricing.id, eventPricings.pricingId))
+      .leftJoin(pricing, eq(pricing.id, eventPricings.pricingId))
       .where(
         and(eq(invoices.id, invoiceId), eq(invoices.businessId, businessId)),
       );

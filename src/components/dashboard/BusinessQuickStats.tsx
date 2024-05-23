@@ -13,6 +13,8 @@ export const BusinessQuickStats = () => {
 
   const sales = api.dashboard.getMonthlyIncome.useQuery();
   const numberOfEvents = api.dashboard.getNumberOfEventsLeftInWeek.useQuery();
+  const numberOfUnpaidInvoices =
+    api.dashboard.getNumberOfUnpaidInvoices.useQuery();
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
@@ -76,8 +78,10 @@ export const BusinessQuickStats = () => {
               <Icons.invoice className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">10</div>
-              <p className="text-xs text-muted-foreground">(TODO)</p>
+              <div className="text-2xl font-bold">
+                {numberOfUnpaidInvoices.data}
+              </div>
+              <p className="text-xs text-muted-foreground">Still to be paid</p>
             </CardContent>
           </Card>
         </Link>

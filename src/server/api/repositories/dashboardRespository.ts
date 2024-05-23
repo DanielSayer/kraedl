@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { invoices, events } from "@/server/db/schema";
 import { addDays, lastDayOfWeek } from "date-fns";
-import { eq, and, gte, lte, gt, count } from "drizzle-orm";
+import { eq, and, gte, lte, gt, count, sql } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
 
 class DashboardRepository {
@@ -46,6 +46,19 @@ class DashboardRepository {
         ),
       );
     return single(eventCount).count;
+  }
+  async getNumberOfUnpaidInvoices(businessId: string) {
+    const invoiceCount = await db
+      .select({ count: count() })
+      .from(invoices)
+      .where(
+        and(
+          sql`${invoices.paidAt} IS NULL`,
+          sql`${invoices.invoicedAt} IS NOT NULL`,
+          eq(invoices.businessId, businessId),
+        ),
+      );
+    return single(invoiceCount).count;
   }
 }
 

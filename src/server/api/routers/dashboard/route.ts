@@ -5,6 +5,7 @@ import {
   getUpcomingEventsQuery,
 } from "../../managers/dashboard/getEventsQueries";
 import { adminProcedure, createTRPCRouter } from "../../trpc";
+import { getNumberOfUnpaidInvoicesQuery } from "../../managers/dashboard/getNumberOfUnpaidInvoices";
 
 export const dashboardRouter = createTRPCRouter({
   getUpcomingEvents: adminProcedure.query(async ({ ctx }) => {
@@ -18,5 +19,8 @@ export const dashboardRouter = createTRPCRouter({
   }),
   getNumberOfEventsLeftInWeek: adminProcedure.query(async ({ ctx }) => {
     return await getNumberOfEventsLeftInWeekQuery(ctx.businessId);
+  }),
+  getNumberOfUnpaidInvoices: adminProcedure.query(async ({ ctx }) => {
+    return await getNumberOfUnpaidInvoicesQuery(ctx.businessId);
   }),
 });

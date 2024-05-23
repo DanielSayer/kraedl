@@ -7,10 +7,10 @@ type Invoice = {
   invoicedAt: Date | null;
   dueDate: string;
   paidAt: Date | null;
-  pricingId: string;
-  pricingLine: string;
-  quantity: string;
-  pricePer: string;
+  pricingId: string | null;
+  pricingLine: string | null;
+  quantity: string | null;
+  pricePer: string | null;
 };
 
 type LineItem = {
@@ -37,6 +37,9 @@ export function mapInvoiceToLineItems(res: Invoice[]) {
   };
 
   for (const row of res) {
+    if (!row.pricingId || !row.pricingLine || !row.quantity || !row.pricePer) {
+      continue;
+    }
     invoice.lineItems.push({
       id: row.pricingId,
       name: row.pricingLine,
