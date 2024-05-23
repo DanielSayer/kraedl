@@ -1,4 +1,4 @@
-import type { InvoiceStatus } from "@/types/invoices";
+import { getInvoiceStatus } from "../../common/helperMethods/invoiceHelpers";
 import { invoicesRepository } from "../../repositories/invoicesRepository";
 
 export async function getInvoicesQuery(
@@ -28,26 +28,4 @@ export async function getInvoicesQuery(
       total: i.total,
     })),
   };
-}
-
-function getInvoiceStatus(
-  invoicedAt: Date | null,
-  dueDate: string,
-  paidAt: Date | null,
-): InvoiceStatus {
-  if (!invoicedAt) {
-    return "DRAFT";
-  }
-
-  if (paidAt) {
-    return "PAID";
-  }
-
-  const now = new Date().getTime();
-  const due = new Date(dueDate).getTime();
-  if (due < now) {
-    return "OVERDUE";
-  }
-
-  return "INVOICED";
 }

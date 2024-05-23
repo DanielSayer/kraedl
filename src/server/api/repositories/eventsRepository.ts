@@ -1,5 +1,10 @@
 import { db } from "@/server/db";
-import { clients, events, invoiceEventLink } from "@/server/db/schema";
+import {
+  clients,
+  events,
+  invoiceEventLink,
+  invoices,
+} from "@/server/db/schema";
 import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
 
@@ -9,14 +14,6 @@ type EventDto = {
   startTime: Date;
   endTime: Date;
   businessId: string;
-};
-
-type Event = {
-  id: string;
-  name: string | null;
-  clientId: string;
-  startTime: Date;
-  endTime: Date;
 };
 
 class EventsRepository {
@@ -34,20 +31,22 @@ class EventsRepository {
 
     return single(id);
   }
-  async getEventsInDateRange(
-    start: string,
-    end: string,
-    businessId: string,
-  ): Promise<Event[]> {
+  async getEventsInDateRange(start: string, end: string, businessId: string) {
     return await db
       .select({
         id: events.id,
         name: events.name,
-        clientId: events.clientId,
+        clientName: clients.name,
         startTime: events.startTime,
         endTime: events.endTime,
+        invoicedAt: invoices.invoicedAt,
+        dueDate: invoices.dueDate,
+        paidAt: invoices.paidAt,
       })
       .from(events)
+      .innerJoin(clients, eq(clients.id, events.clientId))
+      .leftJoin(invoiceEventLink, eq(invoiceEventLink.eventId, events.id))
+      .leftJoin(invoices, eq(invoices.id, invoiceEventLink.invoiceId))
       .where(
         and(
           eq(events.businessId, businessId),

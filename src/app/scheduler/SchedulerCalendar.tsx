@@ -2,7 +2,11 @@
 
 import { Calendar } from "@/components/Calendar";
 import useWindowSize from "@/hooks/useWindowSize";
-import { getSchedulerCalendarHeight } from "@/lib/calendarUtils";
+import {
+  getEventBackgroundStyles,
+  getEventTextStyles,
+  getSchedulerCalendarHeight,
+} from "@/lib/calendarUtils";
 import type { Event } from "@/types/events";
 import type { DatesSetArg } from "@fullcalendar/core";
 import type FullCalendar from "@fullcalendar/react";
@@ -24,9 +28,11 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
   const fullCalendarEvents = events
     ? events.map((e) => ({
         id: e.id,
-        title: e.name ? e.name : e.clientId,
+        title: e.name ? e.name : e.clientName,
         start: e.startTime,
         end: e.endTime,
+        classNames: getEventBackgroundStyles(e.status),
+        textColor: getEventTextStyles(e.status),
       }))
     : [];
 

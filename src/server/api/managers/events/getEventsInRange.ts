@@ -1,6 +1,7 @@
 import type { getEventsInRangeSchema } from "@/lib/validations/events";
 import eventsRepository from "../../repositories/eventsRepository";
 import type { z } from "zod";
+import { getInvoiceStatus } from "../../common/helperMethods/invoiceHelpers";
 
 type GetEventsInRangeRequest = z.infer<typeof getEventsInRangeSchema>;
 
@@ -17,5 +18,12 @@ export async function getEventsInRange(
     businessId,
   );
 
-  return events;
+  return events.map((event) => ({
+    id: event.id,
+    name: event.name,
+    clientName: event.clientName,
+    startTime: event.startTime,
+    endTime: event.endTime,
+    status: getInvoiceStatus(event.invoicedAt, event.dueDate, event.paidAt),
+  }));
 }

@@ -10,6 +10,7 @@ import CreateEventDialog from "./CreateEventDialog";
 import SchedulerCalendar from "./SchedulerCalendar";
 import useCalendar from "./useCalendar";
 import { api } from "@/trpc/react";
+import { Card } from "@/components/ui/card";
 
 const SchedulerPage = () => {
   const { selectedDate, datesSet, handleSelectDate, calendarRef, dateRange } =
@@ -33,6 +34,22 @@ const SchedulerPage = () => {
           month={selectedDate}
           onSelect={handleSelectDate}
         />
+        <Card className="px-2 py-4">
+          <div className="space-y-2">
+            <div className="mb-3 text-sm font-semibold">Key:</div>
+            <span className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="h-4 w-4 rounded bg-violet-400" /> Not Invoiced or
+              Not Overdue
+            </span>
+            <span className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="h-4 w-4 rounded bg-green-400" /> Invoiced and Paid
+            </span>
+            <span className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="h-4 w-4 rounded bg-red-400" /> Invoiced and
+              Overdue
+            </span>
+          </div>
+        </Card>
       </div>
       <div className="w-full">
         <CreateEventButton refetch={refetch} className="lg:hidden" />
