@@ -12,6 +12,7 @@ export const BusinessQuickStats = () => {
     api.dashboard.getNumberOfClientsForBusiness.useQuery();
 
   const sales = api.dashboard.getMonthlyIncome.useQuery();
+  const numberOfEvents = api.dashboard.getNumberOfEventsLeftInWeek.useQuery();
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
@@ -61,9 +62,9 @@ export const BusinessQuickStats = () => {
               <Icons.calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">10</div>
+              <div className="text-2xl font-bold">{numberOfEvents.data}</div>
               <p className="text-xs text-muted-foreground">
-                events this week (TODO)
+                events remaining this week
               </p>
             </CardContent>
           </Card>

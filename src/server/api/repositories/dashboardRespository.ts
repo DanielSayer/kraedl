@@ -1,6 +1,8 @@
 import { db } from "@/server/db";
 import { invoices, events } from "@/server/db/schema";
-import { eq, and, gte, lte, gt } from "drizzle-orm";
+import { addDays, lastDayOfWeek } from "date-fns";
+import { eq, and, gte, lte, gt, count } from "drizzle-orm";
+import { single } from "../common/helperMethods/arrayHelpers";
 
 class DashboardRepository {
   async getInvoiceTotalsInRange(start: Date, end: Date, businessId: string) {
@@ -29,6 +31,21 @@ class DashboardRepository {
         clients: { columns: { name: true } },
       },
     });
+  }
+  async getNumberOfEventsLeftInWeek(businessId: string) {
+    const today = new Date();
+    const lastDay = addDays(lastDayOfWeek(today, { weekStartsOn: 1 }), 1);
+    const eventCount = await db
+      .select({ count: count() })
+      .from(events)
+      .where(
+        and(
+          eq(events.businessId, businessId),
+          gte(events.startTime, new Date(today)),
+          lte(events.endTime, new Date(lastDay)),
+        ),
+      );
+    return single(eventCount).count;
   }
 }
 
