@@ -1,12 +1,13 @@
 import { db } from "@/server/db";
 import {
   clients,
+  eventPricings,
   events,
   invoiceEventLink,
-  invoices,
 } from "@/server/db/schema";
 import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
+import { mapEvents } from "./actions/eventsActions";
 
 type EventDto = {
   name?: string;
@@ -32,21 +33,18 @@ class EventsRepository {
     return single(id);
   }
   async getEventsInDateRange(start: string, end: string, businessId: string) {
-    return await db
+    const rawEventInRangeData = await db
       .select({
         id: events.id,
         name: events.name,
         clientName: clients.name,
         startTime: events.startTime,
         endTime: events.endTime,
-        invoicedAt: invoices.invoicedAt,
-        dueDate: invoices.dueDate,
-        paidAt: invoices.paidAt,
+        lineItemTotal: eventPricings.totalPrice,
       })
       .from(events)
       .innerJoin(clients, eq(clients.id, events.clientId))
-      .leftJoin(invoiceEventLink, eq(invoiceEventLink.eventId, events.id))
-      .leftJoin(invoices, eq(invoices.id, invoiceEventLink.invoiceId))
+      .leftJoin(eventPricings, eq(eventPricings.eventId, events.id))
       .where(
         and(
           eq(events.businessId, businessId),
@@ -54,6 +52,7 @@ class EventsRepository {
           lte(events.endTime, new Date(end)),
         ),
       );
+    return mapEvents(rawEventInRangeData);
   }
   async getById(eventId: string, businessId: string) {
     const event = await db.query.events.findFirst({

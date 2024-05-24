@@ -1,4 +1,4 @@
-import type { InvoiceStatus } from "@/types/invoices";
+import type { EventStatus } from "@/types/events";
 
 const TW_MD_BREAKPOINT = 768;
 
@@ -27,30 +27,22 @@ export function getCalendarProps(width: number) {
   };
 }
 
-export function getEventBackgroundStyles(status: InvoiceStatus) {
-  if (status === "OVERDUE") {
+export function getEventBackgroundStyles(status: EventStatus) {
+  if (status === "DRAFT") {
     return [
-      "cursor-pointer rounded-md border-destructive bg-red-300 p-0.5 hover:bg-red-400",
+      "cursor-pointer rounded-md border-blue-500 bg-blue-200 p-0.5 hover:bg-blue-300",
     ];
   }
 
-  if (status === "PAID") {
-    return [
-      "cursor-pointer rounded-md border-green-800 bg-green-300 p-0.5 hover:bg-green-400",
-    ];
-  }
   return [
     "cursor-pointer rounded-md border-primary bg-violet-300 p-0.5 hover:bg-violet-400",
   ];
 }
 
-export function getEventTextStyles(status: InvoiceStatus) {
-  if (status === "OVERDUE") {
-    return "#B91C1C";
+export function getEventTextStyles(status: EventStatus) {
+  if (status === "DRAFT") {
+    return "#1D4ED8";
   }
 
-  if (status === "PAID") {
-    return "#15803D";
-  }
   return "#6D28D9";
 }

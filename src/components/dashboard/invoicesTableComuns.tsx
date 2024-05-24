@@ -71,7 +71,7 @@ export const invoiceTableColumns: ColumnDef<InvoicesTableRow>[] = [
       }
 
       if (status === "PAID") {
-        return <Badge variant="success">{status}</Badge>;
+        return <Badge>{status}</Badge>;
       }
 
       return <Badge variant="secondary">{status}</Badge>;

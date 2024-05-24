@@ -38,15 +38,10 @@ const SchedulerPage = () => {
           <div className="space-y-2">
             <div className="mb-3 text-sm font-semibold">Key:</div>
             <span className="flex items-center gap-2 text-sm text-muted-foreground">
-              <div className="h-4 w-4 rounded bg-violet-400" /> Not Invoiced or
-              Not Overdue
+              <div className="h-4 w-4 rounded bg-blue-300" /> Draft
             </span>
             <span className="flex items-center gap-2 text-sm text-muted-foreground">
-              <div className="h-4 w-4 rounded bg-green-400" /> Invoiced and Paid
-            </span>
-            <span className="flex items-center gap-2 text-sm text-muted-foreground">
-              <div className="h-4 w-4 rounded bg-red-400" /> Invoiced and
-              Overdue
+              <div className="h-4 w-4 rounded bg-violet-400" /> Set Up
             </span>
           </div>
         </Card>
