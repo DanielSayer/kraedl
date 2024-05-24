@@ -8,13 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
+import { formatCurrency } from "@/lib/currencyUtils";
 import { formatInvoiceNumber } from "@/lib/invoiceUtils";
 import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
 import type { Business, Client, Invoice } from "@/types/invoices";
 import { format } from "date-fns";
-import { BankDetails } from "./BankDetails";
 import type { RefObject } from "react";
+import { BankDetails } from "./BankDetails";
 
 type InvoiceProps = {
   printRef: RefObject<HTMLDivElement>;
@@ -103,7 +103,7 @@ export const InvoicePreview = ({
                     {formatCurrency(d.pricePer)}
                   </TableCell>
                   <TableCell className="text-end">
-                    {getTotalPrice(d.pricePer, d.quantity)}
+                    {formatCurrency(d.totalPrice)}
                   </TableCell>
                 </TableRow>
               ))}

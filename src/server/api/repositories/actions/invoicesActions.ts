@@ -11,6 +11,7 @@ type Invoice = {
   pricingLine: string | null;
   quantity: string | null;
   pricePer: string | null;
+  totalPrice: string | null;
 };
 
 type LineItem = {
@@ -18,6 +19,7 @@ type LineItem = {
   name: string;
   quantity: string;
   pricePer: string;
+  totalPrice: string;
 };
 
 export function mapInvoiceToLineItems(res: Invoice[]) {
@@ -37,7 +39,13 @@ export function mapInvoiceToLineItems(res: Invoice[]) {
   };
 
   for (const row of res) {
-    if (!row.pricingId || !row.pricingLine || !row.quantity || !row.pricePer) {
+    if (
+      !row.pricingId ||
+      !row.pricingLine ||
+      !row.quantity ||
+      !row.pricePer ||
+      !row.totalPrice
+    ) {
       continue;
     }
     invoice.lineItems.push({
@@ -45,6 +53,7 @@ export function mapInvoiceToLineItems(res: Invoice[]) {
       name: row.pricingLine,
       quantity: row.quantity,
       pricePer: row.pricePer,
+      totalPrice: row.totalPrice,
     });
   }
 

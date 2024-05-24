@@ -5,7 +5,7 @@ import Combobox from "@/components/ui/combobox";
 import { IconInput } from "@/components/ui/icon-input";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
+import { formatCurrency } from "@/lib/currencyUtils";
 import type { DropdownOption } from "@/types/components/dropdownItem";
 import type { PricingLine } from "./PricingBuilder";
 
@@ -13,7 +13,7 @@ type PricingLineProps = {
   priceForItem: string;
   pricingLine: PricingLine;
   pricingOptions: DropdownOption[];
-  updatePricingLines: <T extends keyof PricingLine>(
+  updatePricingLines: <T extends keyof Omit<PricingLine, "totalPrice">>(
     id: string,
     key: T,
     value: PricingLine[T],
@@ -73,10 +73,7 @@ export const PricingLineRow = ({
               id="total"
               readOnly
               disabled
-              value={getTotalPrice(pricingLine.quantity, priceForItem, {
-                format: true,
-                removeSign: true,
-              })}
+              value={pricingLine.totalPrice}
             />
           </div>
         </div>

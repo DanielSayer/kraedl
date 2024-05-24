@@ -6,6 +6,7 @@ const eventPricingSchema = z.object({
     message: "Pricing name is required, either select one or remove the row.",
   }),
   quantity: z.string(),
+  totalPrice: z.string(),
 });
 
 export const saveEventPricingsSchema = z.object({

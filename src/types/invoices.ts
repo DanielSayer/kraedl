@@ -50,6 +50,7 @@ type LineItem = {
   name: string;
   quantity: string;
   pricePer: string;
+  totalPrice: string;
 };
 
 export type InvoiceStatus = "DRAFT" | "PAID" | "OVERDUE" | "INVOICED";

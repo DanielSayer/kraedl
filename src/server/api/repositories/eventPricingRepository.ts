@@ -6,6 +6,7 @@ type EventPricingDto = {
   id: string;
   pricingId: string;
   quantity: string;
+  totalPrice: string;
 };
 
 class EventPricingRepository {
@@ -16,6 +17,7 @@ class EventPricingRepository {
         id: true,
         pricingId: true,
         quantity: true,
+        totalPrice: true,
       },
     });
   }

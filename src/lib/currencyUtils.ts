@@ -22,7 +22,7 @@ export function formatCurrency(
 export function getTotalPrice(
   price: string,
   quantity: string,
-  config?: { format: boolean; removeSign: boolean },
+  config?: { format: boolean; removeSign?: boolean },
 ) {
   const priceFloat = parseFloat(price);
   const quantityFloat = parseFloat(quantity);

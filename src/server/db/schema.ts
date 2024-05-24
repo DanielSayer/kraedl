@@ -226,6 +226,7 @@ export const eventPricings = createTable("eventPricings", {
     .notNull()
     .references(() => pricing.id),
   quantity: decimal("quantity", { precision: 10, scale: 1 }).notNull(),
+  totalPrice: decimal("totalPrice", { precision: 12, scale: 2 }).notNull(),
 });
 
 export const eventPricingRelations = relations(eventPricings, ({ one }) => ({

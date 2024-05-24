@@ -30,6 +30,7 @@ export type PricingLine = {
   id: string;
   pricingId: string;
   quantity: string;
+  totalPrice: string;
 };
 
 export const PricingBuilder = ({
@@ -46,7 +47,8 @@ export const PricingBuilder = ({
     addPricingLine,
     updatePricingLines,
     removePricingLine,
-  } = usePricingLines(eventId, savedPricingLines);
+    getPriceForItem,
+  } = usePricingLines(eventId, savedPricingLines, pricings);
 
   const pricingOptions = useMemo(() => {
     return pricings.map((p) => {
@@ -54,16 +56,12 @@ export const PricingBuilder = ({
     });
   }, [pricings]);
 
-  const getPriceForItem = (selectedPriceId: string) => {
-    return pricings.find((x) => x.id === selectedPriceId)?.price ?? "0";
-  };
-
   const getQuotePrice = () => {
     const prices = pricingLines.map((x) => {
+      if (x.quantity === "") return 0;
       const priceForItem = getPriceForItem(x.pricingId);
       const totalPrice = getTotalPrice(x.quantity, priceForItem, {
         format: false,
-        removeSign: true,
       });
       return parseFloat(totalPrice);
     });

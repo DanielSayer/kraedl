@@ -51,6 +51,7 @@ class InvoicesRepository {
         pricingLine: pricing.label,
         quantity: eventPricings.quantity,
         pricePer: pricing.price,
+        totalPrice: eventPricings.totalPrice,
       })
       .from(invoices)
       .leftJoin(invoiceEventLink, eq(invoiceEventLink.invoiceId, invoices.id))
