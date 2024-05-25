@@ -28,7 +28,7 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
   const fullCalendarEvents = events
     ? events.map((e) => ({
         id: e.id,
-        title: e.name ? e.name : e.clientName,
+        title: e.name ? `${e.clientName} - ${e.name}` : e.clientName,
         start: e.startTime,
         end: e.endTime,
         classNames: getEventBackgroundStyles(e.status),
@@ -44,6 +44,7 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
       events={fullCalendarEvents}
       height={calendarHeight}
       nowIndicator
+      dayMaxEvents={3}
       {...props}
     />
   );
