@@ -2,8 +2,11 @@ import { Icons } from "@/components/Icons";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { CreateInvoiceForm } from "./CreateInvoiceForm";
+import useProtectedRoute from "@/hooks/useProtectedRoute";
 
-const Page = () => {
+export default async function Page() {
+  await useProtectedRoute();
+
   return (
     <div className="container p-10 pb-16">
       <div className="flex justify-between">
@@ -17,6 +20,4 @@ const Page = () => {
       <CreateInvoiceForm />
     </div>
   );
-};
-
-export default Page;
+}

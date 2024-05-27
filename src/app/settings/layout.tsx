@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { SidebarNav } from "./SidebarNav";
+import useProtectedRoute from "@/hooks/useProtectedRoute";
 
 const sidebarNavItems = [
   {
@@ -20,7 +21,11 @@ interface SettingsLayoutProps {
   children: ReactNode;
 }
 
-export default function SettingsLayout({ children }: SettingsLayoutProps) {
+export default async function SettingsLayout({
+  children,
+}: SettingsLayoutProps) {
+  await useProtectedRoute();
+
   return (
     <div className="container min-h-[calc(100vh-56px)]">
       <div className="h-full space-y-6 p-10 pb-16">
