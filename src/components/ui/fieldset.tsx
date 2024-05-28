@@ -4,7 +4,7 @@ import React from "react";
 import type { PropsWithChildren, ReactNode } from "react";
 
 type FieldsetProps = {
-  children: ReactNode[];
+  children: ReactNode[] | ReactNode;
 };
 
 export const Fieldset = ({ children }: FieldsetProps) => {

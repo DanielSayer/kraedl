@@ -14,11 +14,18 @@ import {
 } from "@/components/ui/popover";
 
 type DatePickerProps = {
-  date: string | undefined;
+  className?: string;
+  disabled?: boolean;
+  date?: string;
   onChange: (date: Date) => void;
 };
 
-export function DatePicker({ date, onChange }: DatePickerProps) {
+export function DatePicker({
+  className,
+  date,
+  disabled,
+  onChange,
+}: DatePickerProps) {
   const selectedDate = date ? new Date(date) : undefined;
   const handleChange = (day: Date | undefined) => {
     if (!day) return;
@@ -29,10 +36,12 @@ export function DatePicker({ date, onChange }: DatePickerProps) {
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          disabled={disabled}
           variant={"outline"}
           className={cn(
             "w-full justify-start text-left font-normal",
             !date && "text-muted-foreground",
+            className,
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />

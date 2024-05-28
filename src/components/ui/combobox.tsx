@@ -45,14 +45,14 @@ const Combobox = ({ onChange, options, value, ...props }: ComboboxProps) => {
       }}
       classNames={{
         menu: () => "border",
-        valueContainer: () => "p-0 !px-3 !py-2",
+        valueContainer: () => "p-0 !px-3 !py-2 !h-10",
         singleValue: () => "!text-foreground !text-sm",
         placeholder: () => "!text-muted-foreground !text-sm",
-        input: () => "!text-foreground !text-sm !m-0 ",
+        input: () => "!text-foreground !text-sm !m-0",
         control: ({ isFocused }) =>
           isFocused
-            ? "!border-input !outline-none !ring-2 !ring-ring !ring-offset-2 !ring-offset-background !bg-inherit"
-            : "!border-input !bg-inherit",
+            ? "!border-input !outline-none !ring-2 !ring-ring !ring-offset-2 !ring-offset-background !rounded-md"
+            : "!border-input !rounded-md",
         option: ({ isSelected, isFocused }) =>
           isSelected
             ? "!bg-primary"

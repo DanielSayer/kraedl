@@ -16,8 +16,9 @@ import { useMemo } from "react";
 import { PricingLineRow } from "./PricingLineRow";
 import usePricingLines from "./usePricingLines";
 
-import type { Pricing } from "@/types/pricings";
 import { cn } from "@/lib/utils";
+import type { Pricing } from "@/types/pricings";
+import { Recurrence } from "../Recurrence";
 
 type PricingBuilderProps = {
   isReadOnly: boolean;
@@ -75,6 +76,7 @@ export const PricingBuilder = ({
   };
   return (
     <>
+      <Recurrence />
       <Fieldset>
         <FieldsetLegend>
           <Icons.invoice /> Pricing Builder
