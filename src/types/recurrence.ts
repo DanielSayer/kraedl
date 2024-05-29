@@ -1,6 +1,11 @@
 import type { DropdownOption } from "./components/dropdownItem";
 
-const recurrenceFrequencies = ["NONE", "DAILY", "WEEKLY", "MONTHLY"] as const;
+export const recurrenceFrequencies = [
+  "NONE",
+  "DAILY",
+  "WEEKLY",
+  "MONTHLY",
+] as const;
 export type RecurrenceFrequency = (typeof recurrenceFrequencies)[number];
 
 export type Recurrence = {
@@ -10,7 +15,8 @@ export type Recurrence = {
   interval?: number;
 };
 
-export type RecurrenceEnd = "AFTER" | "ON";
+export const recurrenceEnds = ["AFTER", "ON"] as const;
+export type RecurrenceEnd = (typeof recurrenceEnds)[number];
 
 export const recurrenceFrequencyOptions: DropdownOption[] = [
   { label: "None", value: "NONE" },

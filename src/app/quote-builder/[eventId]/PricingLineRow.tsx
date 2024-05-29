@@ -2,63 +2,100 @@ import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Combobox from "@/components/ui/combobox";
+import { FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { IconInput } from "@/components/ui/icon-input";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { formatCurrency } from "@/lib/currencyUtils";
+import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
+import type { QuoteBuilder } from "@/lib/validations/events";
 import type { DropdownOption } from "@/types/components/dropdownItem";
-import type { PricingLine } from "./PricingBuilder";
+import type { PricingLine } from "@/types/pricingLines";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
 type PricingLineProps = {
-  priceForItem: string;
-  pricingLine: PricingLine;
+  index: number;
   pricingOptions: DropdownOption[];
   isPricingLoading: boolean;
-  updatePricingLines: <T extends keyof Omit<PricingLine, "totalPrice">>(
-    id: string,
-    key: T,
-    value: PricingLine[T],
-  ) => void;
-  removePricingLine: (id: string) => void;
+  getPriceForItem: (seclectedPriceId: string) => string;
 };
 
 export const PricingLineRow = ({
-  priceForItem,
-  pricingLine,
+  index,
   pricingOptions,
   isPricingLoading,
-  updatePricingLines,
-  removePricingLine,
+  getPriceForItem,
 }: PricingLineProps) => {
+  const { control, setValue, watch } = useFormContext<QuoteBuilder>();
+  const { remove } = useFieldArray<QuoteBuilder>({ name: "eventPricings" });
+  const currentPricingLine = watch(`eventPricings.${index}`);
+
+  const removePricingLine = () => {
+    const pricingLines = watch("eventPricings");
+    const index = pricingLines.findIndex((p) => p.id === currentPricingLine.id);
+    remove(index);
+  };
+
+  const updatePricingLine = <T extends keyof Omit<PricingLine, "totalPrice">>(
+    key: T,
+    value: PricingLine[T],
+  ) => {
+    const newPricingLine = {
+      ...currentPricingLine,
+      [key]: value,
+    };
+    const pricePer = getPriceForItem(newPricingLine.pricingId);
+    const newLineItemPrice = getTotalPrice(pricePer, newPricingLine.quantity, {
+      format: true,
+      removeSign: true,
+    });
+
+    setValue(`eventPricings.${index}`, {
+      ...newPricingLine,
+      totalPrice: newLineItemPrice,
+    });
+  };
+
   return (
     <Card>
-      <CardContent className="flex items-end justify-between p-6">
+      <CardContent className="flex items-end justify-between p-6 pt-4">
         <div className="grid w-11/12 grid-cols-6 gap-4">
-          <div className="col-span-3 space-y-1">
-            <Label htmlFor="pricing">Pricing Name</Label>
-            <Combobox
-              id="pricing"
-              onChange={(e) =>
-                updatePricingLines(pricingLine.id, "pricingId", e.value)
-              }
-              options={pricingOptions}
-              isLoading={isPricingLoading}
-              value={pricingLine.pricingId}
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="quantity">Quantity</Label>
-            <Input
-              id="quantity"
-              type="number"
-              step={0.5}
-              min={0}
-              value={pricingLine.quantity}
-              onChange={(e) =>
-                updatePricingLines(pricingLine.id, "quantity", e.target.value)
-              }
-            />
-          </div>
+          <FormField
+            control={control}
+            name={`eventPricings.${index}.pricingId`}
+            render={({ field }) => (
+              <FormItem className="col-span-3 space-y-1">
+                <FormLabel>Pricing Name</FormLabel>
+                <Combobox
+                  onChange={(opt) => updatePricingLine("pricingId", opt.value)}
+                  options={pricingOptions}
+                  isLoading={isPricingLoading}
+                  value={field.value}
+                />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name={`eventPricings.${index}.quantity`}
+            render={({ field }) => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const { onChange: _, ...rest } = field;
+              return (
+                <FormItem className="space-y-1">
+                  <FormLabel>Quantity</FormLabel>
+                  <Input
+                    type="number"
+                    step={0.5}
+                    min={0}
+                    onChange={(e) =>
+                      updatePricingLine("quantity", e.target.value)
+                    }
+                    {...rest}
+                  />
+                </FormItem>
+              );
+            }}
+          />
           <div className="space-y-1">
             <Label htmlFor="price_per">Price per</Label>
             <IconInput
@@ -66,7 +103,12 @@ export const PricingLineRow = ({
               id="price_per"
               readOnly
               disabled
-              value={formatCurrency(priceForItem, { removeSign: true })}
+              value={formatCurrency(
+                getPriceForItem(currentPricingLine.pricingId),
+                {
+                  removeSign: true,
+                },
+              )}
             />
           </div>
           <div className="space-y-1">
@@ -76,7 +118,7 @@ export const PricingLineRow = ({
               id="total"
               readOnly
               disabled
-              value={pricingLine.totalPrice}
+              value={currentPricingLine.totalPrice}
             />
           </div>
         </div>
@@ -85,7 +127,8 @@ export const PricingLineRow = ({
             className="hover:bg-destructive hover:text-background"
             variant="outline"
             size="icon"
-            onClick={() => removePricingLine(pricingLine.id)}
+            type="button"
+            onClick={() => removePricingLine()}
           >
             <Icons.delete className="h-4 w-4" />
           </Button>

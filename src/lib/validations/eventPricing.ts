@@ -1,11 +1,17 @@
 import { z } from "zod";
 
-const eventPricingSchema = z.object({
+export const eventPricingSchema = z.object({
   id: z.string().uuid(),
   pricingId: z.string().uuid({
     message: "Pricing name is required, either select one or remove the row.",
   }),
-  quantity: z.string(),
+  quantity: z.string().refine(
+    (arg) => {
+      const val = parseFloat(arg);
+      return !isNaN(val) && val > 0;
+    },
+    { message: "Quantity must be positive" },
+  ),
   totalPrice: z.string(),
 });
 

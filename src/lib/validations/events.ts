@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { date, time } from "./_generics";
+import { recurrenceEnds, recurrenceFrequencies } from "@/types/recurrence";
+import { eventPricingSchema } from "./eventPricing";
 
 export const createEventSchema = z.object({
   name: z.string().max(255, "Name must be less than 255 characters").optional(),
@@ -22,3 +24,18 @@ export const getEventsForInvoicesSchema = z.object({
   pageIndex: z.number(),
   pageSize: z.number(),
 });
+
+const recurrenceSchema = z.object({
+  frequency: z.enum(recurrenceFrequencies),
+  interval: z.number(),
+  endType: z.enum(recurrenceEnds),
+  after: z.number(),
+  on: date.optional(),
+});
+
+export const quoteBuilderSchema = z.object({
+  eventId: z.string().uuid(),
+  eventPricings: z.array(eventPricingSchema),
+  recurrence: recurrenceSchema,
+});
+export type QuoteBuilder = z.infer<typeof quoteBuilderSchema>;

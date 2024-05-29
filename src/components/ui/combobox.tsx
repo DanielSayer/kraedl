@@ -3,7 +3,7 @@ import Select from "react-select";
 import type { DropdownOption } from "@/types/components/dropdownItem";
 import type { SingleValue } from "react-select";
 
-type SelectProps = {
+type ComboboxProps = {
   id: string;
   className: string;
   placeholder: string;
@@ -12,14 +12,17 @@ type SelectProps = {
   isLoading: boolean;
   isDisabled: boolean;
   options: DropdownOption[];
-};
-
-type ComboboxProps = Partial<SelectProps> & {
   onChange: (option: DropdownOption) => void;
 };
 
-const Combobox = ({ onChange, options, value, ...props }: ComboboxProps) => {
+const Combobox = ({
+  onChange,
+  options,
+  value,
+  ...props
+}: Partial<ComboboxProps>) => {
   const handleChange = (option: SingleValue<DropdownOption>) => {
+    if (!onChange) return;
     if (!option) return;
 
     onChange(option);

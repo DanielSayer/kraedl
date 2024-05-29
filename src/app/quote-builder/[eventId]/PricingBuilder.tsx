@@ -11,43 +11,32 @@ import {
 } from "@/components/ui/fieldset";
 import { Separator } from "@/components/ui/separator";
 import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
+import { cn } from "@/lib/utils";
+import type { QuoteBuilder } from "@/lib/validations/events";
+import { api } from "@/trpc/react";
+import { getNewPricingLine } from "@/types/pricingLines";
 import Link from "next/link";
 import { useMemo } from "react";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { PricingLineRow } from "./PricingLineRow";
-import usePricingLines from "./usePricingLines";
-
-import { cn } from "@/lib/utils";
-import { api } from "@/trpc/react";
 
 type PricingBuilderProps = {
   isReadOnly: boolean;
-  eventId: string;
-  pricingLines: PricingLine[];
-};
-
-export type PricingLine = {
-  id: string;
-  pricingId: string;
-  quantity: string;
-  totalPrice: string;
+  isPending: boolean;
 };
 
 export const PricingBuilder = ({
   isReadOnly,
-  eventId,
-  pricingLines: savedPricingLines,
+  isPending,
 }: PricingBuilderProps) => {
+  const { watch, formState } = useFormContext<QuoteBuilder>();
+  const { append } = useFieldArray<QuoteBuilder>({ name: "eventPricings" });
   const { data: pricings, isLoading } = api.pricing.getPricings.useQuery();
-  const {
-    error,
-    isSaving,
-    pricingLines,
-    handleSave,
-    addPricingLine,
-    updatePricingLines,
-    removePricingLine,
-    getPriceForItem,
-  } = usePricingLines(eventId, savedPricingLines, pricings ?? []);
+  const pricingLines = watch("eventPricings");
+
+  const getPriceForItem = (selectedPriceId: string) => {
+    return pricings?.find((x) => x.id === selectedPriceId)?.price ?? "0";
+  };
 
   const pricingOptions = useMemo(() => {
     return (
@@ -82,26 +71,22 @@ export const PricingBuilder = ({
         </FieldsetLegend>
         <FieldsetContent className={cn("grid", { "pt-6": isReadOnly })}>
           <Button
+            type="button"
             className={cn("my-4 ml-auto", { hidden: isReadOnly })}
-            onClick={addPricingLine}
+            onClick={() => append(getNewPricingLine())}
           >
             <Icons.add className="mr-2 h-4 w-4" /> Pricing line
           </Button>
           <div className="flex flex-col gap-4">
-            {pricingLines.map((line) => {
-              const priceForItem = getPriceForItem(line.pricingId);
-              return (
-                <PricingLineRow
-                  pricingLine={line}
-                  priceForItem={priceForItem}
-                  pricingOptions={pricingOptions}
-                  isPricingLoading={isLoading}
-                  removePricingLine={removePricingLine}
-                  updatePricingLines={updatePricingLines}
-                  key={line.id}
-                />
-              );
-            })}
+            {pricingLines.map((line, index) => (
+              <PricingLineRow
+                key={line.id}
+                index={index}
+                pricingOptions={pricingOptions}
+                isPricingLoading={isLoading}
+                getPriceForItem={getPriceForItem}
+              />
+            ))}
           </div>
           <Separator className="my-4" />
           <div className="flex items-center justify-between">
@@ -110,7 +95,7 @@ export const PricingBuilder = ({
           </div>
         </FieldsetContent>
       </Fieldset>
-      <ErrorMessage>{error}</ErrorMessage>
+      <ErrorMessage>{formState.errors.root?.message}</ErrorMessage>
       <div className="flex justify-end gap-2">
         <Link
           href="/scheduler"
@@ -119,9 +104,9 @@ export const PricingBuilder = ({
           Go back
         </Link>
         <LoadingButton
-          isLoading={isSaving}
-          onClick={handleSave}
+          isLoading={isPending}
           disabled={isReadOnly}
+          type="submit"
         >
           Save
         </LoadingButton>
