@@ -38,14 +38,6 @@ export const PricingBuilder = ({
     return pricings?.find((x) => x.id === selectedPriceId)?.price ?? "0";
   };
 
-  const pricingOptions = useMemo(() => {
-    return (
-      pricings?.map((p) => {
-        return { value: p.id, label: p.label };
-      }) ?? []
-    );
-  }, [pricings]);
-
   const getQuotePrice = () => {
     const prices = pricingLines.map((x) => {
       if (x.quantity === "") return 0;
@@ -63,6 +55,14 @@ export const PricingBuilder = ({
     const grandTotal = prices.reduce((c, curr) => c + curr, 0);
     return formatCurrency(grandTotal.toString());
   };
+
+  const pricingOptions = useMemo(() => {
+    return (
+      pricings?.map((p) => {
+        return { value: p.id, label: p.label };
+      }) ?? []
+    );
+  }, [pricings]);
   return (
     <>
       <Fieldset>

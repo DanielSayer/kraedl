@@ -10,6 +10,12 @@ interface QuoteBuilderPageProps {
   };
 }
 
+const getPageDescription = (isInvoiced: boolean) => {
+  return isInvoiced
+    ? "Event has been invoiced. This is now read only."
+    : "Manage your event here.";
+};
+
 export default async function Page({ params }: QuoteBuilderPageProps) {
   await useProtectedRoute();
 
@@ -26,13 +32,9 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
   return (
     <div className="container mb-20 pt-6">
       <h2 className="text-2xl font-bold tracking-tight">Quote Builder</h2>
-      {isInvoiced() ? (
-        <p className="text-muted-foreground">
-          Event has been invoiced. This is now read only
-        </p>
-      ) : (
-        <p className="text-muted-foreground">Manage your event here.</p>
-      )}
+      <p className="text-muted-foreground">
+        {getPageDescription(isInvoiced())}
+      </p>
       <Separator className="my-2" />
       <EventForm
         event={event}

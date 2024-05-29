@@ -8,19 +8,20 @@ import {
   FieldsetLegend,
   FieldsetTitle,
 } from "@/components/ui/fieldset";
+import { Form } from "@/components/ui/form";
 import { formatDateRange } from "@/lib/dateRangeUtils";
-import type { QuoteEvent } from "@/types/events";
-import { Recurrence } from "./Recurrence";
-import { PricingBuilder, type PricingLine } from "./PricingBuilder";
-import { useForm } from "react-hook-form";
 import {
   quoteBuilderSchema,
   type QuoteBuilder,
 } from "@/lib/validations/events";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
 import { api } from "@/trpc/react";
+import type { QuoteEvent } from "@/types/events";
+import type { PricingLine } from "@/types/pricingLines";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { PricingBuilder } from "./PricingBuilder";
+import { Recurrence } from "./Recurrence";
 
 type EventFormProps = {
   isReadOnly: boolean;
@@ -42,7 +43,6 @@ export const EventForm = ({
         interval: 1,
         endType: "AFTER",
         after: 3,
-        on: undefined,
       },
     },
     resolver: zodResolver(quoteBuilderSchema),
@@ -54,8 +54,6 @@ export const EventForm = ({
   });
 
   const handleSubmit = async (data: QuoteBuilder) => {
-    console.log("here");
-    console.log(form.formState.errors);
     await mutateAsync({
       eventId: data.eventId,
       eventPricings: data.eventPricings,
