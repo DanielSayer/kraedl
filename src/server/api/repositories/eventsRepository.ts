@@ -4,6 +4,7 @@ import {
   eventPricings,
   events,
   invoiceEventLink,
+  invoices,
 } from "@/server/db/schema";
 import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { single } from "../common/helperMethods/arrayHelpers";
@@ -55,28 +56,22 @@ class EventsRepository {
     return mapEvents(rawEventInRangeData);
   }
   async getById(eventId: string, businessId: string) {
-    const event = await db.query.events.findFirst({
-      where: and(eq(events.id, eventId), eq(events.businessId, businessId)),
-      with: {
-        clients: {
-          columns: {
-            name: true,
-          },
-        },
-        invoice: {
-          columns: {},
-          with: {
-            invoices: {
-              columns: {
-                issueDate: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    const event = await db
+      .select({
+        id: events.id,
+        name: events.name,
+        startTime: events.startTime,
+        endTime: events.endTime,
+        clientName: clients.name,
+        invoicedAt: invoices.issueDate,
+      })
+      .from(events)
+      .innerJoin(clients, eq(clients.id, events.clientId))
+      .leftJoin(invoiceEventLink, eq(invoiceEventLink.eventId, events.id))
+      .leftJoin(invoices, eq(invoices.id, invoiceEventLink.invoiceId))
+      .where(and(eq(events.id, eventId), eq(events.businessId, businessId)));
 
-    return event;
+    return single(event);
   }
   async countNonInvoicedEventsInThePast(currentTime: Date, businessId: string) {
     const amount = await db

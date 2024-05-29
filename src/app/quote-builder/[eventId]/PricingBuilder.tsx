@@ -17,13 +17,11 @@ import { PricingLineRow } from "./PricingLineRow";
 import usePricingLines from "./usePricingLines";
 
 import { cn } from "@/lib/utils";
-import type { Pricing } from "@/types/pricings";
-import { Recurrence } from "../Recurrence";
+import { api } from "@/trpc/react";
 
 type PricingBuilderProps = {
   isReadOnly: boolean;
   eventId: string;
-  pricings: Pricing[];
   pricingLines: PricingLine[];
 };
 
@@ -37,9 +35,9 @@ export type PricingLine = {
 export const PricingBuilder = ({
   isReadOnly,
   eventId,
-  pricings,
   pricingLines: savedPricingLines,
 }: PricingBuilderProps) => {
+  const { data: pricings, isLoading } = api.pricing.getPricings.useQuery();
   const {
     error,
     isSaving,
@@ -49,12 +47,14 @@ export const PricingBuilder = ({
     updatePricingLines,
     removePricingLine,
     getPriceForItem,
-  } = usePricingLines(eventId, savedPricingLines, pricings);
+  } = usePricingLines(eventId, savedPricingLines, pricings ?? []);
 
   const pricingOptions = useMemo(() => {
-    return pricings.map((p) => {
-      return { value: p.id, label: p.label };
-    });
+    return (
+      pricings?.map((p) => {
+        return { value: p.id, label: p.label };
+      }) ?? []
+    );
   }, [pricings]);
 
   const getQuotePrice = () => {
@@ -76,7 +76,6 @@ export const PricingBuilder = ({
   };
   return (
     <>
-      <Recurrence />
       <Fieldset>
         <FieldsetLegend>
           <Icons.invoice /> Pricing Builder
@@ -96,6 +95,7 @@ export const PricingBuilder = ({
                   pricingLine={line}
                   priceForItem={priceForItem}
                   pricingOptions={pricingOptions}
+                  isPricingLoading={isLoading}
                   removePricingLine={removePricingLine}
                   updatePricingLines={updatePricingLines}
                   key={line.id}

@@ -4,12 +4,18 @@ import React from "react";
 import type { PropsWithChildren, ReactNode } from "react";
 
 type FieldsetProps = {
+  className?: string;
   children: ReactNode[] | ReactNode;
 };
 
-export const Fieldset = ({ children }: FieldsetProps) => {
+export const Fieldset = ({ className, children }: FieldsetProps) => {
   return (
-    <fieldset className="rounded-lg  border bg-card px-3 text-card-foreground shadow-sm">
+    <fieldset
+      className={cn(
+        "rounded-lg border bg-card px-3 text-card-foreground shadow-sm",
+        className,
+      )}
+    >
       {children}
     </fieldset>
   );

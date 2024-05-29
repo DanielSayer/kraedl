@@ -8,3 +8,12 @@ export type Event = {
 };
 
 export type EventStatus = "DRAFT" | "READY";
+
+export type QuoteEvent = {
+  id: string;
+  name: string | null;
+  startTime: Date;
+  endTime: Date;
+  clientName: string;
+  invoicedAt: string | null;
+};

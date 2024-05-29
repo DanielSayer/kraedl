@@ -10,6 +10,8 @@ export type Recurrence = {
   interval?: number;
 };
 
+export type RecurrenceEnd = "AFTER" | "ON";
+
 export const recurrenceFrequencyOptions: DropdownOption[] = [
   { label: "None", value: "NONE" },
   { label: "Daily", value: "DAILY" },

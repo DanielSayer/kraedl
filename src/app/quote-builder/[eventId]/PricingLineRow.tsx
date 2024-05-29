@@ -13,6 +13,7 @@ type PricingLineProps = {
   priceForItem: string;
   pricingLine: PricingLine;
   pricingOptions: DropdownOption[];
+  isPricingLoading: boolean;
   updatePricingLines: <T extends keyof Omit<PricingLine, "totalPrice">>(
     id: string,
     key: T,
@@ -25,6 +26,7 @@ export const PricingLineRow = ({
   priceForItem,
   pricingLine,
   pricingOptions,
+  isPricingLoading,
   updatePricingLines,
   removePricingLine,
 }: PricingLineProps) => {
@@ -40,6 +42,7 @@ export const PricingLineRow = ({
                 updatePricingLines(pricingLine.id, "pricingId", e.value)
               }
               options={pricingOptions}
+              isLoading={isPricingLoading}
               value={pricingLine.pricingId}
             />
           </div>

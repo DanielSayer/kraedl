@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons } from "@/components/Icons";
 import Combobox from "@/components/ui/combobox";
 import { DatePicker } from "@/components/ui/datepicker";
@@ -12,20 +14,21 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   getPlural,
   recurrenceFrequencyOptions,
+  type RecurrenceEnd,
   type RecurrenceFrequency,
 } from "@/types/recurrence";
 import { useState } from "react";
 
 export const Recurrence = () => {
   const [frequency, setFrequency] = useState<RecurrenceFrequency>("NONE");
-  const [end, setEnd] = useState<"after" | "on">("after");
+  const [end, setEnd] = useState<RecurrenceEnd>("AFTER");
   return (
-    <Fieldset>
+    <Fieldset className="h-full">
       <FieldsetLegend>
-        <Icons.calendar /> Recurrence
+        <Icons.recurrence /> Recurrence
       </FieldsetLegend>
-      <FieldsetContent className="p-6">
-        <div className="grid grid-cols-3 gap-6">
+      <FieldsetContent className="p-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <Label>Frequency</Label>
             <Combobox
@@ -43,21 +46,21 @@ export const Recurrence = () => {
                   <span>{getPlural(frequency)}</span>
                 </div>
               </div>
-              <div>
+              <div className="col-span-2">
                 <Label>End</Label>
                 <div className="flex space-x-2">
                   <RadioGroup
-                    defaultValue="after"
+                    defaultValue="AFTER"
                     onValueChange={(val) => {
-                      setEnd(val as "after" | "on");
+                      setEnd(val as RecurrenceEnd);
                     }}
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="after" id="after" />
+                      <RadioGroupItem value="AFTER" id="after" />
                       <Label htmlFor="after">After</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="on" id="on" />
+                      <RadioGroupItem value="ON" id="on" />
                       <Label htmlFor="on">On</Label>
                     </div>
                   </RadioGroup>
@@ -67,11 +70,11 @@ export const Recurrence = () => {
                         type="number"
                         step={1}
                         defaultValue={3}
-                        disabled={end !== "after"}
+                        disabled={end !== "AFTER"}
                       />
                       <span>occurrences</span>
                     </div>
-                    <DatePicker onChange={() => {}} disabled={end !== "on"} />
+                    <DatePicker onChange={() => {}} disabled={end !== "ON"} />
                   </div>
                 </div>
               </div>
