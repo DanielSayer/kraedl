@@ -54,10 +54,7 @@ export const EventForm = ({
   });
 
   const handleSubmit = async (data: QuoteBuilder) => {
-    await mutateAsync({
-      eventId: data.eventId,
-      eventPricings: data.eventPricings,
-    });
+    await mutateAsync(data);
   };
 
   return (

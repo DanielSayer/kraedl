@@ -11,7 +11,7 @@ export type RecurrenceFrequency = (typeof recurrenceFrequencies)[number];
 export type Recurrence = {
   freq: RecurrenceFrequency;
   count?: number;
-  until?: Date;
+  until?: string;
   interval?: number;
 };
 

@@ -1,14 +1,14 @@
 import type { Recurrence, RecurrenceFrequency } from "@/types/recurrence";
 import { format } from "date-fns";
 
-export const recurrenceToICal = (recurrence: Recurrence): string => {
+export const generateRecurrenceRule = (recurrence: Recurrence): string => {
   const rules: string[] = [`FREQ=${recurrence.freq}`];
 
   for (const [key, value] of Object.entries(recurrence)) {
     if (key === "freq") continue;
-    let formattedValue: string | number = value as string | number;
+    let formattedValue = value;
 
-    if (key === "until" && value instanceof Date) {
+    if (key === "until") {
       formattedValue = format(value, "YYYYMMDDTHHmmssZ");
     }
 
@@ -36,7 +36,7 @@ export const rruleToRecurrence = (rrule: string): Recurrence => {
         rec.count = parseInt(value, 10);
         break;
       case "until":
-        rec.until = new Date(format(value, "YYYY-mm-dd"));
+        rec.until = format(value, "YYYY-mm-dd");
         break;
       case "interval":
         rec.interval = parseInt(value, 10);

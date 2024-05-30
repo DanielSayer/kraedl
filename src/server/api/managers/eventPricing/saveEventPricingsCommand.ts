@@ -1,12 +1,9 @@
-import type { z } from "zod";
+import type { QuoteBuilder } from "@/lib/validations/events";
 import Result from "../../common/result";
 import eventPricingRepository from "../../repositories/eventPricingRepository";
-import type { saveEventPricingsSchema } from "@/lib/validations/eventPricing";
-
-type SaveEventPricingsRequest = z.infer<typeof saveEventPricingsSchema>;
 
 export async function saveEventPricingsCommand(
-  req: SaveEventPricingsRequest,
+  req: QuoteBuilder,
 ): Promise<Result<boolean>> {
   if (req.eventPricings.length === 0) {
     return Result.Failure("Event must have at least one line item");
