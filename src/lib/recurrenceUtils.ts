@@ -1,4 +1,4 @@
-import type { Recurrence, RecurrenceFrequency } from "@/types/recurrence";
+import type { Recurrence, RecurrenceEnd, RecurrenceFrequency } from "@/types/recurrence";
 import { format } from "date-fns";
 
 export const generateRecurrenceRule = (recurrence: Recurrence): string => {
@@ -48,3 +48,11 @@ export const rruleToRecurrence = (rrule: string): Recurrence => {
 
   return rec as Recurrence;
 };
+
+export const getRecurrenceEnd = (count: number | undefined, until: Date | undefined): RecurrenceEnd | undefined => {
+  if (!count && !until) {
+    return
+  }
+
+  return count ? "AFTER" : "ON";
+}
