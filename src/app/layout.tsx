@@ -17,6 +17,7 @@ const inter = Inter({
 
 export const metadata = {
   title: "kraedl",
+  description: "The ultimate software for small businesses.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
