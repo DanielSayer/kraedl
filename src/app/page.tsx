@@ -8,7 +8,7 @@ export default async function Home() {
         This is kraedl
       </h1>
       <h1 className="max-w-4xl text-4xl font-bold md:text-5xl lg:text-6xl">
-        You should check it out
+        You should check it out, it&apos;s the ultimate business tool.
       </h1>
       <Link href={"/signIn"} className={buttonVariants({ variant: "default" })}>
         Sign In
