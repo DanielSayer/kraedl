@@ -10,9 +10,10 @@ export type RecurrenceFrequency = (typeof recurrenceFrequencies)[number];
 
 export type Recurrence = {
   freq: RecurrenceFrequency;
+  interval?: number;
+  endType?: RecurrenceEnd;
   count?: number;
   until?: string;
-  interval?: number;
 };
 
 export const recurrenceEnds = ["AFTER", "ON"] as const;
