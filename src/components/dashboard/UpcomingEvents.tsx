@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import { formatTimeRange } from "@/lib/dateRangeUtils";
-import { api } from "@/trpc/react";
-import type { TPRCReturnType } from "@/types/trpc";
-import { format } from "date-fns";
-import { Icons } from "../Icons";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
+import { formatTimeRange } from '@/lib/dateRangeUtils'
+import { api } from '@/trpc/react'
+import type { TPRCReturnType } from '@/types/trpc'
+import { format } from 'date-fns'
+import { Icons } from '../Icons'
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Skeleton } from '../ui/skeleton'
 
 export const UpcomingEvents = () => {
-  const { data, isLoading } = api.dashboard.getUpcomingEvents.useQuery();
+  const { data, isLoading } = api.dashboard.getUpcomingEvents.useQuery()
   return (
     <Card>
       <CardHeader>
@@ -19,20 +19,20 @@ export const UpcomingEvents = () => {
         <UpcomingEventsContent data={data} isLoading={isLoading} />
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
 type UpcomingEventsContentProps = {
-  data: TPRCReturnType<typeof api.dashboard.getUpcomingEvents.useQuery>;
-  isLoading: boolean;
-};
+  data: TPRCReturnType<typeof api.dashboard.getUpcomingEvents.useQuery>
+  isLoading: boolean
+}
 
 const UpcomingEventsContent = ({
   data,
   isLoading,
 }: UpcomingEventsContentProps) => {
   if (isLoading || !data) {
-    return <EventSkeleton />;
+    return <EventSkeleton />
   }
 
   if (data.length === 0) {
@@ -45,7 +45,7 @@ const UpcomingEventsContent = ({
           </div>
         </div>
       </Card>
-    );
+    )
   }
   return data.map((event) => (
     <div
@@ -53,11 +53,11 @@ const UpcomingEventsContent = ({
       className="flex items-center gap-4 rounded border px-4 py-3"
     >
       <div className="grid gap-1">
-        <p className="text-md font-medium  leading-none">
+        <p className="text-md font-medium leading-none">
           {event.name ? event.name : event.clients.name}
         </p>
         <p className="text-sm text-muted-foreground">
-          {event.name ? event.clients.name : ""}
+          {event.name ? event.clients.name : ''}
         </p>
       </div>
       <div className="ml-auto grid gap-1">
@@ -65,12 +65,12 @@ const UpcomingEventsContent = ({
           {formatTimeRange(event.startTime, event.endTime)}
         </p>
         <p className="text-sm text-muted-foreground">
-          {format(event.startTime, "dd MMM yyyy")}
+          {format(event.startTime, 'dd MMM yyyy')}
         </p>
       </div>
     </div>
-  ));
-};
+  ))
+}
 
 const EventSkeleton = () => {
   return (
@@ -88,8 +88,8 @@ const EventSkeleton = () => {
         </div>
       ))}
     </>
-  );
-};
+  )
+}
 
 // {isLoading || !data ? (
 //   <EventSkeleton />

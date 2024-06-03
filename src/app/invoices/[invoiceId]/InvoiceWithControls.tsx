@@ -1,46 +1,46 @@
-"use client";
+'use client'
 
-import { useCreatePdf } from "@/hooks/useCreatePdf";
-import type { Invoice, InvoiceFromApi } from "@/types/invoices";
-import { format } from "date-fns";
-import { useState } from "react";
-import { InvoicePreview } from "./Invoice";
-import { InvoiceControls } from "./InvoiceControls";
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import LoadingButton from "@/components/LoadingButton";
-import { api } from "@/trpc/react";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useCreatePdf } from '@/hooks/useCreatePdf'
+import type { Invoice, InvoiceFromApi } from '@/types/invoices'
+import { format } from 'date-fns'
+import { useState } from 'react'
+import { InvoicePreview } from './Invoice'
+import { InvoiceControls } from './InvoiceControls'
+import Link from 'next/link'
+import { buttonVariants } from '@/components/ui/button'
+import LoadingButton from '@/components/LoadingButton'
+import { api } from '@/trpc/react'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 type InvoiceProps = {
-  invoice: InvoiceFromApi;
-};
+  invoice: InvoiceFromApi
+}
 
 export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
-  const router = useRouter();
-  const { printRef, handleDownloadPdf } = useCreatePdf();
+  const router = useRouter()
+  const { printRef, handleDownloadPdf } = useCreatePdf()
   const [invoiceFields, setInvoiceFields] = useState<Invoice>(
     mapInvoice(invoice),
-  );
+  )
 
   const handleChangeDate = (key: keyof Invoice, date: Date) => {
     const updatedInvoiceFields: Invoice = {
       ...invoiceFields,
-      [key]: format(date, "yyyy-MM-dd"),
-    };
-    setInvoiceFields(updatedInvoiceFields);
-  };
+      [key]: format(date, 'yyyy-MM-dd'),
+    }
+    setInvoiceFields(updatedInvoiceFields)
+  }
 
   const { isPending, mutateAsync } = api.invoices.markAsPaid.useMutation({
     onSuccess: () => {
-      toast.success("Invoice paid!");
-      router.push("/invoices");
+      toast.success('Invoice paid!')
+      router.push('/invoices')
     },
     onError: () => {
-      toast.error("Something went wrong please contact support");
+      toast.error('Something went wrong please contact support')
     },
-  });
+  })
 
   return (
     <div className="container pt-10">
@@ -52,7 +52,7 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
           <div className="flex gap-20">
             <Link
               href="/invoices"
-              className={buttonVariants({ variant: "secondary" })}
+              className={buttonVariants({ variant: 'secondary' })}
             >
               Go back
             </Link>
@@ -87,8 +87,8 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 function mapInvoice(invoice: InvoiceFromApi): Invoice {
   return {
@@ -97,8 +97,8 @@ function mapInvoice(invoice: InvoiceFromApi): Invoice {
     clientId: invoice.clientId,
     invoicedAt: invoice.invoicedAt,
     dueDate: invoice.dueDate,
-    issueDate: invoice.issueDate ?? format(new Date(), "yyyy-MM-dd"),
+    issueDate: invoice.issueDate ?? format(new Date(), 'yyyy-MM-dd'),
     lineItems: invoice.lineItems,
     total: invoice.total,
-  };
+  }
 }

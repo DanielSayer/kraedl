@@ -1,19 +1,19 @@
-import { db } from "@/server/db";
-import { bankAccounts } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { db } from '@/server/db'
+import { bankAccounts } from '@/server/db/schema'
+import { eq } from 'drizzle-orm'
 
 type BankAccountDto = {
-  businessId: string;
-  accountName: string;
-  bsb: string;
-  accountNumber: string;
-};
+  businessId: string
+  accountName: string
+  bsb: string
+  accountNumber: string
+}
 
 class BankAccountRepository {
   async getByBusinessId(businessId: string) {
     return await db.query.bankAccounts.findFirst({
       where: eq(bankAccounts.businessId, businessId),
-    });
+    })
   }
   async insertOrUpdate(bankAccount: BankAccountDto) {
     await db
@@ -26,9 +26,9 @@ class BankAccountRepository {
           bsb: bankAccount.bsb,
           accountNumber: bankAccount.accountNumber,
         },
-      });
+      })
   }
 }
 
-const bankAccountRepository = new BankAccountRepository();
-export default bankAccountRepository;
+const bankAccountRepository = new BankAccountRepository()
+export default bankAccountRepository

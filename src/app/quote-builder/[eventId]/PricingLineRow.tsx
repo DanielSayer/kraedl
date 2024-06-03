@@ -1,23 +1,23 @@
-import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import Combobox from "@/components/ui/combobox";
-import { FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { IconInput } from "@/components/ui/icon-input";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
-import type { QuoteBuilder } from "@/lib/validations/events";
-import type { DropdownOption } from "@/types/components/dropdownItem";
-import type { PricingLine } from "@/types/pricingLines";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { Icons } from '@/components/Icons'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import Combobox from '@/components/ui/combobox'
+import { FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { IconInput } from '@/components/ui/icon-input'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { formatCurrency, getTotalPrice } from '@/lib/currencyUtils'
+import type { QuoteBuilder } from '@/lib/validations/events'
+import type { DropdownOption } from '@/types/components/dropdownItem'
+import type { PricingLine } from '@/types/pricingLines'
+import { useFieldArray, useFormContext } from 'react-hook-form'
 
 type PricingLineProps = {
-  index: number;
-  pricingOptions: DropdownOption[];
-  isPricingLoading: boolean;
-  getPriceForItem: (seclectedPriceId: string) => string;
-};
+  index: number
+  pricingOptions: DropdownOption[]
+  isPricingLoading: boolean
+  getPriceForItem: (seclectedPriceId: string) => string
+}
 
 export const PricingLineRow = ({
   index,
@@ -25,35 +25,35 @@ export const PricingLineRow = ({
   isPricingLoading,
   getPriceForItem,
 }: PricingLineProps) => {
-  const { control, setValue, watch } = useFormContext<QuoteBuilder>();
-  const { remove } = useFieldArray<QuoteBuilder>({ name: "eventPricings" });
-  const currentPricingLine = watch(`eventPricings.${index}`);
+  const { control, setValue, watch } = useFormContext<QuoteBuilder>()
+  const { remove } = useFieldArray<QuoteBuilder>({ name: 'eventPricings' })
+  const currentPricingLine = watch(`eventPricings.${index}`)
 
   const removePricingLine = () => {
-    const pricingLines = watch("eventPricings");
-    const index = pricingLines.findIndex((p) => p.id === currentPricingLine.id);
-    remove(index);
-  };
+    const pricingLines = watch('eventPricings')
+    const index = pricingLines.findIndex((p) => p.id === currentPricingLine.id)
+    remove(index)
+  }
 
-  const updatePricingLine = <T extends keyof Omit<PricingLine, "totalPrice">>(
+  const updatePricingLine = <T extends keyof Omit<PricingLine, 'totalPrice'>>(
     key: T,
     value: PricingLine[T],
   ) => {
     const newPricingLine = {
       ...currentPricingLine,
       [key]: value,
-    };
-    const pricePer = getPriceForItem(newPricingLine.pricingId);
+    }
+    const pricePer = getPriceForItem(newPricingLine.pricingId)
     const newLineItemPrice = getTotalPrice(pricePer, newPricingLine.quantity, {
       format: true,
       removeSign: true,
-    });
+    })
 
     setValue(`eventPricings.${index}`, {
       ...newPricingLine,
       totalPrice: newLineItemPrice,
-    });
-  };
+    })
+  }
 
   return (
     <Card>
@@ -66,7 +66,7 @@ export const PricingLineRow = ({
               <FormItem className="col-span-3 space-y-1">
                 <FormLabel>Pricing Name</FormLabel>
                 <Combobox
-                  onChange={(opt) => updatePricingLine("pricingId", opt.value)}
+                  onChange={(opt) => updatePricingLine('pricingId', opt.value)}
                   options={pricingOptions}
                   isLoading={isPricingLoading}
                   value={field.value}
@@ -79,7 +79,7 @@ export const PricingLineRow = ({
             name={`eventPricings.${index}.quantity`}
             render={({ field }) => {
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              const { onChange: _, ...rest } = field;
+              const { onChange: _, ...rest } = field
               return (
                 <FormItem className="space-y-1">
                   <FormLabel>Quantity</FormLabel>
@@ -88,12 +88,12 @@ export const PricingLineRow = ({
                     step={0.5}
                     min={0}
                     onChange={(e) =>
-                      updatePricingLine("quantity", e.target.value)
+                      updatePricingLine('quantity', e.target.value)
                     }
                     {...rest}
                   />
                 </FormItem>
-              );
+              )
             }}
           />
           <div className="space-y-1">
@@ -135,5 +135,5 @@ export const PricingLineRow = ({
         </div>
       </CardContent>
     </Card>
-  );
-};
+  )
+}

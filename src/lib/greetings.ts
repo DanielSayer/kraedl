@@ -1,12 +1,12 @@
 export function getGreeting() {
-  const userHours = new Date().getHours();
+  const userHours = new Date().getHours()
   if (userHours >= 17) {
-    return "Good evening";
+    return 'Good evening'
   }
 
   if (userHours >= 12) {
-    return "Good afternoon";
+    return 'Good afternoon'
   }
 
-  return "Good morning";
+  return 'Good morning'
 }

@@ -1,13 +1,13 @@
-import { db } from "@/server/db";
-import { eventPricings } from "@/server/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import { db } from '@/server/db'
+import { eventPricings } from '@/server/db/schema'
+import { eq, inArray } from 'drizzle-orm'
 
 type EventPricingDto = {
-  id: string;
-  pricingId: string;
-  quantity: string;
-  totalPrice: string;
-};
+  id: string
+  pricingId: string
+  quantity: string
+  totalPrice: string
+}
 
 class EventPricingRepository {
   async getByEventId(eventId: string) {
@@ -19,13 +19,13 @@ class EventPricingRepository {
         quantity: true,
         totalPrice: true,
       },
-    });
+    })
   }
   async insertEventPricings(req: EventPricingDto[], eventId: string) {
-    await db.delete(eventPricings).where(eq(eventPricings.eventId, eventId));
+    await db.delete(eventPricings).where(eq(eventPricings.eventId, eventId))
     await db
       .insert(eventPricings)
-      .values(req.map((x) => ({ ...x, eventId: eventId })));
+      .values(req.map((x) => ({ ...x, eventId: eventId })))
   }
   async getEventPricingsByEventIds(eventIds: string[]) {
     return await db.query.eventPricings.findMany({
@@ -41,9 +41,9 @@ class EventPricingRepository {
           },
         },
       },
-    });
+    })
   }
 }
 
-const eventPricingRepository = new EventPricingRepository();
-export default eventPricingRepository;
+const eventPricingRepository = new EventPricingRepository()
+export default eventPricingRepository

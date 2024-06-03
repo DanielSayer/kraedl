@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   AddressField,
@@ -7,15 +7,15 @@ import {
   PhoneNumberField,
   PostcodeField,
   SuburbField,
-} from "@/components/FormFields";
-import LoadingButton from "@/components/LoadingButton";
-import Combobox from "@/components/ui/combobox";
-import { states } from "@/lib/constants/states";
-import { businessRegisterSchema } from "@/lib/validations/businesses";
-import { api } from "@/trpc/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+} from '@/components/FormFields'
+import LoadingButton from '@/components/LoadingButton'
+import Combobox from '@/components/ui/combobox'
+import { states } from '@/lib/constants/states'
+import { businessRegisterSchema } from '@/lib/validations/businesses'
+import { api } from '@/trpc/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import {
   Form,
   FormControl,
@@ -23,37 +23,37 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../../components/ui/form";
+} from '../../../components/ui/form'
 
-import type { DropdownOption } from "@/types/components/dropdownItem";
-import type { z } from "zod";
+import type { DropdownOption } from '@/types/components/dropdownItem'
+import type { z } from 'zod'
 
-type FormData = z.infer<typeof businessRegisterSchema>;
+type FormData = z.infer<typeof businessRegisterSchema>
 
 const RegisterBusinessForm = () => {
-  const router = useRouter();
+  const router = useRouter()
   const form = useForm<FormData>({
     resolver: zodResolver(businessRegisterSchema),
     defaultValues: {
-      name: "",
-      streetAddress: "",
-      suburb: "",
-      city: "",
-      state: "",
-      postcode: "",
-      phoneNumber: "",
+      name: '',
+      streetAddress: '',
+      suburb: '',
+      city: '',
+      state: '',
+      postcode: '',
+      phoneNumber: '',
     },
-  });
+  })
   const { mutateAsync, isPending } = api.business.register.useMutation({
     onError: (e) => {
-      form.setError("root", { message: e.message });
+      form.setError('root', { message: e.message })
     },
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    const { id } = await mutateAsync(data);
-    router.push(`/register/${id}`);
-  };
+    const { id } = await mutateAsync(data)
+    router.push(`/register/${id}`)
+  }
 
   return (
     <div className="grid gap-6">
@@ -133,7 +133,7 @@ const RegisterBusinessForm = () => {
                           options={states}
                           value={field.value}
                           onChange={(value: DropdownOption) =>
-                            form.setValue("state", value.value)
+                            form.setValue('state', value.value)
                           }
                         />
                       </FormControl>
@@ -162,7 +162,7 @@ const RegisterBusinessForm = () => {
         </form>
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default RegisterBusinessForm;
+export default RegisterBusinessForm

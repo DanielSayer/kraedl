@@ -1,33 +1,30 @@
-"use client";
+'use client'
 
-import { Icons } from "@/components/Icons";
+import { Icons } from '@/components/Icons'
 import {
   Fieldset,
   FieldsetContent,
   FieldsetHeader,
   FieldsetLegend,
   FieldsetTitle,
-} from "@/components/ui/fieldset";
-import { Form } from "@/components/ui/form";
-import { formatDateRange } from "@/lib/dateRangeUtils";
-import {
-  quoteBuilderSchema,
-  type QuoteBuilder,
-} from "@/lib/validations/events";
-import { api } from "@/trpc/react";
-import type { QuoteEvent } from "@/types/events";
-import type { PricingLine } from "@/types/pricingLines";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { PricingBuilder } from "./PricingBuilder";
-import { Recurrence } from "./Recurrence";
+} from '@/components/ui/fieldset'
+import { Form } from '@/components/ui/form'
+import { formatDateRange } from '@/lib/dateRangeUtils'
+import { quoteBuilderSchema, type QuoteBuilder } from '@/lib/validations/events'
+import { api } from '@/trpc/react'
+import type { QuoteEvent } from '@/types/events'
+import type { PricingLine } from '@/types/pricingLines'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { PricingBuilder } from './PricingBuilder'
+import { Recurrence } from './Recurrence'
 
 type EventFormProps = {
-  isReadOnly: boolean;
-  event: QuoteEvent;
-  pricingLines: PricingLine[];
-};
+  isReadOnly: boolean
+  event: QuoteEvent
+  pricingLines: PricingLine[]
+}
 
 export const EventForm = ({
   isReadOnly,
@@ -39,23 +36,23 @@ export const EventForm = ({
       eventId: event.id,
       eventPricings: pricingLines,
       recurrence: {
-        frequency: "NONE",
+        frequency: 'NONE',
         interval: 1,
-        endType: "AFTER",
+        endType: 'AFTER',
         after: 3,
       },
     },
     resolver: zodResolver(quoteBuilderSchema),
-  });
+  })
 
   const { isPending, mutateAsync } = api.eventPricing.save.useMutation({
-    onError: (e) => form.setError("root", { message: e.message }),
-    onSuccess: () => toast.success("Successfully saved"),
-  });
+    onError: (e) => form.setError('root', { message: e.message }),
+    onSuccess: () => toast.success('Successfully saved'),
+  })
 
   const handleSubmit = async (data: QuoteBuilder) => {
-    await mutateAsync(data);
-  };
+    await mutateAsync(data)
+  }
 
   return (
     <Form {...form}>
@@ -89,5 +86,5 @@ export const EventForm = ({
         </div>
       </form>
     </Form>
-  );
-};
+  )
+}

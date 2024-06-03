@@ -1,11 +1,11 @@
-import { TRPCClientError } from "@trpc/client";
-import { convertDateAndTimeToDate } from "../../common/helperMethods/dateHelpers";
-import DateRange from "../../common/valueObjects/DateRange";
-import eventsRepository from "../../repositories/eventsRepository";
-import type { z } from "zod";
-import type { createEventSchema } from "@/lib/validations/events";
+import { TRPCClientError } from '@trpc/client'
+import { convertDateAndTimeToDate } from '../../common/helperMethods/dateHelpers'
+import DateRange from '../../common/valueObjects/DateRange'
+import eventsRepository from '../../repositories/eventsRepository'
+import type { z } from 'zod'
+import type { createEventSchema } from '@/lib/validations/events'
 
-type EventRequest = z.infer<typeof createEventSchema>;
+type EventRequest = z.infer<typeof createEventSchema>
 
 export async function createEventCommand(
   request: EventRequest,
@@ -16,25 +16,25 @@ export async function createEventCommand(
     request.startTime,
     request.date,
     timezone,
-  );
+  )
   const endDate = convertDateAndTimeToDate(
     request.endTime,
     request.date,
     timezone,
-  );
+  )
 
-  const dateRangeResult = DateRange.NewResult(startDate, endDate);
+  const dateRangeResult = DateRange.NewResult(startDate, endDate)
   if (dateRangeResult.isFailure()) {
     throw new TRPCClientError(
       `${dateRangeResult.GetError()} If this is intentional and multi-day events are required, please contact support`,
-    );
+    )
   }
-  const dateRange = dateRangeResult.GetValue();
+  const dateRange = dateRangeResult.GetValue()
   return await eventsRepository.create({
     clientId: request.clientId,
     name: request.name,
     startTime: dateRange.Start,
     endTime: dateRange.End,
     businessId: businessId,
-  });
+  })
 }

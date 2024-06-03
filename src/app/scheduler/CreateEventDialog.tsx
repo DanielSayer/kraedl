@@ -1,15 +1,11 @@
-"use client";
+'use client'
 
-import { NameField } from "@/components/FormFields";
-import LoadingButton from "@/components/LoadingButton";
-import { Button } from "@/components/ui/button";
-import Combobox from "@/components/ui/combobox";
-import { DatePicker } from "@/components/ui/datepicker";
-import {
-  DialogClose,
-  DialogFooter,
-  DialogHeader,
-} from "@/components/ui/dialog";
+import { NameField } from '@/components/FormFields'
+import LoadingButton from '@/components/LoadingButton'
+import { Button } from '@/components/ui/button'
+import Combobox from '@/components/ui/combobox'
+import { DatePicker } from '@/components/ui/datepicker'
+import { DialogClose, DialogFooter, DialogHeader } from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -17,25 +13,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { createEventSchema } from "@/lib/validations/events";
-import { api } from "@/trpc/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { createEventSchema } from '@/lib/validations/events'
+import { api } from '@/trpc/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
-import type { DropdownOption } from "@/types/components/dropdownItem";
-import type { z } from "zod";
+import type { DropdownOption } from '@/types/components/dropdownItem'
+import type { z } from 'zod'
 
-type FormData = z.infer<typeof createEventSchema>;
+type FormData = z.infer<typeof createEventSchema>
 type CreateEventDialogProps = {
-  isLoading: boolean;
-  clients: DropdownOption[];
-  toggle: () => void;
-  refetch: () => void;
-};
+  isLoading: boolean
+  clients: DropdownOption[]
+  toggle: () => void
+  refetch: () => void
+}
 
 const CreateEventDialog = ({
   isLoading,
@@ -46,28 +42,28 @@ const CreateEventDialog = ({
   const form = useForm<FormData>({
     resolver: zodResolver(createEventSchema),
     defaultValues: {
-      name: "",
-      clientId: "",
-      date: "",
-      endTime: "",
-      startTime: "",
+      name: '',
+      clientId: '',
+      date: '',
+      endTime: '',
+      startTime: '',
     },
-  });
+  })
 
   const mutation = api.events.create.useMutation({
     onError: (error) => {
-      form.setError("root", { message: error.message });
+      form.setError('root', { message: error.message })
     },
     onSuccess: () => {
-      refetch();
-      toast.success("Event created");
-      toggle();
+      refetch()
+      toast.success('Event created')
+      toggle()
     },
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    await mutation.mutateAsync({ ...data });
-  };
+    await mutation.mutateAsync({ ...data })
+  }
 
   return (
     <>
@@ -77,7 +73,7 @@ const CreateEventDialog = ({
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-3  ">
+          <div className="grid gap-3">
             <div className="w-full">
               <FormField
                 control={form.control}
@@ -106,7 +102,7 @@ const CreateEventDialog = ({
                         options={clients}
                         value={field.value}
                         onChange={(value: DropdownOption) =>
-                          form.setValue("clientId", value.value)
+                          form.setValue('clientId', value.value)
                         }
                         placeholder="Client"
                       />
@@ -157,7 +153,7 @@ const CreateEventDialog = ({
                     <DatePicker
                       date={field.value}
                       onChange={(date) =>
-                        form.setValue("date", format(date, "yyyy-MM-dd"))
+                        form.setValue('date', format(date, 'yyyy-MM-dd'))
                       }
                     />
                   </FormControl>
@@ -187,7 +183,7 @@ const CreateEventDialog = ({
         </form>
       </Form>
     </>
-  );
-};
+  )
+}
 
-export default CreateEventDialog;
+export default CreateEventDialog

@@ -1,7 +1,7 @@
-import clientsRepository from "../../repositories/clientsRepository";
+import clientsRepository from '../../repositories/clientsRepository'
 
 export const getNumberOfClientsForBusinessQuery = async (
   businessId: string,
 ) => {
-  return await clientsRepository.getNumberOfClientsForBusiness(businessId);
-};
+  return await clientsRepository.getNumberOfClientsForBusiness(businessId)
+}

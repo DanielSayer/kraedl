@@ -1,21 +1,21 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Icons } from "./Icons";
-import { Avatar, AvatarFallback } from "./ui/avatar";
-import { Button, buttonVariants } from "./ui/button";
+import Image from 'next/image'
+import Link from 'next/link'
+import { Icons } from './Icons'
+import { Avatar, AvatarFallback } from './ui/avatar'
+import { Button, buttonVariants } from './ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { authorizedNavOptions } from "@/lib/constants/NavOptions";
+} from './ui/dropdown-menu'
+import { authorizedNavOptions } from '@/lib/constants/NavOptions'
 
 interface UserAccountNavProps {
-  email: string;
-  imageUrl: string;
-  name: string;
+  email: string
+  imageUrl: string
+  name: string
 }
 
 const UserAccountNav = ({ email, imageUrl, name }: UserAccountNavProps) => {
@@ -66,7 +66,7 @@ const UserAccountNav = ({ email, imageUrl, name }: UserAccountNavProps) => {
           <Link
             href="/api/auth/signout"
             className={buttonVariants({
-              size: "sm",
+              size: 'sm',
             })}
           >
             Log out
@@ -74,6 +74,6 @@ const UserAccountNav = ({ email, imageUrl, name }: UserAccountNavProps) => {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-};
-export default UserAccountNav;
+  )
+}
+export default UserAccountNav

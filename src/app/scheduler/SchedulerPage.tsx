@@ -1,25 +1,25 @@
-"use client";
+'use client'
 
-import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import useLoadClientsOptions from "@/hooks/useLoadClientOptions";
-import { useState } from "react";
-import CreateEventDialog from "./CreateEventDialog";
-import SchedulerCalendar from "./SchedulerCalendar";
-import useCalendar from "./useCalendar";
-import { api } from "@/trpc/react";
-import { Card } from "@/components/ui/card";
+import { Icons } from '@/components/Icons'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import useLoadClientsOptions from '@/hooks/useLoadClientOptions'
+import { useState } from 'react'
+import CreateEventDialog from './CreateEventDialog'
+import SchedulerCalendar from './SchedulerCalendar'
+import useCalendar from './useCalendar'
+import { api } from '@/trpc/react'
+import { Card } from '@/components/ui/card'
 
 const SchedulerPage = () => {
   const { selectedDate, datesSet, handleSelectDate, calendarRef, dateRange } =
-    useCalendar();
+    useCalendar()
 
   const { data, refetch } = api.events.getInRange.useQuery({
     startTime: dateRange.start.toString(),
     endTime: dateRange.end.toString(),
-  });
+  })
 
   return (
     <div className="flex gap-8">
@@ -56,18 +56,18 @@ const SchedulerPage = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 type CreateEventButtonProps = {
-  className?: string;
-  refetch: () => void;
-};
+  className?: string
+  refetch: () => void
+}
 
 const CreateEventButton = ({ refetch, className }: CreateEventButtonProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const toggle = () => setIsOpen(!isOpen);
-  const clients = useLoadClientsOptions();
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const toggle = () => setIsOpen(!isOpen)
+  const clients = useLoadClientsOptions()
   return (
     <Dialog open={isOpen} onOpenChange={toggle}>
       <DialogTrigger asChild onClick={toggle}>
@@ -87,7 +87,7 @@ const CreateEventButton = ({ refetch, className }: CreateEventButtonProps) => {
         <CreateEventDialog {...clients} toggle={toggle} refetch={refetch} />
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default SchedulerPage;
+export default SchedulerPage

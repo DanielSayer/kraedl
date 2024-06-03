@@ -1,14 +1,14 @@
-import { getServerAuthSession } from "@/server/auth";
-import { redirect } from "next/navigation";
+import { getServerAuthSession } from '@/server/auth'
+import { redirect } from 'next/navigation'
 
 const useProtectedRoute = async () => {
-  const session = await getServerAuthSession();
+  const session = await getServerAuthSession()
 
   if (!session) {
-    redirect("/signIn");
+    redirect('/signIn')
   }
 
-  return { session, user: session.user };
-};
+  return { session, user: session.user }
+}
 
-export default useProtectedRoute;
+export default useProtectedRoute

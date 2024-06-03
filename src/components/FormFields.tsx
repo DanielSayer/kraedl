@@ -1,14 +1,14 @@
-import type { ControllerRenderProps } from "react-hook-form";
-import { FormControl, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { Input } from "./ui/input";
+import type { ControllerRenderProps } from 'react-hook-form'
+import { FormControl, FormItem, FormLabel, FormMessage } from './ui/form'
+import { Input } from './ui/input'
 
 type FormFieldProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field: ControllerRenderProps<any, any> | undefined;
-  isLoading: boolean;
-  label?: string;
-  placeholder?: string;
-};
+  field: ControllerRenderProps<any, any> | undefined
+  isLoading: boolean
+  label?: string
+  placeholder?: string
+}
 
 export const NameField = ({
   isLoading,
@@ -19,12 +19,12 @@ export const NameField = ({
   return (
     <FormItem>
       <FormLabel className="sr-only" htmlFor="name">
-        {label ?? "Name"}
+        {label ?? 'Name'}
       </FormLabel>
       <FormControl>
         <Input
           id="name"
-          placeholder={placeholder ?? "John Smith"}
+          placeholder={placeholder ?? 'John Smith'}
           type="text"
           autoCapitalize="none"
           autoCorrect="off"
@@ -34,8 +34,8 @@ export const NameField = ({
       </FormControl>
       <FormMessage />
     </FormItem>
-  );
-};
+  )
+}
 
 export const EmailField = ({
   field,
@@ -46,12 +46,12 @@ export const EmailField = ({
   return (
     <FormItem>
       <FormLabel className="sr-only" htmlFor="email">
-        {label ?? "Email"}
+        {label ?? 'Email'}
       </FormLabel>
       <FormControl>
         <Input
           id="email"
-          placeholder={placeholder ?? "name@example.com"}
+          placeholder={placeholder ?? 'name@example.com'}
           type="email"
           autoCapitalize="none"
           autoComplete="email"
@@ -62,8 +62,8 @@ export const EmailField = ({
       </FormControl>
       <FormMessage />
     </FormItem>
-  );
-};
+  )
+}
 
 export const AddressField = ({
   field,
@@ -74,12 +74,12 @@ export const AddressField = ({
   return (
     <FormItem>
       <FormLabel className="sr-only" htmlFor="address">
-        {label ?? "Street address"}
+        {label ?? 'Street address'}
       </FormLabel>
       <FormControl>
         <Input
           id="address"
-          placeholder={placeholder ?? "street address"}
+          placeholder={placeholder ?? 'street address'}
           type="text"
           autoCapitalize="none"
           autoCorrect="off"
@@ -89,8 +89,8 @@ export const AddressField = ({
       </FormControl>
       <FormMessage />
     </FormItem>
-  );
-};
+  )
+}
 
 export const SuburbField = ({
   field,
@@ -101,12 +101,12 @@ export const SuburbField = ({
   return (
     <FormItem>
       <FormLabel className="sr-only" htmlFor="suburb">
-        {label ?? "Suburb"}
+        {label ?? 'Suburb'}
       </FormLabel>
       <FormControl>
         <Input
           id="suburb"
-          placeholder={placeholder ?? "suburb"}
+          placeholder={placeholder ?? 'suburb'}
           type="text"
           autoCapitalize="none"
           autoCorrect="off"
@@ -116,8 +116,8 @@ export const SuburbField = ({
       </FormControl>
       <FormMessage />
     </FormItem>
-  );
-};
+  )
+}
 
 export const CityField = ({
   field,
@@ -128,12 +128,12 @@ export const CityField = ({
   return (
     <FormItem>
       <FormLabel className="sr-only" htmlFor="city">
-        {label ?? "City"}
+        {label ?? 'City'}
       </FormLabel>
       <FormControl>
         <Input
           id="city"
-          placeholder={placeholder ?? "city"}
+          placeholder={placeholder ?? 'city'}
           type="text"
           autoCapitalize="none"
           autoCorrect="off"
@@ -143,8 +143,8 @@ export const CityField = ({
       </FormControl>
       <FormMessage />
     </FormItem>
-  );
-};
+  )
+}
 
 export const PostcodeField = ({
   field,
@@ -155,12 +155,12 @@ export const PostcodeField = ({
   return (
     <FormItem>
       <FormLabel className="sr-only" htmlFor="postcode">
-        {label ?? "Postcode"}
+        {label ?? 'Postcode'}
       </FormLabel>
       <FormControl>
         <Input
           id="postcode"
-          placeholder={placeholder ?? "postcode"}
+          placeholder={placeholder ?? 'postcode'}
           type="text"
           autoCapitalize="none"
           autoCorrect="off"
@@ -170,8 +170,8 @@ export const PostcodeField = ({
       </FormControl>
       <FormMessage />
     </FormItem>
-  );
-};
+  )
+}
 
 export const PhoneNumberField = ({
   field,
@@ -182,12 +182,12 @@ export const PhoneNumberField = ({
   return (
     <FormItem>
       <FormLabel className="sr-only" htmlFor="phoneNumber">
-        {label ?? "Phone number"}
+        {label ?? 'Phone number'}
       </FormLabel>
       <FormControl>
         <Input
           id="phoneNumber"
-          placeholder={placeholder ?? "0412 345 678"}
+          placeholder={placeholder ?? '0412 345 678'}
           type="tel"
           autoCapitalize="none"
           autoCorrect="off"
@@ -197,22 +197,22 @@ export const PhoneNumberField = ({
       </FormControl>
       <FormMessage />
     </FormItem>
-  );
-};
+  )
+}
 
 type PasswordFieldProps = FormFieldProps & {
-  isConfirm?: boolean;
-};
+  isConfirm?: boolean
+}
 export const PasswordField = ({
   field,
   isLoading,
   isConfirm,
 }: PasswordFieldProps) => {
-  const name = isConfirm ? "confirmPassword" : "password";
+  const name = isConfirm ? 'confirmPassword' : 'password'
   return (
     <FormItem>
       <FormLabel className="sr-only" htmlFor={name}>
-        {isConfirm ? "Confirm Password" : "Password"}
+        {isConfirm ? 'Confirm Password' : 'Password'}
       </FormLabel>
       <FormControl>
         <Input
@@ -220,12 +220,12 @@ export const PasswordField = ({
           placeholder="password"
           type="password"
           autoCapitalize="none"
-          autoComplete={isConfirm ? "current-password" : "new-password"}
+          autoComplete={isConfirm ? 'current-password' : 'new-password'}
           disabled={isLoading}
           {...field}
         />
       </FormControl>
       <FormMessage />
     </FormItem>
-  );
-};
+  )
+}

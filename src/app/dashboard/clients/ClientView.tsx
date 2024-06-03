@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import { Icons } from "@/components/Icons";
-import { buttonVariants } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Icons } from '@/components/Icons'
+import { buttonVariants } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -10,20 +10,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
-import type { ClientWithAddress } from "@/types/clients";
-import Link from "next/link";
-import { useState } from "react";
-import ClientPreview from "./ClientPreview";
+} from '@/components/ui/table'
+import { formatPhoneNumber } from '@/lib/phoneNumberUtils'
+import type { ClientWithAddress } from '@/types/clients'
+import Link from 'next/link'
+import { useState } from 'react'
+import ClientPreview from './ClientPreview'
 
 type ClientViewProps = {
-  clients: ClientWithAddress[];
-};
+  clients: ClientWithAddress[]
+}
 
 const ClientView = ({ clients }: ClientViewProps) => {
   const [selectedClient, setSelectedClient] =
-    useState<ClientWithAddress | null>(null);
+    useState<ClientWithAddress | null>(null)
   return (
     <div className="mt-6 flex flex-1">
       <MobileClientsView clients={clients} />
@@ -49,7 +49,7 @@ const ClientView = ({ clients }: ClientViewProps) => {
                 <TableCell>{formatPhoneNumber(client.phoneNumber)}</TableCell>
                 <TableCell>
                   <span className="hidden lg:inline">
-                    {client.clientAddresses?.suburb ?? "Not set up"}
+                    {client.clientAddresses?.suburb ?? 'Not set up'}
                   </span>
                   <Link
                     href={`/clients/${client.id}`}
@@ -67,8 +67,8 @@ const ClientView = ({ clients }: ClientViewProps) => {
       </div>
       <ClientPreview client={selectedClient} />
     </div>
-  );
-};
+  )
+}
 
 const MobileClientsView = ({ clients }: ClientViewProps) => {
   return (
@@ -76,7 +76,7 @@ const MobileClientsView = ({ clients }: ClientViewProps) => {
       {clients.map((client) => (
         <Card
           key={client.id}
-          className=" flex items-center justify-between p-2 px-4"
+          className="flex items-center justify-between p-2 px-4"
         >
           <div className="truncate">
             <h2>{client.name}</h2>
@@ -87,7 +87,7 @@ const MobileClientsView = ({ clients }: ClientViewProps) => {
             </div>
           </div>
           <Link
-            className={buttonVariants({ variant: "outline" })}
+            className={buttonVariants({ variant: 'outline' })}
             href={`/clients/${client.id}`}
           >
             <Icons.arrowRight className="h-6 w-6" />
@@ -95,7 +95,7 @@ const MobileClientsView = ({ clients }: ClientViewProps) => {
         </Card>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default ClientView;
+export default ClientView

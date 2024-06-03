@@ -1,41 +1,41 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { EmailField, PasswordField } from "@/components/FormFields";
-import LoadingButton from "@/components/LoadingButton";
-import { Form, FormField, FormMessage } from "@/components/ui/form";
-import { signIn } from "next-auth/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/lib/validations/auth";
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { EmailField, PasswordField } from '@/components/FormFields'
+import LoadingButton from '@/components/LoadingButton'
+import { Form, FormField, FormMessage } from '@/components/ui/form'
+import { signIn } from 'next-auth/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { loginSchema } from '@/lib/validations/auth'
 
-import type { z } from "zod";
+import type { z } from 'zod'
 
-type FormData = z.infer<typeof loginSchema>;
+type FormData = z.infer<typeof loginSchema>
 
 const SignInForm = () => {
-  const router = useRouter();
+  const router = useRouter()
   const form = useForm<FormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+    defaultValues: { email: '', password: '' },
+  })
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    const signInResult = await signIn("credentials", {
+    setIsLoading(true)
+    const signInResult = await signIn('credentials', {
       ...data,
       redirect: false,
-    });
+    })
     if (!signInResult?.ok || signInResult?.error) {
-      form.setError("root", {
-        message: signInResult?.error ?? "Something went wrong",
-      });
-      setIsLoading(false);
-      return;
+      form.setError('root', {
+        message: signInResult?.error ?? 'Something went wrong',
+      })
+      setIsLoading(false)
+      return
     }
-    router.push("/dashboard");
-  };
+    router.push('/dashboard')
+  }
 
   return (
     <div className="grid gap-6">
@@ -69,7 +69,7 @@ const SignInForm = () => {
         </form>
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default SignInForm;
+export default SignInForm

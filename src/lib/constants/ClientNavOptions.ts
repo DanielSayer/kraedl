@@ -1,14 +1,14 @@
 export const clientNavOptions = [
   {
-    label: "Profile",
-    href: "/clients/[id]",
+    label: 'Profile',
+    href: '/clients/[id]',
   },
   {
-    label: "History",
-    href: "/clients/[id]/transactions",
+    label: 'History',
+    href: '/clients/[id]/transactions',
   },
   {
-    label: "Notes",
-    href: "/clients/[id]/notes",
+    label: 'Notes',
+    href: '/clients/[id]/notes',
   },
-];
+]

@@ -1,24 +1,24 @@
-import { Icons } from "@/components/Icons";
-import { EditAddressDialog } from "@/components/clients/EditAddressDialog";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import useProtectedRoute from "@/hooks/useProtectedRoute";
-import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
-import { api } from "@/trpc/server";
-import { ClientHeader } from "./ClientHeader";
+import { Icons } from '@/components/Icons'
+import { EditAddressDialog } from '@/components/clients/EditAddressDialog'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import useProtectedRoute from '@/hooks/useProtectedRoute'
+import { formatPhoneNumber } from '@/lib/phoneNumberUtils'
+import { api } from '@/trpc/server'
+import { ClientHeader } from './ClientHeader'
 
 interface ClientPageProps {
   params: {
-    clientId: string;
-  };
+    clientId: string
+  }
 }
 
 export default async function Page({ params }: ClientPageProps) {
-  await useProtectedRoute();
-  const client = await api.clients.getById({ id: params.clientId });
+  await useProtectedRoute()
+  const client = await api.clients.getById({ id: params.clientId })
   const clientAddress = await api.clients.getClientAddress({
     id: params.clientId,
-  });
+  })
 
   return (
     <div className="mt-4 px-2 md:p-0">
@@ -64,12 +64,12 @@ export default async function Page({ params }: ClientPageProps) {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
 
 type ClientAddressBlock = {
-  clientAddress: Awaited<ReturnType<typeof api.clients.getClientAddress>>;
-};
+  clientAddress: Awaited<ReturnType<typeof api.clients.getClientAddress>>
+}
 
 const ClientAddressBlock = ({ clientAddress }: ClientAddressBlock) => {
   if (!clientAddress) {
@@ -83,7 +83,7 @@ const ClientAddressBlock = ({ clientAddress }: ClientAddressBlock) => {
         <p className="mt-2">3 Generic St, Samplecity</p>
         <p className="mt-2">QuietSuburb, SA, 1234</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -96,5 +96,5 @@ const ClientAddressBlock = ({ clientAddress }: ClientAddressBlock) => {
         {clientAddress.suburb}, {clientAddress.state}, {clientAddress.postcode}
       </p>
     </div>
-  );
-};
+  )
+}

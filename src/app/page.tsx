@@ -1,5 +1,5 @@
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
+import { buttonVariants } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default async function Home() {
   return (
@@ -10,9 +10,9 @@ export default async function Home() {
       <h1 className="max-w-4xl text-4xl font-bold md:text-5xl lg:text-6xl">
         You should check it out, it&apos;s the ultimate business tool.
       </h1>
-      <Link href={"/signIn"} className={buttonVariants({ variant: "default" })}>
+      <Link href={'/signIn'} className={buttonVariants({ variant: 'default' })}>
         Sign In
       </Link>
     </main>
-  );
+  )
 }

@@ -1,10 +1,10 @@
-import { Button, type ButtonProps } from "./ui/button";
-import { Icons } from "./Icons";
+import { Button, type ButtonProps } from './ui/button'
+import { Icons } from './Icons'
 
 type LoadingButtonProps = ButtonProps & {
-  isLoading: boolean;
-  loadingText?: string;
-};
+  isLoading: boolean
+  loadingText?: string
+}
 
 const LoadingButton = ({
   isLoading,
@@ -18,13 +18,13 @@ const LoadingButton = ({
       {isLoading ? (
         <span className="flex items-center">
           <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-          {loadingText ?? "Loading..."}
+          {loadingText ?? 'Loading...'}
         </span>
       ) : (
         children
       )}
     </Button>
-  );
-};
+  )
+}
 
-export default LoadingButton;
+export default LoadingButton

@@ -1,21 +1,21 @@
-import { Icons } from "@/components/Icons";
-import { BusinessQuickStats } from "@/components/dashboard/BusinessQuickStats";
-import { InvoicePreview } from "@/components/dashboard/InvoicePreview";
-import { UpcomingEvents } from "@/components/dashboard/UpcomingEvents";
-import { Button } from "@/components/ui/button";
+import { Icons } from '@/components/Icons'
+import { BusinessQuickStats } from '@/components/dashboard/BusinessQuickStats'
+import { InvoicePreview } from '@/components/dashboard/InvoicePreview'
+import { UpcomingEvents } from '@/components/dashboard/UpcomingEvents'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import useProtectedRoute from "@/hooks/useProtectedRoute";
-import { getGreeting } from "@/lib/greetings";
-import Link from "next/link";
+} from '@/components/ui/card'
+import useProtectedRoute from '@/hooks/useProtectedRoute'
+import { getGreeting } from '@/lib/greetings'
+import Link from 'next/link'
 
 export default async function Page() {
-  const { user } = await useProtectedRoute();
+  const { user } = await useProtectedRoute()
   return (
     <main className="grid grid-cols-3 gap-6 px-48 pt-6">
       <div className="col-span-2">
@@ -46,5 +46,5 @@ export default async function Page() {
         <UpcomingEvents />
       </div>
     </main>
-  );
+  )
 }

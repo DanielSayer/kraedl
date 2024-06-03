@@ -1,12 +1,12 @@
-import { Icons } from "@/components/Icons";
-import { getServerAuthSession } from "@/server/auth";
-import { redirect } from "next/navigation";
-import SignInForm from "./SignInForm";
+import { Icons } from '@/components/Icons'
+import { getServerAuthSession } from '@/server/auth'
+import { redirect } from 'next/navigation'
+import SignInForm from './SignInForm'
 
 const Page = async () => {
-  const session = await getServerAuthSession();
+  const session = await getServerAuthSession()
   if (session?.user) {
-    redirect("/dashboard");
+    redirect('/dashboard')
   }
 
   return (
@@ -24,7 +24,7 @@ const Page = async () => {
         <SignInForm />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

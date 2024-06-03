@@ -1,9 +1,9 @@
-import { Separator } from "@/components/ui/separator";
-import { BankDetailsForm } from "./BankDetailsForm";
-import { api } from "@/trpc/server";
+import { Separator } from '@/components/ui/separator'
+import { BankDetailsForm } from './BankDetailsForm'
+import { api } from '@/trpc/server'
 
 export default async function Page() {
-  const bankAccount = await api.bankAccounts.getByBusinessId();
+  const bankAccount = await api.bankAccounts.getByBusinessId()
   return (
     <div>
       <div className="text-xl">Banking Details</div>
@@ -13,5 +13,5 @@ export default async function Page() {
       <Separator className="mb-4 mt-2" />
       <BankDetailsForm bankAccount={bankAccount} />
     </div>
-  );
+  )
 }

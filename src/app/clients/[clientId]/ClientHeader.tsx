@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
-import { clientNavOptions } from "@/lib/constants/ClientNavOptions";
+import { Icons } from '@/components/Icons'
+import { Button } from '@/components/ui/button'
+import { clientNavOptions } from '@/lib/constants/ClientNavOptions'
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@radix-ui/react-popover";
-import Link from "next/link";
+} from '@radix-ui/react-popover'
+import Link from 'next/link'
 
 export const ClientHeader = ({ id, title }: { id: string; title: string }) => {
   return (
@@ -21,8 +21,8 @@ export const ClientHeader = ({ id, title }: { id: string; title: string }) => {
       </div>
       <MobileNav userId={id} />
     </h1>
-  );
-};
+  )
+}
 
 const MobileNav = ({ userId }: { userId: string }) => {
   return (
@@ -33,14 +33,14 @@ const MobileNav = ({ userId }: { userId: string }) => {
             <Icons.subMenu />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="z-50 mr-2 w-40 rounded-md border bg-popover p-4 text-base  text-popover-foreground md:hidden">
+        <PopoverContent className="z-50 mr-2 w-40 rounded-md border bg-popover p-4 text-base text-popover-foreground md:hidden">
           <div className="flex flex-col gap-2">
             {clientNavOptions.map((option) => (
               <Link
                 key={option.label}
                 className="w-100 block hover:text-muted-foreground"
                 href={option.href}
-                as={option.href.replace("[id]", userId)}
+                as={option.href.replace('[id]', userId)}
               >
                 {option.label}
               </Link>
@@ -49,5 +49,5 @@ const MobileNav = ({ userId }: { userId: string }) => {
         </PopoverContent>
       </Popover>
     </div>
-  );
-};
+  )
+}

@@ -1,30 +1,30 @@
 type Invoice = {
-  id: string;
-  clientId: string;
-  invoiceNumber: number;
-  total: string;
-  issueDate: string | null;
-  invoicedAt: Date | null;
-  dueDate: string;
-  paidAt: Date | null;
-  pricingId: string | null;
-  pricingLine: string | null;
-  quantity: string | null;
-  pricePer: string | null;
-  totalPrice: string | null;
-};
+  id: string
+  clientId: string
+  invoiceNumber: number
+  total: string
+  issueDate: string | null
+  invoicedAt: Date | null
+  dueDate: string
+  paidAt: Date | null
+  pricingId: string | null
+  pricingLine: string | null
+  quantity: string | null
+  pricePer: string | null
+  totalPrice: string | null
+}
 
 type LineItem = {
-  id: string;
-  name: string;
-  quantity: string;
-  pricePer: string;
-  totalPrice: string;
-};
+  id: string
+  name: string
+  quantity: string
+  pricePer: string
+  totalPrice: string
+}
 
 export function mapInvoiceToLineItems(res: Invoice[]) {
   if (res.length === 0 || !res[0]) {
-    return null;
+    return null
   }
   const invoice = {
     id: res[0].id,
@@ -36,7 +36,7 @@ export function mapInvoiceToLineItems(res: Invoice[]) {
     dueDate: res[0].dueDate,
     paidAt: res[0].paidAt,
     lineItems: [] as LineItem[],
-  };
+  }
 
   for (const row of res) {
     if (
@@ -46,7 +46,7 @@ export function mapInvoiceToLineItems(res: Invoice[]) {
       !row.pricePer ||
       !row.totalPrice
     ) {
-      continue;
+      continue
     }
     invoice.lineItems.push({
       id: row.pricingId,
@@ -54,8 +54,8 @@ export function mapInvoiceToLineItems(res: Invoice[]) {
       quantity: row.quantity,
       pricePer: row.pricePer,
       totalPrice: row.totalPrice,
-    });
+    })
   }
 
-  return invoice;
+  return invoice
 }

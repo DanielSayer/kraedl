@@ -1,22 +1,22 @@
-"use client";
+'use client'
 
-import { states } from "@/lib/constants/states";
-import { editClientAddressSchema } from "@/lib/validations/clients";
-import { api } from "@/trpc/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { states } from '@/lib/constants/states'
+import { editClientAddressSchema } from '@/lib/validations/clients'
+import { api } from '@/trpc/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import {
   AddressField,
   CityField,
   PostcodeField,
   SuburbField,
-} from "../FormFields";
-import { Icons } from "../Icons";
-import LoadingButton from "../LoadingButton";
-import { Button } from "../ui/button";
-import Combobox from "../ui/combobox";
+} from '../FormFields'
+import { Icons } from '../Icons'
+import LoadingButton from '../LoadingButton'
+import { Button } from '../ui/button'
+import Combobox from '../ui/combobox'
 import {
   Dialog,
   DialogClose,
@@ -24,7 +24,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTrigger,
-} from "../ui/dialog";
+} from '../ui/dialog'
 import {
   Form,
   FormControl,
@@ -32,53 +32,53 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Separator } from "../ui/separator";
+} from '../ui/form'
+import { Separator } from '../ui/separator'
 
-import type { ClientAddresss } from "@/types/clients";
-import type { DropdownOption } from "@/types/components/dropdownItem";
-import type { z } from "zod";
+import type { ClientAddresss } from '@/types/clients'
+import type { DropdownOption } from '@/types/components/dropdownItem'
+import type { z } from 'zod'
 
-type FormData = z.infer<typeof editClientAddressSchema>;
+type FormData = z.infer<typeof editClientAddressSchema>
 
 type EditAddressDialogProps = {
-  clientId: string;
-  clientAddress?: ClientAddresss;
-};
+  clientId: string
+  clientAddress?: ClientAddresss
+}
 
 export const EditAddressDialog = ({
   clientId,
   clientAddress,
 }: EditAddressDialogProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const toggle = () => setIsOpen(!isOpen);
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const toggle = () => setIsOpen(!isOpen)
 
   const form = useForm<FormData>({
     resolver: zodResolver(editClientAddressSchema),
     defaultValues: {
       id: clientId,
-      streetAddress: clientAddress?.streetAddress ?? "",
-      suburb: clientAddress?.suburb ?? "",
-      city: clientAddress?.city ?? "",
-      postcode: clientAddress?.postcode ?? "",
-      state: clientAddress?.state ?? "",
+      streetAddress: clientAddress?.streetAddress ?? '',
+      suburb: clientAddress?.suburb ?? '',
+      city: clientAddress?.city ?? '',
+      postcode: clientAddress?.postcode ?? '',
+      state: clientAddress?.state ?? '',
     },
-  });
+  })
 
   const { mutateAsync, isPending } =
     api.clients.updateClientAddress.useMutation({
       onError: (e) => {
-        form.setError("root", { message: e.message });
+        form.setError('root', { message: e.message })
       },
       onSuccess: () => {
-        toast.success("Successfully updated address");
-        toggle();
+        toast.success('Successfully updated address')
+        toggle()
       },
-    });
+    })
 
   const handleSubmit = async (data: FormData) => {
-    await mutateAsync(data);
-  };
+    await mutateAsync(data)
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={toggle}>
@@ -147,7 +147,7 @@ export const EditAddressDialog = ({
                         options={states}
                         value={field.value}
                         onChange={(value: DropdownOption) =>
-                          form.setValue("state", value.value)
+                          form.setValue('state', value.value)
                         }
                       />
                     </FormControl>
@@ -176,5 +176,5 @@ export const EditAddressDialog = ({
         </Form>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}

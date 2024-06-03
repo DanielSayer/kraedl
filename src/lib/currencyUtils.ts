@@ -2,21 +2,21 @@ export function formatCurrency(
   amount: string,
   config?: { removeSign?: boolean },
 ) {
-  const formatter = new Intl.NumberFormat("en-AU", {
-    style: "currency",
-    currency: "AUD",
-  });
+  const formatter = new Intl.NumberFormat('en-AU', {
+    style: 'currency',
+    currency: 'AUD',
+  })
 
-  const currency = parseFloat(amount);
+  const currency = parseFloat(amount)
   if (isNaN(currency)) {
-    return "---";
+    return '---'
   }
-  const result = formatter.format(currency);
+  const result = formatter.format(currency)
 
   if (config?.removeSign) {
-    return result.substring(1);
+    return result.substring(1)
   }
-  return result;
+  return result
 }
 
 export function getTotalPrice(
@@ -24,19 +24,19 @@ export function getTotalPrice(
   quantity: string,
   config?: { format: boolean; removeSign?: boolean },
 ) {
-  const priceFloat = parseFloat(price);
-  const quantityFloat = parseFloat(quantity);
+  const priceFloat = parseFloat(price)
+  const quantityFloat = parseFloat(quantity)
 
   if (isNaN(priceFloat) || isNaN(quantityFloat)) {
-    return "---";
+    return '---'
   }
 
-  const totalPrice = priceFloat * quantityFloat;
+  const totalPrice = priceFloat * quantityFloat
 
   if (!config || config.format) {
     return formatCurrency(totalPrice.toString(), {
       removeSign: config?.removeSign,
-    });
+    })
   }
-  return totalPrice.toString();
+  return totalPrice.toString()
 }

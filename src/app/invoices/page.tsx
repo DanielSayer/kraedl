@@ -1,11 +1,11 @@
-import { Icons } from "@/components/Icons";
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
-import { InvoicesTable } from "./InvoicesTable";
-import useProtectedRoute from "@/hooks/useProtectedRoute";
+import { Icons } from '@/components/Icons'
+import { buttonVariants } from '@/components/ui/button'
+import Link from 'next/link'
+import { InvoicesTable } from './InvoicesTable'
+import useProtectedRoute from '@/hooks/useProtectedRoute'
 
 export default async function Page() {
-  await useProtectedRoute();
+  await useProtectedRoute()
   return (
     <div className="container p-10 pb-16">
       <div className="flex justify-between">
@@ -15,7 +15,7 @@ export default async function Page() {
             Create or manage your client invoices.
           </p>
         </div>
-        <Link href={"/invoices/create"} className={buttonVariants()}>
+        <Link href={'/invoices/create'} className={buttonVariants()}>
           <Icons.add className="me-2 h-4 w-4" />
           Create
         </Link>
@@ -23,5 +23,5 @@ export default async function Page() {
       <hr className="my-6" />
       <InvoicesTable />
     </div>
-  );
+  )
 }

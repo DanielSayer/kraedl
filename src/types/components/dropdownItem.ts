@@ -1,1 +1,1 @@
-export type DropdownOption = { value: string; label: string };
+export type DropdownOption = { value: string; label: string }

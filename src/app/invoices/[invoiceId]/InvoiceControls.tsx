@@ -1,27 +1,22 @@
-import LoadingButton from "@/components/LoadingButton";
-import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { DatePicker } from "@/components/ui/datepicker";
-import { ErrorMessage } from "@/components/ui/errorMessage";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { api } from "@/trpc/react";
-import type { Invoice } from "@/types/invoices";
-import Link from "next/link";
-import { toast } from "sonner";
-import useInvoiceName from "./useInvoiceName";
+import LoadingButton from '@/components/LoadingButton'
+import { buttonVariants } from '@/components/ui/button'
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
+import { DatePicker } from '@/components/ui/datepicker'
+import { ErrorMessage } from '@/components/ui/errorMessage'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { api } from '@/trpc/react'
+import type { Invoice } from '@/types/invoices'
+import Link from 'next/link'
+import { toast } from 'sonner'
+import useInvoiceName from './useInvoiceName'
 
 type InvoiceControlsProps = {
-  clientName: string;
-  invoiceFields: Invoice;
-  handleChangeDate: (key: keyof Invoice, date: Date) => void;
-  handleDownloadPdf: (name: string) => Promise<void>;
-};
+  clientName: string
+  invoiceFields: Invoice
+  handleChangeDate: (key: keyof Invoice, date: Date) => void
+  handleDownloadPdf: (name: string) => Promise<void>
+}
 
 export const InvoiceControls = ({
   clientName,
@@ -33,22 +28,22 @@ export const InvoiceControls = ({
     invoiceNumber: invoiceFields.invoiceNumber,
     clientName: clientName,
     issueDate: invoiceFields.issueDate,
-  });
+  })
 
   const issueInvoice = api.invoices.invoice.useMutation({
     onSuccess: async () => {
-      toast.success("Invoiced, downloading...");
-      await handleDownloadPdf(invoiceName);
+      toast.success('Invoiced, downloading...')
+      await handleDownloadPdf(invoiceName)
     },
-  });
+  })
 
   const onIssueInvoice = async () => {
     await issueInvoice.mutateAsync({
       invoiceId: invoiceFields.id,
       dueDate: invoiceFields.dueDate,
       issueDate: invoiceFields.issueDate,
-    });
-  };
+    })
+  }
 
   return (
     <Card>
@@ -60,14 +55,14 @@ export const InvoiceControls = ({
           <Label>Issue Date</Label>
           <DatePicker
             date={invoiceFields.issueDate}
-            onChange={(date) => handleChangeDate("issueDate", date)}
+            onChange={(date) => handleChangeDate('issueDate', date)}
           />
         </div>
         <div>
           <Label>Due Date</Label>
           <DatePicker
             date={invoiceFields.dueDate}
-            onChange={(date) => handleChangeDate("dueDate", date)}
+            onChange={(date) => handleChangeDate('dueDate', date)}
           />
         </div>
         <div>
@@ -87,7 +82,7 @@ export const InvoiceControls = ({
         <div className="flex justify-end gap-2">
           <Link
             href="/invoices"
-            className={buttonVariants({ variant: "secondary" })}
+            className={buttonVariants({ variant: 'secondary' })}
           >
             Back
           </Link>
@@ -101,5 +96,5 @@ export const InvoiceControls = ({
         <ErrorMessage>{issueInvoice.error?.message}</ErrorMessage>
       </CardFooter>
     </Card>
-  );
-};
+  )
+}

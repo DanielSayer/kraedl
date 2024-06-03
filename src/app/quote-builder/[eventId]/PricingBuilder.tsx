@@ -1,78 +1,78 @@
-"use client";
+'use client'
 
-import { Icons } from "@/components/Icons";
-import LoadingButton from "@/components/LoadingButton";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { ErrorMessage } from "@/components/ui/errorMessage";
+import { Icons } from '@/components/Icons'
+import LoadingButton from '@/components/LoadingButton'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { ErrorMessage } from '@/components/ui/errorMessage'
 import {
   Fieldset,
   FieldsetContent,
   FieldsetLegend,
-} from "@/components/ui/fieldset";
-import { Separator } from "@/components/ui/separator";
-import { formatCurrency, getTotalPrice } from "@/lib/currencyUtils";
-import { cn } from "@/lib/utils";
-import type { QuoteBuilder } from "@/lib/validations/events";
-import { api } from "@/trpc/react";
-import { getNewPricingLine } from "@/types/pricingLines";
-import Link from "next/link";
-import { useMemo } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import { PricingLineRow } from "./PricingLineRow";
+} from '@/components/ui/fieldset'
+import { Separator } from '@/components/ui/separator'
+import { formatCurrency, getTotalPrice } from '@/lib/currencyUtils'
+import { cn } from '@/lib/utils'
+import type { QuoteBuilder } from '@/lib/validations/events'
+import { api } from '@/trpc/react'
+import { getNewPricingLine } from '@/types/pricingLines'
+import Link from 'next/link'
+import { useMemo } from 'react'
+import { useFieldArray, useFormContext } from 'react-hook-form'
+import { PricingLineRow } from './PricingLineRow'
 
 type PricingBuilderProps = {
-  isReadOnly: boolean;
-  isPending: boolean;
-};
+  isReadOnly: boolean
+  isPending: boolean
+}
 
 export const PricingBuilder = ({
   isReadOnly,
   isPending,
 }: PricingBuilderProps) => {
-  const { watch, formState } = useFormContext<QuoteBuilder>();
-  const { append } = useFieldArray<QuoteBuilder>({ name: "eventPricings" });
-  const { data: pricings, isLoading } = api.pricing.getPricings.useQuery();
-  const pricingLines = watch("eventPricings");
+  const { watch, formState } = useFormContext<QuoteBuilder>()
+  const { append } = useFieldArray<QuoteBuilder>({ name: 'eventPricings' })
+  const { data: pricings, isLoading } = api.pricing.getPricings.useQuery()
+  const pricingLines = watch('eventPricings')
 
   const getPriceForItem = (selectedPriceId: string) => {
-    return pricings?.find((x) => x.id === selectedPriceId)?.price ?? "0";
-  };
+    return pricings?.find((x) => x.id === selectedPriceId)?.price ?? '0'
+  }
 
   const getQuotePrice = () => {
     const prices = pricingLines.map((x) => {
-      if (x.quantity === "") return 0;
-      const priceForItem = getPriceForItem(x.pricingId);
+      if (x.quantity === '') return 0
+      const priceForItem = getPriceForItem(x.pricingId)
       const totalPrice = getTotalPrice(x.quantity, priceForItem, {
         format: false,
-      });
-      return parseFloat(totalPrice);
-    });
+      })
+      return parseFloat(totalPrice)
+    })
 
     if (prices.some((x) => isNaN(x))) {
-      return "Something went wrong";
+      return 'Something went wrong'
     }
 
-    const grandTotal = prices.reduce((c, curr) => c + curr, 0);
-    return formatCurrency(grandTotal.toString());
-  };
+    const grandTotal = prices.reduce((c, curr) => c + curr, 0)
+    return formatCurrency(grandTotal.toString())
+  }
 
   const pricingOptions = useMemo(() => {
     return (
       pricings?.map((p) => {
-        return { value: p.id, label: p.label };
+        return { value: p.id, label: p.label }
       }) ?? []
-    );
-  }, [pricings]);
+    )
+  }, [pricings])
   return (
     <>
       <Fieldset>
         <FieldsetLegend>
           <Icons.invoice /> Pricing Builder
         </FieldsetLegend>
-        <FieldsetContent className={cn("grid", { "pt-6": isReadOnly })}>
+        <FieldsetContent className={cn('grid', { 'pt-6': isReadOnly })}>
           <Button
             type="button"
-            className={cn("my-4 ml-auto", { hidden: isReadOnly })}
+            className={cn('my-4 ml-auto', { hidden: isReadOnly })}
             onClick={() => append(getNewPricingLine())}
           >
             <Icons.add className="mr-2 h-4 w-4" /> Pricing line
@@ -99,7 +99,7 @@ export const PricingBuilder = ({
       <div className="flex justify-end gap-2">
         <Link
           href="/scheduler"
-          className={buttonVariants({ variant: "secondary" })}
+          className={buttonVariants({ variant: 'secondary' })}
         >
           Go back
         </Link>
@@ -112,5 +112,5 @@ export const PricingBuilder = ({
         </LoadingButton>
       </div>
     </>
-  );
-};
+  )
+}

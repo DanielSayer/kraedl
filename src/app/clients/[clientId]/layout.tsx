@@ -1,19 +1,19 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { api } from "@/trpc/server";
-import SideNav from "./SideNav";
-import { Icons } from "@/components/Icons";
-import Link from "next/link";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { api } from '@/trpc/server'
+import SideNav from './SideNav'
+import { Icons } from '@/components/Icons'
+import Link from 'next/link'
 
 export default async function ClientLayout({
   children,
   params,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
   params: {
-    clientId: string;
-  };
+    clientId: string
+  }
 }) {
-  const client = await api.clients.getById({ id: params.clientId });
+  const client = await api.clients.getById({ id: params.clientId })
 
   return (
     <>
@@ -38,5 +38,5 @@ export default async function ClientLayout({
         </div>
       </div>
     </>
-  );
+  )
 }

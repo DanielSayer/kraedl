@@ -1,49 +1,49 @@
-"use client";
+'use client'
 
 import {
   EmailField,
   NameField,
   PhoneNumberField,
-} from "@/components/FormFields";
-import LoadingButton from "@/components/LoadingButton";
+} from '@/components/FormFields'
+import LoadingButton from '@/components/LoadingButton'
 import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Form, FormField, FormMessage } from "@/components/ui/form";
-import { registerClientSchema } from "@/lib/validations/clients";
-import { api } from "@/trpc/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+} from '@/components/ui/dialog'
+import { Form, FormField, FormMessage } from '@/components/ui/form'
+import { registerClientSchema } from '@/lib/validations/clients'
+import { api } from '@/trpc/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 
-import type { z } from "zod";
+import type { z } from 'zod'
 
-type FormData = z.infer<typeof registerClientSchema>;
+type FormData = z.infer<typeof registerClientSchema>
 
 const AddClientModalContent = () => {
-  const router = useRouter();
+  const router = useRouter()
   const form = useForm<FormData>({
     resolver: zodResolver(registerClientSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      phoneNumber: "",
+      name: '',
+      email: '',
+      phoneNumber: '',
     },
-  });
+  })
 
   const { isPending, mutateAsync } = api.clients.create.useMutation({
     onError: (e) => {
-      form.setError("root", { message: e.message });
+      form.setError('root', { message: e.message })
     },
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    const { id } = await mutateAsync(data);
-    router.push(`/clients/${id}`);
-  };
+    const { id } = await mutateAsync(data)
+    router.push(`/clients/${id}`)
+  }
 
   return (
     <>
@@ -91,7 +91,7 @@ const AddClientModalContent = () => {
         </form>
       </Form>
     </>
-  );
-};
+  )
+}
 
-export default AddClientModalContent;
+export default AddClientModalContent

@@ -1,18 +1,18 @@
-import { db } from "@/server/db/index";
-import { bankAccounts, businesses, users } from "@/server/db/schema";
-import { count, eq } from "drizzle-orm";
-import { single } from "../common/helperMethods/arrayHelpers";
-import type { State } from "../common/valueObjects/state";
+import { db } from '@/server/db/index'
+import { bankAccounts, businesses, users } from '@/server/db/schema'
+import { count, eq } from 'drizzle-orm'
+import { single } from '../common/helperMethods/arrayHelpers'
+import type { State } from '../common/valueObjects/state'
 
 type BusinessDto = {
-  name: string;
-  phoneNumber: string;
-  streetAddress: string;
-  suburb: string;
-  postcode: string;
-  city: string;
-  state: State;
-};
+  name: string
+  phoneNumber: string
+  streetAddress: string
+  suburb: string
+  postcode: string
+  city: string
+  state: State
+}
 
 class BusinessesRepository {
   async create(business: BusinessDto) {
@@ -27,25 +27,25 @@ class BusinessesRepository {
         city: business.city,
         state: business.state,
       })
-      .returning({ id: businesses.id });
+      .returning({ id: businesses.id })
 
-    return single(id);
+    return single(id)
   }
   async getNameById(businessId: string) {
     const businessInfo = await db
       .select({ id: businesses.id, name: businesses.name })
       .from(businesses)
-      .where(eq(businesses.id, businessId));
+      .where(eq(businesses.id, businessId))
 
-    return single(businessInfo);
+    return single(businessInfo)
   }
   async getNumberOfStaff(businessId: string) {
     const numberOfStaff = await db
       .select({ count: count() })
       .from(users)
-      .where(eq(users.businessId, businessId));
+      .where(eq(users.businessId, businessId))
 
-    return single(numberOfStaff).count;
+    return single(numberOfStaff).count
   }
   async getBusinessWithUserIds(businessId: string) {
     const business = await db.query.businesses.findFirst({
@@ -58,9 +58,9 @@ class BusinessesRepository {
           },
         },
       },
-    });
+    })
 
-    return business;
+    return business
   }
   async getBillingInfo(businessId: string) {
     const business = await db
@@ -76,11 +76,11 @@ class BusinessesRepository {
       })
       .from(businesses)
       .leftJoin(bankAccounts, eq(businesses.id, bankAccounts.businessId))
-      .where(eq(businesses.id, businessId));
+      .where(eq(businesses.id, businessId))
 
-    return single(business);
+    return single(business)
   }
 }
 
-const businessRepository = new BusinessesRepository();
-export default businessRepository;
+const businessRepository = new BusinessesRepository()
+export default businessRepository

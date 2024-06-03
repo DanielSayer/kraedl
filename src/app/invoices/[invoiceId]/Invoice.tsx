@@ -1,5 +1,5 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -7,21 +7,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { formatCurrency } from "@/lib/currencyUtils";
-import { formatInvoiceNumber } from "@/lib/invoiceUtils";
-import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
-import type { Business, Client, Invoice } from "@/types/invoices";
-import { format } from "date-fns";
-import type { RefObject } from "react";
-import { BankDetails } from "./BankDetails";
+} from '@/components/ui/table'
+import { formatCurrency } from '@/lib/currencyUtils'
+import { formatInvoiceNumber } from '@/lib/invoiceUtils'
+import { formatPhoneNumber } from '@/lib/phoneNumberUtils'
+import type { Business, Client, Invoice } from '@/types/invoices'
+import { format } from 'date-fns'
+import type { RefObject } from 'react'
+import { BankDetails } from './BankDetails'
 
 type InvoiceProps = {
-  printRef: RefObject<HTMLDivElement>;
-  invoice: Invoice;
-  business: Business;
-  client: Client;
-};
+  printRef: RefObject<HTMLDivElement>
+  invoice: Invoice
+  business: Business
+  client: Client
+}
 
 export const InvoicePreview = ({
   printRef,
@@ -39,7 +39,7 @@ export const InvoicePreview = ({
               <p className="text-muted-foreground">Invoice Number</p>
               <p>{formatInvoiceNumber(invoice.invoiceNumber)}</p>
               <p className="text-muted-foreground">Issue Date</p>
-              <p>{format(invoice.issueDate, "dd MMM yyyy")}</p>
+              <p>{format(invoice.issueDate, 'dd MMM yyyy')}</p>
             </div>
             <div className="flex flex-col items-end">
               <h2>{business.name}</h2>
@@ -65,7 +65,7 @@ export const InvoicePreview = ({
                 <div className="flex flex-col -space-y-0.5 tracking-tight">
                   <p>{client.clientAddress.streetAddress}</p>
                   <p>
-                    {client.clientAddress.suburb},{" "}
+                    {client.clientAddress.suburb},{' '}
                     {client.clientAddress.postcode}
                   </p>
                   <p>
@@ -79,8 +79,8 @@ export const InvoicePreview = ({
               <h2 className="text-2xl font-bold">
                 {formatCurrency(invoice.total)}
               </h2>
-              <h3 className="font-semibold ">
-                Due date: {format(invoice.dueDate, "dd MMM yyyy")}
+              <h3 className="font-semibold">
+                Due date: {format(invoice.dueDate, 'dd MMM yyyy')}
               </h3>
             </Card>
           </div>
@@ -122,5 +122,5 @@ export const InvoicePreview = ({
         </CardFooter>
       </Card>
     </div>
-  );
-};
+  )
+}

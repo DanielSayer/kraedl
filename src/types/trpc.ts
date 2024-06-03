@@ -1,6 +1,6 @@
-import type { ProcedureUseQuery } from "node_modules/@trpc/react-query/dist/createTRPCReact";
+import type { ProcedureUseQuery } from 'node_modules/@trpc/react-query/dist/createTRPCReact'
 
-export type TPRCReturnType<T> = TRPCOutputType<T> | undefined;
+export type TPRCReturnType<T> = TRPCOutputType<T> | undefined
 
 type TRPCOutputType<T> =
-  T extends ProcedureUseQuery<infer D> ? D["output"] : never;
+  T extends ProcedureUseQuery<infer D> ? D['output'] : never

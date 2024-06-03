@@ -1,31 +1,31 @@
-"use client";
+'use client'
 
-import { Icons } from "@/components/Icons";
-import Combobox from "@/components/ui/combobox";
-import { DatePicker } from "@/components/ui/datepicker";
+import { Icons } from '@/components/Icons'
+import Combobox from '@/components/ui/combobox'
+import { DatePicker } from '@/components/ui/datepicker'
 import {
   Fieldset,
   FieldsetContent,
   FieldsetLegend,
-} from "@/components/ui/fieldset";
+} from '@/components/ui/fieldset'
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import type { QuoteBuilder } from "@/lib/validations/events";
-import { getPlural, recurrenceFrequencyOptions } from "@/types/recurrence";
-import { format } from "date-fns";
-import { useFormContext } from "react-hook-form";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import type { QuoteBuilder } from '@/lib/validations/events'
+import { getPlural, recurrenceFrequencyOptions } from '@/types/recurrence'
+import { format } from 'date-fns'
+import { useFormContext } from 'react-hook-form'
 
 export const Recurrence = () => {
-  const { watch, control } = useFormContext<QuoteBuilder>();
-  const frequency = watch("recurrence.frequency");
-  const end = watch("recurrence.endType");
+  const { watch, control } = useFormContext<QuoteBuilder>()
+  const frequency = watch('recurrence.frequency')
+  const end = watch('recurrence.endType')
   return (
     <Fieldset className="h-full">
       <FieldsetLegend>
@@ -49,7 +49,7 @@ export const Recurrence = () => {
             )}
           />
 
-          {frequency !== "NONE" && (
+          {frequency !== 'NONE' && (
             <>
               <FormField
                 name="recurrence.interval"
@@ -103,7 +103,7 @@ export const Recurrence = () => {
                                       <Input
                                         type="number"
                                         step={1}
-                                        disabled={end !== "AFTER"}
+                                        disabled={end !== 'AFTER'}
                                         {...field}
                                       />
                                       <span>occurrences</span>
@@ -125,11 +125,11 @@ export const Recurrence = () => {
                                     <DatePicker
                                       onChange={(date) =>
                                         field.onChange(
-                                          format(date, "yyyy-MM-dd"),
+                                          format(date, 'yyyy-MM-dd'),
                                         )
                                       }
                                       date={field.value}
-                                      disabled={end !== "ON"}
+                                      disabled={end !== 'ON'}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -148,5 +148,5 @@ export const Recurrence = () => {
         </div>
       </FieldsetContent>
     </Fieldset>
-  );
-};
+  )
+}

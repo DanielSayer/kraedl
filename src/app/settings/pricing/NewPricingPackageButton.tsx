@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { NameField } from "@/components/FormFields";
-import { Icons } from "@/components/Icons";
-import LoadingButton from "@/components/LoadingButton";
-import { Button } from "@/components/ui/button";
+import { NameField } from '@/components/FormFields'
+import { Icons } from '@/components/Icons'
+import LoadingButton from '@/components/LoadingButton'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -11,7 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -19,44 +19,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { createPricingPackageSchema } from "@/lib/validations/pricing";
-import { api } from "@/trpc/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
+import { createPricingPackageSchema } from '@/lib/validations/pricing'
+import { api } from '@/trpc/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
-import type { z } from "zod";
+import type { z } from 'zod'
 
 type NewPricingPackageButtonProps = {
-  refetch: () => void;
-};
+  refetch: () => void
+}
 
-type FormData = z.infer<typeof createPricingPackageSchema>;
+type FormData = z.infer<typeof createPricingPackageSchema>
 const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const toggle = () => setIsOpen(!isOpen);
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const toggle = () => setIsOpen(!isOpen)
   const { mutateAsync, isPending } = api.pricing.createPricing.useMutation({
     onError: (e) => {
-      form.setError("root", { message: e.message });
+      form.setError('root', { message: e.message })
     },
-  });
+  })
 
   const form = useForm<FormData>({
-    defaultValues: { name: "", price: "0.0" },
+    defaultValues: { name: '', price: '0.0' },
     resolver: zodResolver(createPricingPackageSchema),
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    await mutateAsync(data);
-    toast.success(`Sucessfully created ${data.name}`);
-    refetch();
-    toggle();
-    form.reset();
-  };
+    await mutateAsync(data)
+    toast.success(`Sucessfully created ${data.name}`)
+    refetch()
+    toggle()
+    form.reset()
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={toggle}>
@@ -131,7 +131,7 @@ const NewPricingPackageButton = ({ refetch }: NewPricingPackageButtonProps) => {
         </Form>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default NewPricingPackageButton;
+export default NewPricingPackageButton

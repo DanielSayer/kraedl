@@ -1,12 +1,12 @@
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from '@/components/ui/card'
 
 type BankDetailsProps = {
   bankDetails?: {
-    bsb: string;
-    accountNumber: string;
-    accountName: string;
-  };
-};
+    bsb: string
+    accountNumber: string
+    accountName: string
+  }
+}
 
 export const BankDetails = ({ bankDetails }: BankDetailsProps) => {
   return (
@@ -38,5 +38,5 @@ export const BankDetails = ({ bankDetails }: BankDetailsProps) => {
         )}
       </CardContent>
     </Card>
-  );
-};
+  )
+}

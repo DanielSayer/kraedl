@@ -1,5 +1,5 @@
-import { getInvoiceStatus } from "../../common/helperMethods/invoiceHelpers";
-import { invoicesRepository } from "../../repositories/invoicesRepository";
+import { getInvoiceStatus } from '../../common/helperMethods/invoiceHelpers'
+import { invoicesRepository } from '../../repositories/invoicesRepository'
 
 export async function getInvoicesQuery(
   pageNumber: number,
@@ -10,10 +10,10 @@ export async function getInvoicesQuery(
     businessId,
     pageSize,
     pageNumber,
-  );
+  )
 
   const numberOfInvoices =
-    await invoicesRepository.getNumberOfInvoices(businessId);
+    await invoicesRepository.getNumberOfInvoices(businessId)
 
   return {
     count: numberOfInvoices,
@@ -27,5 +27,5 @@ export async function getInvoicesQuery(
       status: getInvoiceStatus(i.invoicedAt, i.dueDate, i.paidAt),
       total: i.total,
     })),
-  };
+  }
 }

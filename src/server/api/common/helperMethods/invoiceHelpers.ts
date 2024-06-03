@@ -1,4 +1,4 @@
-import type { InvoiceStatus } from "@/types/invoices";
+import type { InvoiceStatus } from '@/types/invoices'
 
 export const getInvoiceStatus = (
   invoicedAt: Date | null,
@@ -6,18 +6,18 @@ export const getInvoiceStatus = (
   paidAt: Date | null,
 ): InvoiceStatus => {
   if (!invoicedAt || !dueDate) {
-    return "DRAFT";
+    return 'DRAFT'
   }
 
   if (paidAt) {
-    return "PAID";
+    return 'PAID'
   }
 
-  const now = new Date().getTime();
-  const due = new Date(dueDate).getTime();
+  const now = new Date().getTime()
+  const due = new Date(dueDate).getTime()
   if (due < now) {
-    return "OVERDUE";
+    return 'OVERDUE'
   }
 
-  return "INVOICED";
-};
+  return 'INVOICED'
+}

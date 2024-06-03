@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { Icons } from "@/components/Icons";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Separator } from "@/components/ui/separator";
+import { Icons } from '@/components/Icons'
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -11,19 +11,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { formatCurrency } from "@/lib/currencyUtils";
-import NewPricingPackageButton from "./NewPricingPackageButton";
-import { api } from "@/trpc/react";
-import { Skeleton } from "@/components/ui/skeleton";
+} from '@/components/ui/table'
+import { formatCurrency } from '@/lib/currencyUtils'
+import NewPricingPackageButton from './NewPricingPackageButton'
+import { api } from '@/trpc/react'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function Page() {
   const {
     data: pricings,
     isLoading,
     refetch,
-  } = api.pricing.getPricings.useQuery();
-  const isDefault = pricings?.some((x) => x.id === "1");
+  } = api.pricing.getPricings.useQuery()
+  const isDefault = pricings?.some((x) => x.id === '1')
   return (
     <div>
       <div className="text-lg">Let&apos;s look into your pricing strategy!</div>
@@ -77,7 +77,7 @@ export default function Page() {
         </TableBody>
       </Table>
     </div>
-  );
+  )
 }
 
 const SkeletonLoader = () => {
@@ -90,5 +90,5 @@ const SkeletonLoader = () => {
         <Skeleton className="h-4 w-full" />
       </TableCell>
     </TableRow>
-  ));
-};
+  ))
+}

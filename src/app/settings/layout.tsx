@@ -1,30 +1,30 @@
-import type { ReactNode } from "react";
-import { SidebarNav } from "./SidebarNav";
-import useProtectedRoute from "@/hooks/useProtectedRoute";
+import type { ReactNode } from 'react'
+import { SidebarNav } from './SidebarNav'
+import useProtectedRoute from '@/hooks/useProtectedRoute'
 
 const sidebarNavItems = [
   {
-    title: "Business Profile",
-    href: "/settings",
+    title: 'Business Profile',
+    href: '/settings',
   },
   {
-    title: "Pricing",
-    href: "/settings/pricing",
+    title: 'Pricing',
+    href: '/settings/pricing',
   },
   {
-    title: "Bank Accounts",
-    href: "/settings/bank-accounts",
+    title: 'Bank Accounts',
+    href: '/settings/bank-accounts',
   },
-];
+]
 
 interface SettingsLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export default async function SettingsLayout({
   children,
 }: SettingsLayoutProps) {
-  await useProtectedRoute();
+  await useProtectedRoute()
 
   return (
     <div className="container min-h-[calc(100vh-56px)]">
@@ -44,5 +44,5 @@ export default async function SettingsLayout({
         </div>
       </div>
     </div>
-  );
+  )
 }

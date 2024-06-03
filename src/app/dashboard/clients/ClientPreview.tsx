@@ -1,18 +1,18 @@
-import { Icons } from "@/components/Icons";
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatPhoneNumber } from "@/lib/phoneNumberUtils";
-import { cn } from "@/lib/utils";
-import type { ClientWithAddress } from "@/types/clients";
-import Link from "next/link";
+import { Icons } from '@/components/Icons'
+import { Badge } from '@/components/ui/badge'
+import { buttonVariants } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { formatPhoneNumber } from '@/lib/phoneNumberUtils'
+import { cn } from '@/lib/utils'
+import type { ClientWithAddress } from '@/types/clients'
+import Link from 'next/link'
 
 type ClientPreviewProps = {
-  client: ClientWithAddress | null;
-};
+  client: ClientWithAddress | null
+}
 type ClientInfoProps = {
-  client: ClientWithAddress;
-};
+  client: ClientWithAddress
+}
 
 const ClientPreview = ({ client }: ClientPreviewProps) => {
   return (
@@ -30,24 +30,24 @@ const ClientPreview = ({ client }: ClientPreviewProps) => {
         <ClientInfo client={client} />
       )}
     </Card>
-  );
-};
+  )
+}
 
 const ClientInfo = ({ client }: ClientInfoProps) => {
   const clientAddress = client.clientAddresses
     ? `${client.clientAddresses.streetAddress}, ${client.clientAddresses.suburb}`
-    : "Please set up address";
+    : 'Please set up address'
   return (
     <>
       <Link
         href={`/clients/${client.id}`}
         className={cn(
           buttonVariants({
-            variant: "outline",
+            variant: 'outline',
             className:
-              "absolute right-4 mt-4 aspect-square px-2 text-muted-foreground",
+              'absolute right-4 mt-4 aspect-square px-2 text-muted-foreground',
           }),
-          "rounded-full",
+          'rounded-full',
         )}
       >
         <Icons.edit className="h-5 w-5" />
@@ -79,7 +79,7 @@ const ClientInfo = ({ client }: ClientInfoProps) => {
         <hr className="my-4" />
 
         <Link
-          href={"/dashboard/transactions"}
+          href={'/dashboard/transactions'}
           className="mt-8 flex items-center text-lg font-semibold"
         >
           Past Transactions <Icons.arrowRight className="ms-2" />
@@ -102,7 +102,7 @@ const ClientInfo = ({ client }: ClientInfoProps) => {
         <hr className="my-3" />
       </CardContent>
     </>
-  );
-};
+  )
+}
 
-export default ClientPreview;
+export default ClientPreview

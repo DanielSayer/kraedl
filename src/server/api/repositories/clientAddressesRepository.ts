@@ -1,16 +1,16 @@
-import { db } from "@/server/db";
-import { clientAddresses } from "@/server/db/schema";
-import type { State } from "../common/valueObjects/state";
-import { eq } from "drizzle-orm";
+import { db } from '@/server/db'
+import { clientAddresses } from '@/server/db/schema'
+import type { State } from '../common/valueObjects/state'
+import { eq } from 'drizzle-orm'
 
 type ClientAddressDto = {
-  clientId: string;
-  streetAddress: string;
-  suburb: string;
-  postcode: string;
-  city: string;
-  state: State;
-};
+  clientId: string
+  streetAddress: string
+  suburb: string
+  postcode: string
+  city: string
+  state: State
+}
 
 class ClientAddressesRepository {
   async insertOrUpdate(clientAddress: ClientAddressDto) {
@@ -26,14 +26,14 @@ class ClientAddressesRepository {
           postcode: clientAddress.postcode,
           state: clientAddress.state,
         },
-      });
+      })
   }
   async getByClientId(clientId: string) {
     return await db.query.clientAddresses.findFirst({
       where: eq(clientAddresses.clientId, clientId),
-    });
+    })
   }
 }
 
-const clientAddressesRepository = new ClientAddressesRepository();
-export default clientAddressesRepository;
+const clientAddressesRepository = new ClientAddressesRepository()
+export default clientAddressesRepository

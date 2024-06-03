@@ -1,22 +1,22 @@
-import { db } from "@/server/db";
+import { db } from '@/server/db'
 import {
   clients,
   eventPricings,
   events,
   invoiceEventLink,
   invoices,
-} from "@/server/db/schema";
-import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
-import { single } from "../common/helperMethods/arrayHelpers";
-import { mapEvents } from "./actions/eventsActions";
+} from '@/server/db/schema'
+import { and, count, desc, eq, gte, lte, sql } from 'drizzle-orm'
+import { single } from '../common/helperMethods/arrayHelpers'
+import { mapEvents } from './actions/eventsActions'
 
 type EventDto = {
-  name?: string;
-  clientId: string;
-  startTime: Date;
-  endTime: Date;
-  businessId: string;
-};
+  name?: string
+  clientId: string
+  startTime: Date
+  endTime: Date
+  businessId: string
+}
 
 class EventsRepository {
   async create(event: EventDto) {
@@ -29,9 +29,9 @@ class EventsRepository {
         endTime: event.endTime,
         businessId: event.businessId,
       })
-      .returning({ id: events.id });
+      .returning({ id: events.id })
 
-    return single(id);
+    return single(id)
   }
   async getEventsInDateRange(start: string, end: string, businessId: string) {
     const rawEventInRangeData = await db
@@ -52,8 +52,8 @@ class EventsRepository {
           gte(events.startTime, new Date(start)),
           lte(events.endTime, new Date(end)),
         ),
-      );
-    return mapEvents(rawEventInRangeData);
+      )
+    return mapEvents(rawEventInRangeData)
   }
   async getById(eventId: string, businessId: string) {
     const event = await db
@@ -69,9 +69,9 @@ class EventsRepository {
       .innerJoin(clients, eq(clients.id, events.clientId))
       .leftJoin(invoiceEventLink, eq(invoiceEventLink.eventId, events.id))
       .leftJoin(invoices, eq(invoices.id, invoiceEventLink.invoiceId))
-      .where(and(eq(events.id, eventId), eq(events.businessId, businessId)));
+      .where(and(eq(events.id, eventId), eq(events.businessId, businessId)))
 
-    return single(event);
+    return single(event)
   }
   async countNonInvoicedEventsInThePast(currentTime: Date, businessId: string) {
     const amount = await db
@@ -85,9 +85,9 @@ class EventsRepository {
           eq(events.businessId, businessId),
           sql`${invoiceEventLink.invoiceId} IS NULL`,
         ),
-      );
+      )
 
-    return single(amount).count;
+    return single(amount).count
   }
   async getPastEvents(
     currentTime: Date,
@@ -95,7 +95,7 @@ class EventsRepository {
     pageSize: number,
     pageNumber: number,
   ) {
-    const offset = pageSize * pageNumber;
+    const offset = pageSize * pageNumber
 
     return await db
       .select({
@@ -118,9 +118,9 @@ class EventsRepository {
       )
       .offset(offset)
       .limit(pageSize)
-      .orderBy(desc(events.endTime));
+      .orderBy(desc(events.endTime))
   }
 }
 
-const eventsRepository = new EventsRepository();
-export default eventsRepository;
+const eventsRepository = new EventsRepository()
+export default eventsRepository

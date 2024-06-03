@@ -1,36 +1,36 @@
-"use client";
+'use client'
 import {
   authorizedNavOptions,
   notAuthorizedNavOptions,
-} from "@/lib/constants/NavOptions";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Icons } from "./Icons";
+} from '@/lib/constants/NavOptions'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { Icons } from './Icons'
 
 interface MobileNavProps {
-  isAuth: boolean;
+  isAuth: boolean
 }
 
 const MobileNav = ({ isAuth }: MobileNavProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const toggleOpen = () => setIsOpen((prev) => !prev);
-  const pathName = usePathname();
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const toggleOpen = () => setIsOpen((prev) => !prev)
+  const pathName = usePathname()
 
   useEffect(() => {
     if (isOpen) {
-      toggleOpen();
+      toggleOpen()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathName]);
+  }, [pathName])
 
   const closeOnCurrent = (href: string) => {
     if (pathName === href) {
-      setIsOpen(false);
+      setIsOpen(false)
     }
-  };
+  }
 
-  const navOptions = isAuth ? authorizedNavOptions : notAuthorizedNavOptions;
+  const navOptions = isAuth ? authorizedNavOptions : notAuthorizedNavOptions
 
   return (
     <div className="sm:hidden">
@@ -58,7 +58,7 @@ const MobileNav = ({ isAuth }: MobileNavProps) => {
             {isAuth && (
               <li>
                 <Link
-                  onClick={() => closeOnCurrent("/api/auth/signout")}
+                  onClick={() => closeOnCurrent('/api/auth/signout')}
                   className="flex w-full items-center font-semibold text-foreground/90"
                   href="/api/auth/signout"
                 >
@@ -70,7 +70,7 @@ const MobileNav = ({ isAuth }: MobileNavProps) => {
         </div>
       ) : null}
     </div>
-  );
-};
+  )
+}
 
-export default MobileNav;
+export default MobileNav

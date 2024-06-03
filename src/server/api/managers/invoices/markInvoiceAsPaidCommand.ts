@@ -1,4 +1,4 @@
-import { invoicesRepository } from "../../repositories/invoicesRepository";
+import { invoicesRepository } from '../../repositories/invoicesRepository'
 
 export const markInvoiceAsPaidCommand = async (
   invoicedId: string,
@@ -7,15 +7,15 @@ export const markInvoiceAsPaidCommand = async (
   const invoice = await invoicesRepository.getInvoiceById(
     invoicedId,
     businessId,
-  );
+  )
 
   if (!invoice) {
-    throw new Error(`Invoice not found. Id: ${invoicedId}`);
+    throw new Error(`Invoice not found. Id: ${invoicedId}`)
   }
 
   if (!!invoice.paidAt || !invoice.invoicedAt || !invoice.issueDate) {
-    throw new Error(`Could not mark as paid. Invoice id: ${invoice.id}`);
+    throw new Error(`Could not mark as paid. Invoice id: ${invoice.id}`)
   }
 
-  await invoicesRepository.markAsPaid(invoicedId, businessId);
-};
+  await invoicesRepository.markAsPaid(invoicedId, businessId)
+}

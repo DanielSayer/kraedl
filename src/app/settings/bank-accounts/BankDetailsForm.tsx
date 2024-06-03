@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import LoadingButton from "@/components/LoadingButton";
-import { Button } from "@/components/ui/button";
+import LoadingButton from '@/components/LoadingButton'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -9,52 +9,52 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { Separator } from "@/components/ui/separator";
-import { bankDetailsSchema } from "@/lib/validations/bankAccounts";
-import { api } from "@/trpc/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+} from '@/components/ui/input-otp'
+import { Separator } from '@/components/ui/separator'
+import { bankDetailsSchema } from '@/lib/validations/bankAccounts'
+import { api } from '@/trpc/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
-import type { BankAccount } from "@/types/bankAccounts";
-import type { z } from "zod";
+import type { BankAccount } from '@/types/bankAccounts'
+import type { z } from 'zod'
 
 type BankDetailsFormProps = {
-  bankAccount: BankAccount | undefined;
-};
+  bankAccount: BankAccount | undefined
+}
 
-type FormData = z.infer<typeof bankDetailsSchema>;
+type FormData = z.infer<typeof bankDetailsSchema>
 export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
   const form = useForm<FormData>({
     resolver: zodResolver(bankDetailsSchema),
     defaultValues: {
-      accountName: bankAccount?.accountName ?? "",
-      accountNumber: bankAccount?.accountNumber ?? "",
-      bsb: bankAccount?.bsb ?? "",
+      accountName: bankAccount?.accountName ?? '',
+      accountNumber: bankAccount?.accountNumber ?? '',
+      bsb: bankAccount?.bsb ?? '',
     },
-  });
+  })
 
   const { mutateAsync, isPending } =
     api.bankAccounts.updateBankAccountDetails.useMutation({
       onSuccess: () => {
-        toast.success("Successfully updated bank account");
+        toast.success('Successfully updated bank account')
       },
       onError: (e) => {
-        form.setError("root", { message: e.message });
+        form.setError('root', { message: e.message })
       },
-    });
+    })
 
   const saveBankDetails = async (data: FormData) => {
-    await mutateAsync(data);
-  };
+    await mutateAsync(data)
+  }
 
   return (
     <Form {...form}>
@@ -145,5 +145,5 @@ export const BankDetailsForm = ({ bankAccount }: BankDetailsFormProps) => {
         </div>
       </form>
     </Form>
-  );
-};
+  )
+}

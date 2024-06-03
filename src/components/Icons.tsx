@@ -24,7 +24,7 @@ import {
   Trash,
   User,
   Users,
-} from "lucide-react";
+} from 'lucide-react'
 
 export const Icons = {
   add: Plus,
@@ -52,4 +52,4 @@ export const Icons = {
   system: Laptop,
   user: User,
   users: Users,
-};
+}

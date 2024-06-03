@@ -1,14 +1,14 @@
-import clientAddressesRepository from "../../repositories/clientAddressesRepository";
-import clientsRepository from "../../repositories/clientsRepository";
+import clientAddressesRepository from '../../repositories/clientAddressesRepository'
+import clientsRepository from '../../repositories/clientsRepository'
 
 export async function getClientAddressByIdQuery(
   clientId: string,
   businessId: string,
 ) {
-  const clientToFetch = await clientsRepository.getById(clientId, businessId);
+  const clientToFetch = await clientsRepository.getById(clientId, businessId)
   if (!clientToFetch) {
-    throw new Error("Unable to fetch client for update");
+    throw new Error('Unable to fetch client for update')
   }
 
-  return await clientAddressesRepository.getByClientId(clientId);
+  return await clientAddressesRepository.getByClientId(clientId)
 }

@@ -1,13 +1,13 @@
-import DialogButton from "@/components/DialogButton";
-import { Icons } from "@/components/Icons";
-import useProtectedRoute from "@/hooks/useProtectedRoute";
-import { api } from "@/trpc/server";
-import AddClientModalContent from "./AddClientModal";
-import ClientView from "./ClientView";
+import DialogButton from '@/components/DialogButton'
+import { Icons } from '@/components/Icons'
+import useProtectedRoute from '@/hooks/useProtectedRoute'
+import { api } from '@/trpc/server'
+import AddClientModalContent from './AddClientModal'
+import ClientView from './ClientView'
 
 export default async function Page() {
-  await useProtectedRoute();
-  const clients = await api.clients.getByBusiness();
+  await useProtectedRoute()
+  const clients = await api.clients.getByBusiness()
 
   return (
     <div className="container mt-4 flex min-h-[calc(100vh-100px)] flex-col p-3">
@@ -32,5 +32,5 @@ export default async function Page() {
         <ClientView clients={clients} />
       )}
     </div>
-  );
+  )
 }

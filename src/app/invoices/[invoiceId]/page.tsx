@@ -1,17 +1,17 @@
-"use client";
-import { InvoiceWithControls } from "@/app/invoices/[invoiceId]/InvoiceWithControls";
-import { Skeleton } from "@/components/ui/skeleton";
-import { api } from "@/trpc/react";
+'use client'
+import { InvoiceWithControls } from '@/app/invoices/[invoiceId]/InvoiceWithControls'
+import { Skeleton } from '@/components/ui/skeleton'
+import { api } from '@/trpc/react'
 
 interface InvoicePageProps {
   params: {
-    invoiceId: string;
-  };
+    invoiceId: string
+  }
 }
 
 export default function Page({ params }: InvoicePageProps) {
-  const { invoiceId } = params;
-  const { data, isLoading } = api.invoices.getById.useQuery({ invoiceId });
+  const { invoiceId } = params
+  const { data, isLoading } = api.invoices.getById.useQuery({ invoiceId })
 
   if (isLoading || !data) {
     return (
@@ -20,8 +20,8 @@ export default function Page({ params }: InvoicePageProps) {
           <Skeleton key={row} className="h-10 w-full" />
         ))}
       </div>
-    );
+    )
   }
 
-  return <InvoiceWithControls invoice={data} />;
+  return <InvoiceWithControls invoice={data} />
 }

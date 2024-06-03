@@ -1,10 +1,10 @@
-import type { ReactNode } from "react";
-import { Icons } from "@/components/Icons";
+import type { ReactNode } from 'react'
+import { Icons } from '@/components/Icons'
 
 type NavOption = {
-  title: ReactNode;
-  ref: string;
-};
+  title: ReactNode
+  ref: string
+}
 
 export const notAuthorizedNavOptions: NavOption[] = [
   {
@@ -13,33 +13,33 @@ export const notAuthorizedNavOptions: NavOption[] = [
         Get Started <Icons.arrowRight className="ml-2 h-5 w-5" />
       </>
     ),
-    ref: "/registerBusiness",
+    ref: '/registerBusiness',
   },
   {
-    title: "Sign In",
-    ref: "/signIn",
+    title: 'Sign In',
+    ref: '/signIn',
   },
-];
+]
 
 export const authorizedNavOptions: NavOption[] = [
   {
-    title: "Dashboard",
-    ref: "/dashboard",
+    title: 'Dashboard',
+    ref: '/dashboard',
   },
   {
-    title: "Clients",
-    ref: "/dashboard/clients",
+    title: 'Clients',
+    ref: '/dashboard/clients',
   },
   {
-    title: "Invoices",
-    ref: "/invoices",
+    title: 'Invoices',
+    ref: '/invoices',
   },
   {
-    title: "Scheduler",
-    ref: "/scheduler",
+    title: 'Scheduler',
+    ref: '/scheduler',
   },
   {
-    title: "Settings",
-    ref: "/settings",
+    title: 'Settings',
+    ref: '/settings',
   },
-];
+]

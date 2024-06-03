@@ -1,7 +1,7 @@
-import { db } from "@/server/db";
-import { events, invoices } from "@/server/db/schema";
-import { and, count, eq, gt, gte, lte, sql } from "drizzle-orm";
-import { single } from "../common/helperMethods/arrayHelpers";
+import { db } from '@/server/db'
+import { events, invoices } from '@/server/db/schema'
+import { and, count, eq, gt, gte, lte, sql } from 'drizzle-orm'
+import { single } from '../common/helperMethods/arrayHelpers'
 
 class DashboardRepository {
   async getInvoiceTotalsInRange(start: Date, end: Date, businessId: string) {
@@ -16,7 +16,7 @@ class DashboardRepository {
           gte(invoices.paidAt, start),
           lte(invoices.paidAt, end),
         ),
-      );
+      )
   }
   async getUpcomingAppointments(businessId: string) {
     return await db.query.events.findMany({
@@ -29,7 +29,7 @@ class DashboardRepository {
       with: {
         clients: { columns: { name: true } },
       },
-    });
+    })
   }
   async getNumberOfEventsInDateRange(
     start: Date,
@@ -45,8 +45,8 @@ class DashboardRepository {
           gte(events.startTime, start),
           lte(events.endTime, end),
         ),
-      );
-    return single(eventCount).count;
+      )
+    return single(eventCount).count
   }
   async getNumberOfUnpaidInvoices(businessId: string) {
     const invoiceCount = await db
@@ -58,10 +58,10 @@ class DashboardRepository {
           sql`${invoices.invoicedAt} IS NOT NULL`,
           eq(invoices.businessId, businessId),
         ),
-      );
-    return single(invoiceCount).count;
+      )
+    return single(invoiceCount).count
   }
 }
 
-const dashboardRepository = new DashboardRepository();
-export default dashboardRepository;
+const dashboardRepository = new DashboardRepository()
+export default dashboardRepository

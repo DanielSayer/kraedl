@@ -1,19 +1,19 @@
-"use client";
+'use client'
 
-import { Checkbox } from "@/components/ui/checkbox";
-import type { ColumnDef } from "@tanstack/react-table";
+import { Checkbox } from '@/components/ui/checkbox'
+import type { ColumnDef } from '@tanstack/react-table'
 
 export type CreateEventTableRow = {
-  id: string;
-  startDate: string;
-  endDate: string;
-  eventName: string;
-  clientName: string;
-};
+  id: string
+  startDate: string
+  endDate: string
+  eventName: string
+  clientName: string
+}
 
 export const columns: ColumnDef<CreateEventTableRow>[] = [
   {
-    id: "select",
+    id: 'select',
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
@@ -23,16 +23,16 @@ export const columns: ColumnDef<CreateEventTableRow>[] = [
     ),
   },
   {
-    accessorKey: "startDate",
-    header: "Start Date",
+    accessorKey: 'startDate',
+    header: 'Start Date',
   },
   {
-    accessorKey: "endDate",
-    header: "End Date",
+    accessorKey: 'endDate',
+    header: 'End Date',
   },
   {
-    accessorKey: "eventName",
-    header: "Event Name",
+    accessorKey: 'eventName',
+    header: 'Event Name',
   },
-  { accessorKey: "clientName", header: "Client Name" },
-];
+  { accessorKey: 'clientName', header: 'Client Name' },
+]
