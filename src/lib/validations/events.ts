@@ -27,10 +27,10 @@ export const getEventsForInvoicesSchema = z.object({
 
 const recurrenceSchema = z.object({
   frequency: z.enum(recurrenceFrequencies),
-  interval: z.number(),
-  endType: z.enum(recurrenceEnds),
-  after: z.number(),
-  on: date.optional(),
+  interval: z.string().optional(),
+  endType: z.enum(recurrenceEnds).optional(),
+  count: z.string().optional(),
+  until: date.optional(),
 })
 
 export const quoteBuilderSchema = z.object({

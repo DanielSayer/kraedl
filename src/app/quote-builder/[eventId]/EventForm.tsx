@@ -37,9 +37,10 @@ export const EventForm = ({
       eventPricings: pricingLines,
       recurrence: {
         frequency: 'NONE',
-        interval: 1,
+        interval: '1',
         endType: 'AFTER',
-        after: 3,
+        count: '3',
+        until: undefined,
       },
     },
     resolver: zodResolver(quoteBuilderSchema),

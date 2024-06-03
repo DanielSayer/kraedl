@@ -3,17 +3,19 @@ import type {
   RecurrenceEnd,
   RecurrenceFrequency,
 } from '@/types/recurrence'
-import { format } from 'date-fns'
+import { endOfDay, format } from 'date-fns'
 
 export const generateRecurrenceRule = (recurrence: Recurrence): string => {
-  const rules: string[] = [`FREQ=${recurrence.freq}`]
+  const rules: string[] = [`FREQ=${recurrence.frequency}`]
 
   for (const [key, value] of Object.entries(recurrence)) {
-    if (key === 'freq' || key === 'endType') continue
+    if (!value) continue
+    if (key === 'frequency' || key === 'endType') continue
     let formattedValue = value
 
     if (key === 'until') {
-      formattedValue = format(value, 'YYYYMMDDTHHmmssZ')
+      const until = endOfDay(value)
+      formattedValue = format(until, "yyyyMMdd'T'HHmmss")
     }
 
     const capitalizedKey = key.toUpperCase()
@@ -33,17 +35,13 @@ export const rruleToRecurrence = (rrule: string): Recurrence => {
     const lowercaseKey = key.toLowerCase()
 
     switch (lowercaseKey) {
-      case 'freq':
-        rec.freq = value as RecurrenceFrequency
+      case 'frequency':
+        rec.frequency = value as RecurrenceFrequency
         break
       case 'count':
-        rec.count = parseInt(value, 10)
-        break
-      case 'until':
-        rec.until = format(value, 'YYYY-mm-dd')
-        break
       case 'interval':
-        rec.interval = parseInt(value, 10)
+      case 'until':
+        rec.count = value
         break
       default:
         break

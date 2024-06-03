@@ -92,7 +92,7 @@ export const Recurrence = () => {
                           <div className="w-full">
                             <FormField
                               control={control}
-                              name="recurrence.after"
+                              name="recurrence.count"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel className="sr-only">
@@ -102,6 +102,7 @@ export const Recurrence = () => {
                                     <div className="flex w-full items-center space-x-2">
                                       <Input
                                         type="number"
+                                        min={0}
                                         step={1}
                                         disabled={end !== 'AFTER'}
                                         {...field}
@@ -115,7 +116,7 @@ export const Recurrence = () => {
                             />
                             <FormField
                               control={control}
-                              name="recurrence.on"
+                              name="recurrence.until"
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel className="sr-only">

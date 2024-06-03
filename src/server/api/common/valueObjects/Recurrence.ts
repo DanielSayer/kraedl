@@ -15,27 +15,32 @@ export class Recurrence {
   public Frequency: RecurrenceFrequency
   public Interval: number | undefined
   public EndType: RecurrenceEnd | undefined
-  public EndAfter: number | undefined
-  public EndOn: string | undefined
+  public Count: number | undefined
+  public Until: string | undefined
 
   private constructor(recurrenceRule?: string, recurrence?: RecurrenceDto) {
     if (recurrence && !recurrenceRule) {
-      this.Frequency = recurrence.freq
-      this.Interval = recurrence.interval
+      this.Frequency = recurrence.frequency
+      this.Interval = Number(recurrence.interval)
       this.EndType = recurrence.endType
-      this.EndAfter = recurrence.count
-      this.EndOn = recurrence.until
+      this.Count = Number(recurrence.count)
+      this.Until = recurrence.until
       this.RecurrenceRule = generateRecurrenceRule(recurrence)
+      return
     }
 
     if (recurrenceRule && !recurrence) {
       this.RecurrenceRule = recurrenceRule
       const recurrenceRes = rruleToRecurrence(recurrenceRule)
-      this.Frequency = recurrenceRes.freq
-      this.Interval = recurrenceRes.interval
-      this.EndAfter = recurrenceRes.count
-      this.EndOn = recurrenceRes.until
-      this.EndType = getRecurrenceEnd(recurrenceRes.count, recurrenceRes.until)
+      this.Frequency = recurrenceRes.frequency
+      this.Interval = Number(recurrenceRes.interval)
+      this.Count = Number(recurrenceRes.count)
+      this.Until = recurrenceRes.until
+      this.EndType = getRecurrenceEnd(
+        Number(recurrenceRes.count),
+        recurrenceRes.until,
+      )
+      return
     }
 
     throw new Error('Cannot create recurrence')
@@ -50,13 +55,14 @@ export class Recurrence {
       return Result.Success(recurrence)
     }
 
-    if (request.freq === 'NONE') {
-      const cleanedRequest: RecurrenceDto = { freq: request.freq }
+    if (request.frequency === 'NONE') {
+      const cleanedRequest: RecurrenceDto = { frequency: request.frequency }
       const recurrence = new Recurrence(undefined, cleanedRequest)
       return Result.Success(recurrence)
     }
 
-    if (!request.interval || request.interval < 1) {
+    const interval = parseFloat(request.interval ?? '0')
+    if (isNaN(interval) || !Number.isInteger(interval) || interval < 1) {
       return Result.Failure('Interval is required.')
     }
 
@@ -64,7 +70,7 @@ export class Recurrence {
       return Result.Failure('End type is required.')
     }
 
-    if (request.endType === 'AFTER') {
+    if (request.endType === 'ON') {
       if (!request.until) {
         return Result.Failure('End date is required.')
       }
@@ -78,7 +84,8 @@ export class Recurrence {
       return Result.Success(recurrence)
     }
 
-    if (!request.count) {
+    const count = parseFloat(request.count ?? '0')
+    if (isNaN(count) || !Number.isInteger(count) || count < 1) {
       return Result.Failure('Number of events is required.')
     }
 

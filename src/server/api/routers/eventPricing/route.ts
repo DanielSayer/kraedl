@@ -8,8 +8,10 @@ export const eventPricingRouter = createTRPCRouter({
   getById: adminProcedure.input(eventIdSchema).query(async ({ input }) => {
     return await getEventPricingsByEventIdQuery(input.id)
   }),
-  save: adminProcedure.input(quoteBuilderSchema).mutation(async ({ input }) => {
-    const result = await saveEventPricingsCommand(input)
-    return fromResult(result)
-  }),
+  save: adminProcedure
+    .input(quoteBuilderSchema)
+    .mutation(async ({ input, ctx }) => {
+      const result = await saveEventPricingsCommand(input, ctx.businessId)
+      return fromResult(result)
+    }),
 })
