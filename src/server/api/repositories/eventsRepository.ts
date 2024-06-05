@@ -41,18 +41,13 @@ class EventsRepository {
         clientName: clients.name,
         startTime: events.startTime,
         endTime: events.endTime,
+        rrule: events.rrule,
         lineItemTotal: eventPricings.totalPrice,
       })
       .from(events)
       .innerJoin(clients, eq(clients.id, events.clientId))
       .leftJoin(eventPricings, eq(eventPricings.eventId, events.id))
-      .where(
-        and(
-          eq(events.businessId, businessId),
-          gte(events.startTime, new Date(start)),
-          lte(events.endTime, new Date(end)),
-        ),
-      )
+      .where(eq(events.businessId, businessId))
     return mapEvents(rawEventInRangeData)
   }
   async getById(eventId: string, businessId: string) {

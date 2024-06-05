@@ -4,15 +4,17 @@ type EventRawData = {
   clientName: string
   startTime: Date
   endTime: Date
+  rrule: string
   lineItemTotal: string | null
 }
 
-type EventWithLineItemTotals = {
+export type EventWithLineItemTotals = {
   id: string
   name: string | null
   clientName: string
   startTime: Date
   endTime: Date
+  rrule: string
   lineItemsTotal: string[]
 }
 
@@ -27,6 +29,7 @@ export const mapEvents = (data: EventRawData[]) => {
         clientName: item.clientName,
         startTime: item.startTime,
         endTime: item.endTime,
+        rrule: item.rrule,
         lineItemsTotal: [] as string[],
       })
     }

@@ -2,6 +2,9 @@ import type { getEventsInRangeSchema } from '@/lib/validations/events'
 import eventsRepository from '../../repositories/eventsRepository'
 import type { z } from 'zod'
 import type { EventStatus } from '@/types/events'
+import { Recurrence } from '../../common/valueObjects/Recurrence'
+import { addDays, format } from 'date-fns'
+import type { EventWithLineItemTotals } from '../../repositories/actions/eventsActions'
 
 type GetEventsInRangeRequest = z.infer<typeof getEventsInRangeSchema>
 
@@ -18,7 +21,19 @@ export async function getEventsInRange(
     businessId,
   )
 
-  return events.map((event) => ({
+  const eventRecurrences = events.map((e) => ({
+    event: e,
+    recurrence: Recurrence.TryCreate(
+      e.rrule,
+      format(e.startTime, 'yyyy-MM-dd'),
+    ).GetValue(),
+  }))
+
+  const eventProjections = eventRecurrences.flatMap(({ event, recurrence }) =>
+    getProjections(recurrence, event, range),
+  )
+
+  return eventProjections.map((event) => ({
     id: event.id,
     name: event.name,
     clientName: event.clientName,
@@ -38,4 +53,77 @@ const getEventStatus = (lineItemsTotal: string[]): EventStatus => {
   }
 
   return 'READY'
+}
+
+function getProjections(
+  recurrence: Recurrence,
+  event: EventWithLineItemTotals,
+  range: GetEventsInRangeRequest,
+) {
+  if (recurrence.Frequency === 'NONE') {
+    if (
+      isEventInRange(
+        event.startTime,
+        event.endTime,
+        range.startTime,
+        range.endTime,
+      )
+    ) {
+      return [event]
+    }
+    return []
+  }
+
+  return getNextEvents(
+    event,
+    recurrence.Interval!,
+    recurrence.Count,
+    recurrence.Until,
+  )
+}
+
+function getNextEvents(
+  event: EventWithLineItemTotals,
+  interval: number,
+  count: number | undefined,
+  until: string | undefined,
+): EventWithLineItemTotals[] {
+  if (count) {
+    return Array.from({ length: count }, (_, i) => i).map((i) => ({
+      ...event,
+      startTime: addDays(event.startTime, i * interval),
+      endTime: addDays(event.endTime, i * interval),
+    }))
+  }
+
+  if (until) {
+    const events = []
+    let lastEvent = event
+    while (lastEvent.endTime.getTime() <= new Date(until).getTime()) {
+      events.push(lastEvent)
+      const newEvent = {
+        ...lastEvent,
+        startTime: addDays(event.startTime, interval),
+        endTime: addDays(event.endTime, interval),
+      }
+
+      lastEvent = newEvent
+    }
+
+    return events
+  }
+
+  return []
+}
+
+function isEventInRange(
+  eventStart: Date,
+  eventEnd: Date,
+  queryStart: string,
+  queryEnd: string,
+) {
+  return (
+    eventStart.getTime() >= new Date(queryStart).getTime() &&
+    eventEnd.getTime() <= new Date(queryEnd).getTime()
+  )
 }

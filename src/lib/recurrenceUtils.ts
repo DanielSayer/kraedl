@@ -45,7 +45,7 @@ export const rruleToRecurrence = (rrule: string): Recurrence => {
         rec.interval = value
         break
       case 'until':
-        rec.until = format(parse(value, "yyyyMMdd'T'HHmmss", 0), 'yyyy-MM-dd')
+        rec.until = parse(value, "yyyyMMdd'T'HHmmss", 0).toISOString()
         break
       default:
         break

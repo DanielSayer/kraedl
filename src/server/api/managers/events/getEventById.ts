@@ -22,7 +22,9 @@ export async function getEventById(eventId: string, businessId: string) {
       interval: recurrence.Interval ? `${recurrence.Interval}` : undefined,
       endType: recurrence.EndType,
       count: recurrence.Count ? `${recurrence.Count}` : undefined,
-      until: recurrence.Until,
+      until: recurrence.Until
+        ? format(new Date(recurrence.Until), 'yyyy-MM-dd')
+        : undefined,
     },
   }
 }
