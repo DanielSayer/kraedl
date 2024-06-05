@@ -34,8 +34,10 @@ export class Recurrence {
       this.RecurrenceRule = recurrenceRule
       const recurrenceRes = rruleToRecurrence(recurrenceRule)
       this.Frequency = recurrenceRes.frequency
-      this.Interval = Number(recurrenceRes.interval)
-      this.Count = Number(recurrenceRes.count)
+      this.Interval = recurrenceRes.interval
+        ? Number(recurrenceRes.interval)
+        : undefined
+      this.Count = recurrenceRes.count ? Number(recurrenceRes.count) : undefined
       this.Until = recurrenceRes.until
       this.EndType = getRecurrenceEnd(
         Number(recurrenceRes.count),

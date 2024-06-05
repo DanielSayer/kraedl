@@ -63,6 +63,7 @@ class EventsRepository {
         startTime: events.startTime,
         endTime: events.endTime,
         clientName: clients.name,
+        rrule: events.rrule,
         invoicedAt: invoices.issueDate,
       })
       .from(events)

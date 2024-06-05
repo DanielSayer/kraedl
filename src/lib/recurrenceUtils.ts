@@ -3,7 +3,7 @@ import type {
   RecurrenceEnd,
   RecurrenceFrequency,
 } from '@/types/recurrence'
-import { endOfDay, format } from 'date-fns'
+import { endOfDay, format, parse } from 'date-fns'
 
 export const generateRecurrenceRule = (recurrence: Recurrence): string => {
   const rules: string[] = [`FREQ=${recurrence.frequency}`]
@@ -35,13 +35,17 @@ export const rruleToRecurrence = (rrule: string): Recurrence => {
     const lowercaseKey = key.toLowerCase()
 
     switch (lowercaseKey) {
-      case 'frequency':
+      case 'freq':
         rec.frequency = value as RecurrenceFrequency
         break
       case 'count':
-      case 'interval':
-      case 'until':
         rec.count = value
+        break
+      case 'interval':
+        rec.interval = value
+        break
+      case 'until':
+        rec.until = format(parse(value, "yyyyMMdd'T'HHmmss", 0), 'yyyy-MM-dd')
         break
       default:
         break

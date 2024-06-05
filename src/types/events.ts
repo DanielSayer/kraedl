@@ -1,3 +1,5 @@
+import type { Recurrence } from './recurrence'
+
 export type Event = {
   id: string
   name: string | null
@@ -16,4 +18,5 @@ export type QuoteEvent = {
   endTime: Date
   clientName: string
   invoicedAt: string | null
+  recurrence: Recurrence
 }
