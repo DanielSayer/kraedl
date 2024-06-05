@@ -179,6 +179,10 @@ export const events = createTable('events', {
     mode: 'date',
     withTimezone: true,
   }).notNull(),
+  rrule: varchar('rrule').notNull().default('FREQ:NONE'),
+  until: timestamp('until', { mode: 'date', withTimezone: true })
+    .defaultNow()
+    .notNull(),
   businessId: uuid('businessId')
     .notNull()
     .references(() => businesses.id),
