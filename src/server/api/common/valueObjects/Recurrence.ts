@@ -9,6 +9,7 @@ import type {
   Recurrence as RecurrenceDto,
 } from '@/types/recurrence'
 import Result from '../result'
+import { addDays, endOfDay } from 'date-fns'
 
 export class Recurrence {
   public RecurrenceRule: string
@@ -92,5 +93,28 @@ export class Recurrence {
     const cleanedRequest: RecurrenceDto = { ...request, until: undefined }
     const recurrence = new Recurrence(undefined, cleanedRequest)
     return Result.Success(recurrence)
+  }
+
+  getRecurrenceEnd(eventEnd: Date) {
+    if (this.Frequency === 'NONE') {
+      return eventEnd
+    }
+
+    if (!this.Interval || !this.EndType) {
+      throw new Error()
+    }
+
+    if (this.EndType === 'AFTER') {
+      if (!this.Count) {
+        throw new Error()
+      }
+      const lengthOfRecurrence = this.Count * this.Interval
+      return addDays(eventEnd, lengthOfRecurrence)
+    }
+
+    if (!this.Until) {
+      throw new Error()
+    }
+    return endOfDay(this.Until)
   }
 }

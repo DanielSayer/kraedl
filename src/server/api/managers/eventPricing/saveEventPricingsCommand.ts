@@ -27,6 +27,9 @@ export async function saveEventPricingsCommand(
     return Result.Failure(recurrenceResult.GetError())
   }
 
+  const recurrence = recurrenceResult.GetValue()
+  const untilDate = recurrence.getRecurrenceEnd(event.endTime)
+
   for (const pricing of req.eventPricings) {
     const computedQuantity = parseFloat(pricing.quantity)
     if (isNaN(computedQuantity) || !isFinite(computedQuantity)) {
@@ -38,6 +41,11 @@ export async function saveEventPricingsCommand(
     }
   }
 
+  await eventsRepository.updateEventRecurrence(
+    recurrence.RecurrenceRule,
+    untilDate,
+    event.id,
+  )
   await eventPricingRepository.insertEventPricings(
     req.eventPricings,
     req.eventId,

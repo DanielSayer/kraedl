@@ -1,6 +1,6 @@
+import { recurrenceEnds, recurrenceFrequencies } from '@/types/recurrence'
 import { z } from 'zod'
 import { date, time } from './_generics'
-import { recurrenceEnds, recurrenceFrequencies } from '@/types/recurrence'
 import { eventPricingSchema } from './eventPricing'
 
 export const createEventSchema = z.object({
