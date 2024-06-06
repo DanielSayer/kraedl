@@ -27,19 +27,21 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
 
   const fullCalendarEvents = events
     ? events.map((e) => ({
-        id: e.id,
         title: e.name ? `${e.clientName} - ${e.name}` : e.clientName,
         start: e.startTime,
         end: e.endTime,
         classNames: getEventBackgroundStyles(e.status),
         textColor: getEventTextStyles(e.status),
+        extendedProps: {
+          eventId: e.id,
+        },
       }))
     : []
 
   return (
     <Calendar
       eventClick={(e) => {
-        router.push(`/quote-builder/${e.event.id}`)
+        router.push(`/quote-builder/${e.event.extendedProps.eventId}`)
       }}
       events={fullCalendarEvents}
       height={calendarHeight}

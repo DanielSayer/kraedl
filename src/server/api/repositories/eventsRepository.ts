@@ -6,7 +6,7 @@ import {
   invoiceEventLink,
   invoices,
 } from '@/server/db/schema'
-import { and, count, desc, eq, gte, lte, sql } from 'drizzle-orm'
+import { and, count, desc, eq, gt, lt, lte, sql } from 'drizzle-orm'
 import { single } from '../common/helperMethods/arrayHelpers'
 import { mapEvents } from './actions/eventsActions'
 
@@ -47,7 +47,13 @@ class EventsRepository {
       .from(events)
       .innerJoin(clients, eq(clients.id, events.clientId))
       .leftJoin(eventPricings, eq(eventPricings.eventId, events.id))
-      .where(eq(events.businessId, businessId))
+      .where(
+        and(
+          gt(events.until, new Date(start)),
+          eq(events.businessId, businessId),
+          lt(events.startTime, new Date(end)),
+        ),
+      )
     return mapEvents(rawEventInRangeData)
   }
   async getById(eventId: string, businessId: string) {
