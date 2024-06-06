@@ -1,10 +1,11 @@
 import type { getEventsInRangeSchema } from '@/lib/validations/events'
-import eventsRepository from '../../repositories/eventsRepository'
-import type { z } from 'zod'
 import type { EventStatus } from '@/types/events'
-import { Recurrence } from '../../common/valueObjects/Recurrence'
-import { addDays, format } from 'date-fns'
+import type { RecurrenceFrequency } from '@/types/recurrence'
+import { format } from 'date-fns'
+import type { z } from 'zod'
+import { Recurrence, addTime } from '../../common/valueObjects/Recurrence'
 import type { EventWithLineItemTotals } from '../../repositories/actions/eventsActions'
+import eventsRepository from '../../repositories/eventsRepository'
 
 type GetEventsInRangeRequest = z.infer<typeof getEventsInRangeSchema>
 
@@ -23,10 +24,8 @@ export async function getEventsInRange(
 
   const eventRecurrences = events.map((e) => ({
     event: e,
-    recurrence: Recurrence.TryCreate(
-      e.rrule,
-      format(e.startTime, 'yyyy-MM-dd'),
-    ).GetValue(),
+    recurrence: Recurrence.TryCreate(e.rrule, format(e.startTime, 'yyyy-MM-dd'))
+      .Value,
   }))
 
   const eventProjections = eventRecurrences.flatMap(({ event, recurrence }) =>
@@ -76,6 +75,7 @@ function getProjections(
 
   return getNextEvents(
     event,
+    recurrence.Frequency,
     recurrence.Interval!,
     recurrence.Count,
     recurrence.Until,
@@ -84,6 +84,7 @@ function getProjections(
 
 function getNextEvents(
   event: EventWithLineItemTotals,
+  frequency: RecurrenceFrequency,
   interval: number,
   count: number | undefined,
   until: string | undefined,
@@ -91,8 +92,8 @@ function getNextEvents(
   if (count) {
     return Array.from({ length: count }, (_, i) => i).map((i) => ({
       ...event,
-      startTime: addDays(event.startTime, i * interval),
-      endTime: addDays(event.endTime, i * interval),
+      startTime: addTime(frequency, event.startTime, i * interval),
+      endTime: addTime(frequency, event.endTime, i * interval),
     }))
   }
 
@@ -103,8 +104,8 @@ function getNextEvents(
       events.push(lastEvent)
       const newEvent = {
         ...lastEvent,
-        startTime: addDays(event.startTime, interval),
-        endTime: addDays(event.endTime, interval),
+        startTime: addTime(frequency, event.startTime, interval),
+        endTime: addTime(frequency, event.endTime, interval),
       }
 
       lastEvent = newEvent

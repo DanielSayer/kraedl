@@ -9,7 +9,7 @@ import type {
   Recurrence as RecurrenceDto,
 } from '@/types/recurrence'
 import Result from '../result'
-import { addDays, endOfDay } from 'date-fns'
+import { addDays, addMonths, addWeeks, endOfDay } from 'date-fns'
 
 export class Recurrence {
   public RecurrenceRule: string
@@ -110,8 +110,8 @@ export class Recurrence {
       if (!this.Count) {
         throw new Error()
       }
-      const lengthOfRecurrence = this.Count * this.Interval
-      return addDays(eventEnd, lengthOfRecurrence)
+      const lengthOfRecurrence = this.Count * this.Interval - 1
+      return addTime(this.Frequency, eventEnd, lengthOfRecurrence)
     }
 
     if (!this.Until) {
@@ -119,4 +119,22 @@ export class Recurrence {
     }
     return endOfDay(this.Until)
   }
+}
+
+export function addTime(
+  frequency: RecurrenceFrequency,
+  time: Date,
+  amount: number,
+) {
+  if (frequency === 'NONE') return time
+
+  if (frequency === 'DAILY') {
+    return addDays(time, amount)
+  }
+
+  if (frequency === 'WEEKLY') {
+    return addWeeks(time, amount)
+  }
+
+  return addMonths(time, amount)
 }
