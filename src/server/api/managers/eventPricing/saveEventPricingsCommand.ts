@@ -23,11 +23,11 @@ export async function saveEventPricingsCommand(
     format(event.startTime, 'yyyy-MM-dd'),
   )
 
-  if (recurrenceResult.isFailure()) {
-    return Result.Failure(recurrenceResult.GetError())
+  if (recurrenceResult.IsFailure) {
+    return Result.Failure(recurrenceResult.Error)
   }
 
-  const recurrence = recurrenceResult.GetValue()
+  const recurrence = recurrenceResult.Value
   const untilDate = recurrence.getRecurrenceEnd(event.endTime)
 
   for (const pricing of req.eventPricings) {

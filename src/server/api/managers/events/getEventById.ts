@@ -9,11 +9,11 @@ export async function getEventById(eventId: string, businessId: string) {
     format(event.startTime, 'yyyy-MM-dd'),
   )
 
-  if (recurrenceResult.isFailure()) {
+  if (recurrenceResult.IsFailure) {
     throw new Error(`Event ${event.id} could not generate recurrence`)
   }
 
-  const recurrence = recurrenceResult.GetValue()
+  const recurrence = recurrenceResult.Value
 
   return {
     ...event,

@@ -12,7 +12,7 @@ export async function invoiceCommand(
     new Date(request.dueDate),
   )
 
-  if (dateRangeResult.isFailure()) {
+  if (dateRangeResult.IsFailure) {
     throw new TRPCClientError('Due date must be after issue date')
   }
 

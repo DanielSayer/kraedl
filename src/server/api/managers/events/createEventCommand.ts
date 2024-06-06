@@ -24,12 +24,12 @@ export async function createEventCommand(
   )
 
   const dateRangeResult = DateRange.NewResult(startDate, endDate)
-  if (dateRangeResult.isFailure()) {
+  if (dateRangeResult.IsFailure) {
     throw new TRPCClientError(
-      `${dateRangeResult.GetError()} If this is intentional and multi-day events are required, please contact support`,
+      `${dateRangeResult.Error} If this is intentional and multi-day events are required, please contact support`,
     )
   }
-  const dateRange = dateRangeResult.GetValue()
+  const dateRange = dateRangeResult.Value
   return await eventsRepository.create({
     clientId: request.clientId,
     name: request.name,

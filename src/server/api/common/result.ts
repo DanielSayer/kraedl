@@ -1,14 +1,14 @@
 import { TRPCError } from '@trpc/server'
 
 class Result<T> {
-  private IsSuccess: boolean
-  private Value: T | undefined
-  private Error: string | undefined
+  private isSuccess: boolean
+  private value: T | undefined
+  private error: string | undefined
 
   private constructor(isSuccess: boolean, value?: T, error?: string) {
-    this.IsSuccess = isSuccess
-    this.Value = value
-    this.Error = error
+    this.isSuccess = isSuccess
+    this.value = value
+    this.error = error
   }
 
   public static Success<T>(obj: T): Result<T> {
@@ -19,32 +19,32 @@ class Result<T> {
     return new Result<T>(false, undefined, error)
   }
 
-  public isSuccess(): boolean {
-    return this.IsSuccess
+  get IsSuccess(): boolean {
+    return this.isSuccess
   }
 
-  public isFailure(): boolean {
-    return !this.IsSuccess
+  get IsFailure(): boolean {
+    return !this.isSuccess
   }
 
-  public GetValue(): T {
-    if (!this.IsSuccess) {
+  get Value(): T {
+    if (!this.isSuccess) {
       throw new TRPCError({
         message: 'Cannot access value on failure',
         code: 'INTERNAL_SERVER_ERROR',
       })
     }
-    return this.Value!
+    return this.value!
   }
 
-  public GetError(): string {
-    if (this.IsSuccess) {
+  get Error(): string {
+    if (this.isSuccess) {
       throw new TRPCError({
         message: 'Cannot access error on success',
         code: 'INTERNAL_SERVER_ERROR',
       })
     }
-    return this.Error!
+    return this.error!
   }
 }
 

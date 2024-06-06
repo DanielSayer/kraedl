@@ -14,11 +14,10 @@ export async function createPricingCommand(
 ): Promise<Result<string>> {
   const pricingResult = Pricing.TryCreate(pricingReq.name, pricingReq.price)
 
-  if (pricingResult.isFailure()) {
-    return Result.Failure(pricingResult.GetError())
+  if (pricingResult.IsFailure) {
+    return Result.Failure(pricingResult.Error)
   }
-
-  const pricing = pricingResult.GetValue()
+  const pricing = pricingResult.Value
 
   const existingPricingModels =
     await pricingRepository.getByBusinessId(businessId)
