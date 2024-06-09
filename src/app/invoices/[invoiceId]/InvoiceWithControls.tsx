@@ -1,17 +1,17 @@
 'use client'
 
+import LoadingButton from '@/components/LoadingButton'
+import { buttonVariants } from '@/components/ui/button'
 import { useCreatePdf } from '@/hooks/useCreatePdf'
+import { api } from '@/trpc/react'
 import type { Invoice, InvoiceFromApi } from '@/types/invoices'
 import { format } from 'date-fns'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { InvoicePreview } from './Invoice'
 import { InvoiceControls } from './InvoiceControls'
-import Link from 'next/link'
-import { buttonVariants } from '@/components/ui/button'
-import LoadingButton from '@/components/LoadingButton'
-import { api } from '@/trpc/react'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 
 type InvoiceProps = {
   invoice: InvoiceFromApi
@@ -24,10 +24,10 @@ export const InvoiceWithControls = ({ invoice }: InvoiceProps) => {
     mapInvoice(invoice),
   )
 
-  const handleChangeDate = (key: keyof Invoice, date: Date) => {
+  const handleChangeDate = (key: keyof Invoice, date: string) => {
     const updatedInvoiceFields: Invoice = {
       ...invoiceFields,
-      [key]: format(date, 'yyyy-MM-dd'),
+      [key]: date,
     }
     setInvoiceFields(updatedInvoiceFields)
   }

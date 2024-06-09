@@ -14,7 +14,7 @@ import useInvoiceName from './useInvoiceName'
 type InvoiceControlsProps = {
   clientName: string
   invoiceFields: Invoice
-  handleChangeDate: (key: keyof Invoice, date: Date) => void
+  handleChangeDate: (key: keyof Invoice, date: string) => void
   handleDownloadPdf: (name: string) => Promise<void>
 }
 

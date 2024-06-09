@@ -19,7 +19,6 @@ import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import type { QuoteBuilder } from '@/lib/validations/events'
 import { getPlural, recurrenceFrequencyOptions } from '@/types/recurrence'
-import { format } from 'date-fns'
 import { useFormContext } from 'react-hook-form'
 
 export const Recurrence = () => {
@@ -124,11 +123,7 @@ export const Recurrence = () => {
                                   </FormLabel>
                                   <FormControl>
                                     <DatePicker
-                                      onChange={(date) =>
-                                        field.onChange(
-                                          format(date, 'yyyy-MM-dd'),
-                                        )
-                                      }
+                                      onChange={(date) => field.onChange(date)}
                                       date={field.value}
                                       disabled={end !== 'ON'}
                                     />

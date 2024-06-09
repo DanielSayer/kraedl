@@ -17,7 +17,7 @@ type DatePickerProps = {
   className?: string;
   disabled?: boolean;
   date?: string;
-  onChange: (date: Date) => void;
+  onChange: (date: string) => void;
 };
 
 export function DatePicker({
@@ -27,9 +27,10 @@ export function DatePicker({
   onChange,
 }: DatePickerProps) {
   const selectedDate = date ? new Date(date) : undefined;
+
   const handleChange = (day: Date | undefined) => {
-    if (!day) return;
-    onChange(day);
+    const formattedDate = day ? format(day, 'yyyy-MM-dd') : ''
+    onChange(formattedDate);
   };
 
   return (

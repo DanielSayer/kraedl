@@ -18,7 +18,6 @@ import { Input } from '@/components/ui/input'
 import { createEventSchema } from '@/lib/validations/events'
 import { api } from '@/trpc/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -152,9 +151,7 @@ const CreateEventDialog = ({
                   <FormControl>
                     <DatePicker
                       date={field.value}
-                      onChange={(date) =>
-                        form.setValue('date', format(date, 'yyyy-MM-dd'))
-                      }
+                      onChange={(date) => form.setValue('date', date)}
                     />
                   </FormControl>
                   <FormMessage />
