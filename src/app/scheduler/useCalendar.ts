@@ -1,3 +1,4 @@
+import { useSessionStorage } from '@/hooks/useSessionStorage'
 import useWindowSize from '@/hooks/useWindowSize'
 import type { DateRange } from '@/types/misc'
 import type { CalendarApi, DatesSetArg } from '@fullcalendar/core/index.js'
@@ -7,7 +8,10 @@ import { useEffect, useRef, useState } from 'react'
 const useCalendar = () => {
   const { width } = useWindowSize()
   const calendarRef = useRef<FullCalendar | null>(null)
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+  const [selectedDate, setSelectedDate] = useSessionStorage<Date>({
+    key: 'calendarDate',
+    defaultValue: new Date(),
+  })
   const [dateRange, setDateRange] = useState<DateRange>({
     start: new Date(),
     end: new Date(),
