@@ -7,6 +7,7 @@ import { EventForm } from './EventForm'
 interface QuoteBuilderPageProps {
   params: {
     eventId: string
+    startDate: string
   }
 }
 

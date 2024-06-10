@@ -8,7 +8,7 @@ import {
   getSchedulerCalendarHeight,
 } from '@/lib/calendarUtils'
 import type { Event } from '@/types/events'
-import type { DatesSetArg } from '@fullcalendar/core'
+import type { DatesSetArg, EventClickArg } from '@fullcalendar/core'
 import type FullCalendar from '@fullcalendar/react'
 import { useRouter } from 'next/navigation'
 import type { MutableRefObject } from 'react'
@@ -25,6 +25,14 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
   const { height } = useWindowSize()
   const calendarHeight = getSchedulerCalendarHeight(height)
 
+  const handleClickEvent = (e: EventClickArg) => {
+    if (!e.event.start) return
+    const formattedDate = e.event.start.toISOString()
+    router.push(
+      `/quote-builder/${e.event.extendedProps.eventId}/${formattedDate}`,
+    )
+  }
+
   const fullCalendarEvents = events
     ? events.map((e) => ({
         title: e.name ? `${e.clientName} - ${e.name}` : e.clientName,
@@ -40,9 +48,7 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
 
   return (
     <Calendar
-      eventClick={(e) => {
-        router.push(`/quote-builder/${e.event.extendedProps.eventId}`)
-      }}
+      eventClick={handleClickEvent}
       events={fullCalendarEvents}
       height={calendarHeight}
       nowIndicator
