@@ -9,40 +9,22 @@ export const useSessionStorage = <T>({
   key,
   defaultValue,
 }: UseSessionStorageProps<T>): [T, Dispatch<SetStateAction<T>>] => {
-  const [storedValue, setStoredValue] = useState<T>(defaultValue)
-  const [firstLoadDone, setFirstLoadDone] = useState(false)
+  const [value, setValue] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const storedValue = window.sessionStorage.getItem(key)
+      return storedValue !== null
+        ? (JSON.parse(storedValue) as T)
+        : defaultValue
+    } else {
+      return defaultValue
+    }
+  })
 
   useEffect(() => {
-    const fromLocal = () => {
-      if (typeof window === 'undefined') {
-        return defaultValue
-      }
-      try {
-        const item = window.sessionStorage.getItem(key)
-        return item ? (JSON.parse(item) as T) : defaultValue
-      } catch (error) {
-        console.error(error)
-        return defaultValue
-      }
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.setItem(key, JSON.stringify(value))
     }
+  }, [key, value])
 
-    setStoredValue(fromLocal)
-    setFirstLoadDone(true)
-  }, [defaultValue, key])
-
-  useEffect(() => {
-    if (!firstLoadDone) {
-      return
-    }
-
-    try {
-      if (typeof window !== 'undefined') {
-        window.sessionStorage.setItem(key, JSON.stringify(storedValue))
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }, [storedValue, firstLoadDone, key])
-
-  return [storedValue, setStoredValue]
+  return [value, setValue]
 }
