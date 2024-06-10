@@ -119,6 +119,24 @@ export class Recurrence {
     }
     return endOfDay(this.Until)
   }
+
+  getNextEventDates(startTime: Date, endTime: Date) {
+    return {
+      start: addTime(this.Frequency, startTime, 1),
+      end: addTime(this.Frequency, endTime, 1),
+    }
+  }
+
+  hasNextEvent(endTime: Date) {
+    if (this.Frequency === 'NONE') {
+      return false
+    }
+    const nextEventDate = this.getNextEventDates(new Date(), endTime)
+    return (
+      nextEventDate.end.getTime() <=
+      new Date(this.getRecurrenceEnd(endTime)).getTime()
+    )
+  }
 }
 
 export function addTime(

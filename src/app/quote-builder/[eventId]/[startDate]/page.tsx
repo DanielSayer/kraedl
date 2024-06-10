@@ -19,13 +19,19 @@ const getPageDescription = (isInvoiced: boolean) => {
 
 export default async function Page({ params }: QuoteBuilderPageProps) {
   await useProtectedRoute()
-
-  const event = await api.events.getById({ id: params.eventId })
+  const eventStartDate = decodeURIComponent(params.startDate)
+  const event = await api.events.getById({
+    id: params.eventId,
+    startDate: eventStartDate,
+  })
   if (!event) {
     redirect('/scheduler')
   }
 
-  const pricingLines = await api.eventPricing.getById({ id: event.id })
+  const pricingLines = await api.eventPricing.getById({
+    id: event.id,
+    startDate: eventStartDate,
+  })
   const isInvoiced = () => {
     return !!event.invoicedAt
   }
