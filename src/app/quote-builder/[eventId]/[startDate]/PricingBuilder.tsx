@@ -1,7 +1,6 @@
 'use client'
 
 import { Icons } from '@/components/Icons'
-import LoadingButton from '@/components/LoadingButton'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { ErrorMessage } from '@/components/ui/errorMessage'
 import {
@@ -19,6 +18,7 @@ import Link from 'next/link'
 import { useMemo } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { PricingLineRow } from './PricingLineRow'
+import SaveRecurrenceDialog from './SaveRecurrenceDialog'
 
 type PricingBuilderProps = {
   isReadOnly: boolean
@@ -103,13 +103,13 @@ export const PricingBuilder = ({
         >
           Go back
         </Link>
-        <LoadingButton
-          isLoading={isPending}
-          disabled={isReadOnly}
-          type="submit"
-        >
-          Save
-        </LoadingButton>
+        <SaveRecurrenceDialog
+          isPending={isPending}
+          isReadOnly={isReadOnly}
+          hasRecurrence={
+            formState.defaultValues?.recurrence?.frequency !== 'NONE'
+          }
+        />
       </div>
     </>
   )

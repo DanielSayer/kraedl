@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 
 type UseSessionStorageProps<T> = {
   key: string
@@ -8,15 +8,41 @@ type UseSessionStorageProps<T> = {
 export const useSessionStorage = <T>({
   key,
   defaultValue,
-}: UseSessionStorageProps<T>) => {
-  const state = useState<T>(() => {
-    const stored = sessionStorage.getItem(key)
-    return stored ? (JSON.parse(stored) as T) : defaultValue
-  })
+}: UseSessionStorageProps<T>): [T, Dispatch<SetStateAction<T>>] => {
+  const [storedValue, setStoredValue] = useState<T>(defaultValue)
+  const [firstLoadDone, setFirstLoadDone] = useState(false)
 
   useEffect(() => {
-    sessionStorage.setItem(key, JSON.stringify(state[0]))
-  }, [state, key])
+    const fromLocal = () => {
+      if (typeof window === 'undefined') {
+        return defaultValue
+      }
+      try {
+        const item = window.sessionStorage.getItem(key)
+        return item ? (JSON.parse(item) as T) : defaultValue
+      } catch (error) {
+        console.error(error)
+        return defaultValue
+      }
+    }
 
-  return state
+    setStoredValue(fromLocal)
+    setFirstLoadDone(true)
+  }, [defaultValue, key])
+
+  useEffect(() => {
+    if (!firstLoadDone) {
+      return
+    }
+
+    try {
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.setItem(key, JSON.stringify(storedValue))
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }, [storedValue, firstLoadDone, key])
+
+  return [storedValue, setStoredValue]
 }
