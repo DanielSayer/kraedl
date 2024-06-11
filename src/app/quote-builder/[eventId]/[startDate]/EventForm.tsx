@@ -39,6 +39,7 @@ export const EventForm = ({
     defaultValues: {
       eventId: event.id,
       eventPricings: pricingLines,
+      saveType: undefined,
       recurrence: {
         frequency: event.recurrence.frequency,
         interval: event.recurrence.interval ?? '1',

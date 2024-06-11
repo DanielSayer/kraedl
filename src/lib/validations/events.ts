@@ -38,5 +38,6 @@ export const quoteBuilderSchema = z.object({
   eventId: z.string().uuid(),
   eventPricings: z.array(eventPricingSchema),
   recurrence: recurrenceSchema,
+  saveType: z.enum(['this', 'future', 'all']).optional(),
 })
 export type QuoteBuilder = z.infer<typeof quoteBuilderSchema>

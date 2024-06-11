@@ -9,6 +9,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { ErrorMessage } from '@/components/ui/errorMessage'
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
@@ -25,7 +31,7 @@ const SaveRecurrenceDialog = ({
   isReadOnly,
   isPending,
 }: SaveRecurrenceDialogProps) => {
-  const { formState } = useFormContext<QuoteBuilder>()
+  const { formState, control } = useFormContext<QuoteBuilder>()
   const hasChanged = !isEmpty(formState.dirtyFields)
   const hasRecurrence =
     formState.defaultValues?.recurrence?.frequency !== 'NONE'
@@ -56,20 +62,35 @@ const SaveRecurrenceDialog = ({
           </p>
         </DialogHeader>
         <Separator />
-        <RadioGroup defaultValue="this">
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="this" id="r1" />
-            <Label htmlFor="r1">This event</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="future" id="r2" />
-            <Label htmlFor="r2">Future Events</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="all" id="r3" />
-            <Label htmlFor="r3">All Events</Label>
-          </div>
-        </RadioGroup>
+        <FormField
+          name="saveType"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="sr-only">Save Type</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormItem className="flex items-center space-x-2 space-y-0 pt-2">
+                    <RadioGroupItem value="this" id="r1" />
+                    <Label htmlFor="r1">This event</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2 space-y-0">
+                    <RadioGroupItem value="future" id="r2" />
+                    <Label htmlFor="r2">Future Events</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2 space-y-0">
+                    <RadioGroupItem value="all" id="r3" />
+                    <Label htmlFor="r3">All Events</Label>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Separator />
         <Separator />
         <DialogFooter>
           <ErrorMessage>{formState.errors.root?.message}</ErrorMessage>
