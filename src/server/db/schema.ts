@@ -51,6 +51,7 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
   users: many(users),
   clients: many(clients),
   events: many(events),
+  eventExceptions: many(eventExceptions),
   pricing: many(pricing),
   bankAccounts: one(bankAccounts, {
     fields: [businesses.id],
@@ -202,6 +203,7 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
     fields: [events.id],
     references: [invoiceEventLink.eventId],
   }),
+  eventExceptions: many(eventExceptions),
 }))
 
 export const pricing = createTable('pricing', {
@@ -338,6 +340,48 @@ export const invoiceEventLinkRelations = relations(
     events: one(events, {
       fields: [invoiceEventLink.eventId],
       references: [events.id],
+    }),
+  }),
+)
+
+export const eventExceptions = createTable('eventExceptions', {
+  id: uuid('id').defaultRandom().notNull().primaryKey(),
+  eventId: uuid('eventId')
+    .notNull()
+    .references(() => events.id),
+  name: varchar('name', { length: 255 }),
+  clientId: uuid('clientId').notNull(),
+  eventStartTime: timestamp('eventStartTime', {
+    mode: 'date',
+    withTimezone: true,
+  }).notNull(),
+  startTime: timestamp('startTime', {
+    mode: 'date',
+    withTimezone: true,
+  }).notNull(),
+  endTime: timestamp('endTime', {
+    mode: 'date',
+    withTimezone: true,
+  }).notNull(),
+  businessId: uuid('businessId')
+    .notNull()
+    .references(() => businesses.id),
+})
+
+export const eventExceptionsRelations = relations(
+  eventExceptions,
+  ({ one }) => ({
+    clients: one(clients, {
+      fields: [eventExceptions.clientId],
+      references: [clients.id],
+    }),
+    events: one(events, {
+      fields: [eventExceptions.eventId],
+      references: [events.id],
+    }),
+    businesses: one(businesses, {
+      fields: [eventExceptions.businessId],
+      references: [businesses.id],
     }),
   }),
 )
