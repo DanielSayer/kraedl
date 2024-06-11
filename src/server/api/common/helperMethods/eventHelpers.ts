@@ -16,7 +16,7 @@ export const getProjectedEvent = (
 ) => {
   const targetTime = new Date(startTime).getTime()
   let currentEvent = event
-  while (eventRecurrence.hasNextEvent(currentEvent.endTime)) {
+  do {
     if (currentEvent.startTime.getTime() === targetTime) {
       return currentEvent
     }
@@ -30,6 +30,6 @@ export const getProjectedEvent = (
       endTime: nextEventDate.end,
     }
     currentEvent = updatedEvent
-  }
+  } while (eventRecurrence.hasNextEvent(currentEvent.endTime))
   return null
 }

@@ -1,8 +1,7 @@
 'use client'
 
 import { Icons } from '@/components/Icons'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { ErrorMessage } from '@/components/ui/errorMessage'
+import { Button } from '@/components/ui/button'
 import {
   Fieldset,
   FieldsetContent,
@@ -14,22 +13,16 @@ import { cn } from '@/lib/utils'
 import type { QuoteBuilder } from '@/lib/validations/events'
 import { api } from '@/trpc/react'
 import { getNewPricingLine } from '@/types/pricingLines'
-import Link from 'next/link'
 import { useMemo } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { PricingLineRow } from './PricingLineRow'
-import SaveRecurrenceDialog from './SaveRecurrenceDialog'
 
 type PricingBuilderProps = {
   isReadOnly: boolean
-  isPending: boolean
 }
 
-export const PricingBuilder = ({
-  isReadOnly,
-  isPending,
-}: PricingBuilderProps) => {
-  const { watch, formState } = useFormContext<QuoteBuilder>()
+export const PricingBuilder = ({ isReadOnly }: PricingBuilderProps) => {
+  const { watch } = useFormContext<QuoteBuilder>()
   const { append } = useFieldArray<QuoteBuilder>({ name: 'eventPricings' })
   const { data: pricings, isLoading } = api.pricing.getPricings.useQuery()
   const pricingLines = watch('eventPricings')
@@ -64,53 +57,35 @@ export const PricingBuilder = ({
     )
   }, [pricings])
   return (
-    <>
-      <Fieldset>
-        <FieldsetLegend>
-          <Icons.invoice /> Pricing Builder
-        </FieldsetLegend>
-        <FieldsetContent className={cn('grid', { 'pt-6': isReadOnly })}>
-          <Button
-            type="button"
-            className={cn('my-4 ml-auto', { hidden: isReadOnly })}
-            onClick={() => append(getNewPricingLine())}
-          >
-            <Icons.add className="mr-2 h-4 w-4" /> Pricing line
-          </Button>
-          <div className="flex flex-col gap-4">
-            {pricingLines.map((line, index) => (
-              <PricingLineRow
-                key={line.id}
-                index={index}
-                pricingOptions={pricingOptions}
-                isPricingLoading={isLoading}
-                getPriceForItem={getPriceForItem}
-              />
-            ))}
-          </div>
-          <Separator className="my-4" />
-          <div className="flex items-center justify-between">
-            <p className="font-semibold text-muted-foreground">Grand Total</p>
-            <p className="font-bold">{getQuotePrice()}</p>
-          </div>
-        </FieldsetContent>
-      </Fieldset>
-      <ErrorMessage>{formState.errors.root?.message}</ErrorMessage>
-      <div className="flex justify-end gap-2">
-        <Link
-          href="/scheduler"
-          className={buttonVariants({ variant: 'secondary' })}
+    <Fieldset>
+      <FieldsetLegend>
+        <Icons.invoice /> Pricing Builder
+      </FieldsetLegend>
+      <FieldsetContent className={cn('grid', { 'pt-6': isReadOnly })}>
+        <Button
+          type="button"
+          className={cn('my-4 ml-auto', { hidden: isReadOnly })}
+          onClick={() => append(getNewPricingLine())}
         >
-          Go back
-        </Link>
-        <SaveRecurrenceDialog
-          isPending={isPending}
-          isReadOnly={isReadOnly}
-          hasRecurrence={
-            formState.defaultValues?.recurrence?.frequency !== 'NONE'
-          }
-        />
-      </div>
-    </>
+          <Icons.add className="mr-2 h-4 w-4" /> Pricing line
+        </Button>
+        <div className="flex flex-col gap-4">
+          {pricingLines.map((line, index) => (
+            <PricingLineRow
+              key={line.id}
+              index={index}
+              pricingOptions={pricingOptions}
+              isPricingLoading={isLoading}
+              getPriceForItem={getPriceForItem}
+            />
+          ))}
+        </div>
+        <Separator className="my-4" />
+        <div className="flex items-center justify-between">
+          <p className="font-semibold text-muted-foreground">Grand Total</p>
+          <p className="font-bold">{getQuotePrice()}</p>
+        </div>
+      </FieldsetContent>
+    </Fieldset>
   )
 }

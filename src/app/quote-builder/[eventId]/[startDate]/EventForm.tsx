@@ -19,6 +19,10 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { PricingBuilder } from './PricingBuilder'
 import { Recurrence } from './Recurrence'
+import { ErrorMessage } from '@/components/ui/errorMessage'
+import Link from 'next/link'
+import { buttonVariants } from '@/components/ui/button'
+import SaveRecurrenceDialog from './SaveRecurrenceDialog'
 
 type EventFormProps = {
   isReadOnly: boolean
@@ -57,7 +61,7 @@ export const EventForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} id="quote-builder">
         <div className="space-y-4">
           <div className="grid grid-cols-8 gap-4">
             <Fieldset className="col-span-5">
@@ -83,7 +87,20 @@ export const EventForm = ({
               <Recurrence />
             </div>
           </div>
-          <PricingBuilder isReadOnly={isReadOnly} isPending={isPending} />
+          <PricingBuilder isReadOnly={isReadOnly} />
+          <ErrorMessage>{form.formState.errors.root?.message}</ErrorMessage>
+          <div className="flex justify-end gap-2">
+            <Link
+              href="/scheduler"
+              className={buttonVariants({ variant: 'secondary' })}
+            >
+              Go back
+            </Link>
+            <SaveRecurrenceDialog
+              isPending={isPending}
+              isReadOnly={isReadOnly}
+            />
+          </div>
         </div>
       </form>
     </Form>
