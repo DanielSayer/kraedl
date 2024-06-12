@@ -33,9 +33,15 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
     )
   }
 
+  const getCalendarTitle = (event: Event) => {
+    if (event.name === 'Untitled Event') {
+      return `${event.clientName} - ${event.name}`
+    }
+    return `${event.name} - ${event.clientName}`
+  }
   const fullCalendarEvents = events
     ? events.map((e) => ({
-        title: e.name ? `${e.clientName} - ${e.name}` : e.clientName,
+        title: getCalendarTitle(e),
         start: e.startTime,
         end: e.endTime,
         classNames: getEventBackgroundStyles(e.status),

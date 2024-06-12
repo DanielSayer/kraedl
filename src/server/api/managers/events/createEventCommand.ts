@@ -32,7 +32,7 @@ export async function createEventCommand(
   const dateRange = dateRangeResult.Value
   return await eventsRepository.create({
     clientId: request.clientId,
-    name: request.name,
+    name: request.name === '' ? 'Untitled Event' : request.name,
     startTime: dateRange.Start,
     endTime: dateRange.End,
     businessId: businessId,

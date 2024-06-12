@@ -170,7 +170,7 @@ export const clientsRelations = relations(clients, ({ one, many }) => ({
 
 export const events = createTable('events', {
   id: uuid('id').defaultRandom().notNull().primaryKey(),
-  name: varchar('name', { length: 255 }),
+  name: varchar('name', { length: 255 }).notNull(),
   clientId: uuid('clientId').notNull(),
   startTime: timestamp('startTime', {
     mode: 'date',
