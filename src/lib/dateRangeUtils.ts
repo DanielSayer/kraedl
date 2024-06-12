@@ -1,6 +1,17 @@
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 
-export const formatTimeRange = (startTime: Date, endTime: Date) => {
+export const formatDateAndTimeRange = (
+  date: string,
+  startTime: string,
+  endTime: string,
+) => {
+  const startDate = parse(startTime, 'HH:mm', date)
+  const endDate = parse(endTime, 'HH:mm', date)
+
+  return formatDateRange(startDate, endDate)
+}
+
+export const formatDateRangeToTime = (startTime: Date, endTime: Date) => {
   const fomattedStart = format(startTime, 'hh:mm a')
   const formattedEnd = format(endTime, 'hh:mm a')
 
@@ -18,7 +29,7 @@ export function formatDateRange(
   const isSameDay = startDate.toDateString() === endDate.toDateString()
 
   if (isSameDay) {
-    return `${format(startTime, 'dd MMM yyyy')} | ${formatTimeRange(startDate, endDate)}`
+    return `${format(startTime, 'dd MMM yyyy')} | ${formatDateRangeToTime(startDate, endDate)}`
   }
   return 'Multi day range, not implemented yet :)'
 }

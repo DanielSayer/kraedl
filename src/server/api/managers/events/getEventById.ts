@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
+import { getProjectedEvent } from '../../common/helperMethods/eventHelpers'
 import { Recurrence } from '../../common/valueObjects/Recurrence'
 import eventsRepository from '../../repositories/eventsRepository'
-import { getProjectedEvent } from '../../common/helperMethods/eventHelpers'
 
 export async function getEventById(
   eventId: string,
@@ -26,6 +26,9 @@ export async function getEventById(
   }
   return {
     ...projectedEvent,
+    date: format(projectedEvent.startTime, 'yyyy-MM-dd'),
+    startTime: format(projectedEvent.startTime, 'HH:mm'),
+    endTime: format(projectedEvent.endTime, 'HH:mm'),
     recurrence: {
       frequency: recurrence.Frequency,
       interval: recurrence.Interval ? `${recurrence.Interval}` : undefined,

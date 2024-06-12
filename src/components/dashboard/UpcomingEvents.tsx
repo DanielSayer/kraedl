@@ -1,12 +1,12 @@
 'use client'
 
-import { formatTimeRange } from '@/lib/dateRangeUtils'
 import { api } from '@/trpc/react'
 import type { TPRCReturnType } from '@/types/trpc'
 import { format } from 'date-fns'
 import { Icons } from '../Icons'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Skeleton } from '../ui/skeleton'
+import { formatDateRangeToTime } from '@/lib/dateRangeUtils'
 
 export const UpcomingEvents = () => {
   const { data, isLoading } = api.dashboard.getUpcomingEvents.useQuery()
@@ -62,7 +62,7 @@ const UpcomingEventsContent = ({
       </div>
       <div className="ml-auto grid gap-1">
         <p className="text-sm font-medium leading-none">
-          {formatTimeRange(event.startTime, event.endTime)}
+          {formatDateRangeToTime(event.startTime, event.endTime)}
         </p>
         <p className="text-sm text-muted-foreground">
           {format(event.startTime, 'dd MMM yyyy')}
@@ -90,31 +90,3 @@ const EventSkeleton = () => {
     </>
   )
 }
-
-// {isLoading || !data ? (
-//   <EventSkeleton />
-// ) : (
-//   data.map((event) => (
-//     <div
-//       key={event.id}
-//       className="flex items-center gap-4 rounded border px-4 py-3"
-//     >
-//       <div className="grid gap-1">
-//         <p className="text-md font-medium  leading-none">
-//           {event.name ? event.name : event.clients.name}
-//         </p>
-//         <p className="text-sm text-muted-foreground">
-//           {event.name ? event.clients.name : ""}
-//         </p>
-//       </div>
-//       <div className="ml-auto grid gap-1">
-//         <p className="text-sm font-medium leading-none">
-//           {formatTimeRange(event.startTime, event.endTime)}
-//         </p>
-//         <p className="text-sm text-muted-foreground">
-//           {format(event.startTime, "dd MMM yyyy")}
-//         </p>
-//       </div>
-//     </div>
-//   ))
-// )}

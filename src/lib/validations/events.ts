@@ -36,6 +36,9 @@ const recurrenceSchema = z.object({
 
 export const quoteBuilderSchema = z.object({
   eventId: z.string().uuid(),
+  startTime: time,
+  endTime: time,
+  date: date,
   eventPricings: z.array(eventPricingSchema),
   recurrence: recurrenceSchema,
   saveType: z.enum(['this', 'future', 'all']).optional(),
