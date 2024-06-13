@@ -91,9 +91,8 @@ const SaveRecurrenceDialog = ({
           )}
         />
         <Separator />
-        <Separator />
+        <ErrorMessage>{formState.errors.root?.message}</ErrorMessage>
         <DialogFooter>
-          <ErrorMessage>{formState.errors.root?.message}</ErrorMessage>
           <DialogClose asChild>
             <Button variant="secondary">Cancel</Button>
           </DialogClose>

@@ -370,7 +370,7 @@ export const eventExceptions = createTable('eventExceptions', {
 
 export const eventExceptionsRelations = relations(
   eventExceptions,
-  ({ one }) => ({
+  ({ one, many }) => ({
     clients: one(clients, {
       fields: [eventExceptions.clientId],
       references: [clients.id],
@@ -382,6 +382,33 @@ export const eventExceptionsRelations = relations(
     businesses: one(businesses, {
       fields: [eventExceptions.businessId],
       references: [businesses.id],
+    }),
+    eventExceptionPricings: many(eventExceptionPricings),
+  }),
+)
+
+export const eventExceptionPricings = createTable('eventExceptionPricings', {
+  id: uuid('id').defaultRandom().notNull().primaryKey(),
+  eventExceptionId: uuid('eventExceptionId')
+    .notNull()
+    .references(() => eventExceptions.id),
+  pricingId: uuid('pricingId')
+    .notNull()
+    .references(() => pricing.id),
+  quantity: decimal('quantity', { precision: 10, scale: 1 }).notNull(),
+  totalPrice: decimal('totalPrice', { precision: 12, scale: 2 }).notNull(),
+})
+
+export const eventExceptionPricingRelations = relations(
+  eventExceptionPricings,
+  ({ one }) => ({
+    eventExceptions: one(eventExceptions, {
+      fields: [eventExceptionPricings.eventExceptionId],
+      references: [eventExceptions.id],
+    }),
+    pricing: one(pricing, {
+      fields: [eventExceptionPricings.pricingId],
+      references: [pricing.id],
     }),
   }),
 )

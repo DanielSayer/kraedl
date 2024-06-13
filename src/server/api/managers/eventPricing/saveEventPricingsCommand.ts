@@ -6,6 +6,8 @@ import eventsRepository from '../../repositories/eventsRepository'
 import { format } from 'date-fns'
 import { dateRangeValidatorService } from '../../services/DateRangeValidatorService'
 import { TRPCClientError } from '@trpc/client'
+import eventExceptionsRepository from '../../repositories/eventExceptionsRepository'
+import eventExceptionsPricingRepository from '../../repositories/eventExceptionsPricingRepository'
 
 export async function saveEventPricingsCommand(
   req: QuoteBuilder,
@@ -72,6 +74,22 @@ export async function saveEventPricingsCommand(
   }
 
   if (req.saveType === 'this') {
+    await eventExceptionsRepository.create({
+      eventId: req.eventId,
+      name: req.name,
+      clientId: req.clientId,
+      eventStartTime: dateRange.Start,
+      startTime: dateRange.Start,
+      endTime: dateRange.End,
+      businessId: businessId,
+    })
+
+    await eventExceptionsPricingRepository.insertEventExceptionPricings(
+      req.eventPricings,
+      req.eventId,
+    )
+
+    return Result.Success(true)
   }
 
   throw new TRPCClientError('Not implemented')
