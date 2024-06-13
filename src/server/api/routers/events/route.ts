@@ -10,7 +10,7 @@ import { getEventById } from '../../managers/events/getEventById'
 import { getEventsInRange } from '../../managers/events/getEventsInRange'
 import { adminProcedure, createTRPCRouter } from '../../trpc'
 import { getPastEventsForInvoice } from '../../managers/events/getPastEventsForInvoice'
-import { saveEventCommand } from '../../managers/events/saveEventPricingsCommand'
+import { saveEventCommand } from '../../managers/events/saveEventCommand'
 import { fromResult } from '../../common/fromResult'
 
 export const eventRouter = createTRPCRouter({

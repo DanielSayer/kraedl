@@ -8,6 +8,7 @@ import { TRPCClientError } from '@trpc/client'
 import eventExceptionsPricingRepository from '../../repositories/events/eventExceptions/eventExceptionsPricingRepository'
 import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
 import eventExceptionsRepository from '../../repositories/events/eventExceptions/eventExceptionsRepository'
+import type DateRange from '../../common/valueObjects/DateRange'
 
 export async function saveEventCommand(
   req: QuoteBuilder,
@@ -38,7 +39,6 @@ export async function saveEventCommand(
     req.recurrence,
     format(dateRange.Start, 'yyyy-MM-dd'),
   )
-
   if (recurrenceResult.IsFailure) {
     return Result.Failure(recurrenceResult.Error)
   }
@@ -47,50 +47,75 @@ export async function saveEventCommand(
 
   for (const pricing of req.eventPricings) {
     const computedQuantity = parseFloat(pricing.quantity)
-    if (isNaN(computedQuantity) || !isFinite(computedQuantity)) {
-      return Result.Failure('Invalid quantity')
+    if (
+      isNaN(computedQuantity) ||
+      !isFinite(computedQuantity) ||
+      computedQuantity <= 0
+    ) {
+      return Result.Failure('Quantity must be a positive number')
     }
-
-    if (computedQuantity <= 0) {
-      return Result.Failure('Quantity must be positive')
-    }
   }
 
-  if (!req.saveType || req.saveType === 'all') {
-    await eventsRepository.updateEvent(
-      req.name,
-      req.clientId,
-      dateRange.Start,
-      dateRange.End,
-      recurrence.RecurrenceRule,
-      untilDate,
-      event.id,
-    )
-    await eventPricingRepository.insertEventPricings(
-      req.eventPricings,
-      req.eventId,
-    )
-    return Result.Success(true)
+  switch (req.saveType) {
+    case 'future':
+      throw new TRPCClientError('Not implemented')
+    case 'this':
+      await handleThisSaveType(req, businessId, dateRange)
+      break
+    default:
+      await handleDefaultSaveType(
+        req,
+        event.id,
+        dateRange,
+        recurrence.RecurrenceRule,
+        untilDate,
+      )
+      break
   }
 
-  if (req.saveType === 'this') {
-    await eventExceptionsRepository.create({
-      eventId: req.eventId,
-      name: req.name,
-      clientId: req.clientId,
-      eventStartTime: dateRange.Start,
-      startTime: dateRange.Start,
-      endTime: dateRange.End,
-      businessId: businessId,
-    })
+  return Result.Success(true)
+}
 
-    await eventExceptionsPricingRepository.insertEventExceptionPricings(
-      req.eventPricings,
-      req.eventId,
-    )
+async function handleThisSaveType(
+  req: QuoteBuilder,
+  businessId: string,
+  dateRange: DateRange,
+) {
+  await eventExceptionsRepository.create({
+    eventId: req.eventId,
+    name: req.name,
+    clientId: req.clientId,
+    eventStartTime: dateRange.Start,
+    startTime: dateRange.Start,
+    endTime: dateRange.End,
+    businessId: businessId,
+  })
 
-    return Result.Success(true)
-  }
+  await eventExceptionsPricingRepository.insertEventExceptionPricings(
+    req.eventPricings,
+    req.eventId,
+  )
+}
 
-  throw new TRPCClientError('Not implemented')
+async function handleDefaultSaveType(
+  req: QuoteBuilder,
+  eventId: string,
+  dateRange: DateRange,
+  recurrenceRule: string,
+  untilDate: Date,
+) {
+  await eventsRepository.updateEvent(
+    req.name,
+    req.clientId,
+    dateRange.Start,
+    dateRange.End,
+    recurrenceRule,
+    untilDate,
+    eventId,
+  )
+
+  await eventPricingRepository.insertEventPricings(
+    req.eventPricings,
+    req.eventId,
+  )
 }
