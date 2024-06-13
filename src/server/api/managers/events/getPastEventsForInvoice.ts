@@ -1,5 +1,5 @@
 import { TRPCClientError } from '@trpc/client'
-import eventsRepository from '../../repositories/eventsRepository'
+import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
 
 export async function getPastEventsForInvoice(
   currentTime: Date,
@@ -22,9 +22,8 @@ export async function getPastEventsForInvoice(
     pageNumber,
   )
 
-  //Drizzle returns "" instead of null but still types it as null
   return {
-    events: events.map((x) => ({ ...x, name: x.name ?? '' })),
+    events: events,
     count: count,
   }
 }

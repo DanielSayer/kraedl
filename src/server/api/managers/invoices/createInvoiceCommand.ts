@@ -1,5 +1,5 @@
 import type { CreateInvoiceRequest } from '@/lib/validations/invoices'
-import eventPricingRepository from '../../repositories/eventPricingRepository'
+import eventPricingRepository from '../../repositories/events/eventSeries/eventPricingRepository'
 import { invoicesRepository } from '../../repositories/invoicesRepository'
 import { format } from 'date-fns'
 import eventInvoiceLinksRepository from '../../repositories/eventInvoiceLinksRepository'

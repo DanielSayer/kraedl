@@ -1,6 +1,6 @@
+import { single } from '@/server/api/common/helperMethods/arrayHelpers'
 import { db } from '@/server/db'
 import { eventExceptions, events } from '@/server/db/schema'
-import { single } from '../common/helperMethods/arrayHelpers'
 
 type EventExceptionDto = {
   eventId: string

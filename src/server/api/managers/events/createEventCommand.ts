@@ -1,8 +1,8 @@
 import type { createEventSchema } from '@/lib/validations/events'
 import { TRPCClientError } from '@trpc/client'
 import type { z } from 'zod'
-import eventsRepository from '../../repositories/eventsRepository'
 import { dateRangeValidatorService } from '../../services/DateRangeValidatorService'
+import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
 
 type EventRequest = z.infer<typeof createEventSchema>
 

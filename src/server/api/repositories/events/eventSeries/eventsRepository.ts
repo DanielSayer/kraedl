@@ -1,3 +1,4 @@
+import { single } from '@/server/api/common/helperMethods/arrayHelpers'
 import { db } from '@/server/db'
 import {
   clients,
@@ -7,8 +8,7 @@ import {
   invoices,
 } from '@/server/db/schema'
 import { and, count, desc, eq, gt, lt, lte, sql } from 'drizzle-orm'
-import { single } from '../common/helperMethods/arrayHelpers'
-import { mapEvents } from './actions/eventsActions'
+import { mapEvents } from '../../actions/eventsActions'
 
 type EventDto = {
   name: string

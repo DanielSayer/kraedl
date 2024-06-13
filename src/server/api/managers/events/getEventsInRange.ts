@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import type { z } from 'zod'
 import { Recurrence, addTime } from '../../common/valueObjects/Recurrence'
 import type { EventWithLineItemTotals } from '../../repositories/actions/eventsActions'
-import eventsRepository from '../../repositories/eventsRepository'
+import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
 
 type GetEventsInRangeRequest = z.infer<typeof getEventsInRangeSchema>
 

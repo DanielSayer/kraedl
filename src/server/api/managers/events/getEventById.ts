@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import { getProjectedEvent } from '../../common/helperMethods/eventHelpers'
 import { Recurrence } from '../../common/valueObjects/Recurrence'
-import eventsRepository from '../../repositories/eventsRepository'
+import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
 
 export async function getEventById(
   eventId: string,

@@ -1,13 +1,13 @@
 import type { QuoteBuilder } from '@/lib/validations/events'
 import Result from '../../common/result'
-import eventPricingRepository from '../../repositories/eventPricingRepository'
+import eventPricingRepository from '../../repositories/events/eventSeries/eventPricingRepository'
 import { Recurrence } from '../../common/valueObjects/Recurrence'
-import eventsRepository from '../../repositories/eventsRepository'
 import { format } from 'date-fns'
 import { dateRangeValidatorService } from '../../services/DateRangeValidatorService'
 import { TRPCClientError } from '@trpc/client'
-import eventExceptionsRepository from '../../repositories/eventExceptionsRepository'
-import eventExceptionsPricingRepository from '../../repositories/eventExceptionsPricingRepository'
+import eventExceptionsPricingRepository from '../../repositories/events/eventExceptions/eventExceptionsPricingRepository'
+import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
+import eventExceptionsRepository from '../../repositories/events/eventExceptions/eventExceptionsRepository'
 
 export async function saveEventPricingsCommand(
   req: QuoteBuilder,
