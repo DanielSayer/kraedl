@@ -11,7 +11,7 @@ import { single } from '../common/helperMethods/arrayHelpers'
 import { mapEvents } from './actions/eventsActions'
 
 type EventDto = {
-  name?: string
+  name: string
   clientId: string
   startTime: Date
   endTime: Date
@@ -63,12 +63,11 @@ class EventsRepository {
         name: events.name,
         startTime: events.startTime,
         endTime: events.endTime,
-        clientName: clients.name,
+        clientId: events.clientId,
         rrule: events.rrule,
         invoicedAt: invoices.issueDate,
       })
       .from(events)
-      .innerJoin(clients, eq(clients.id, events.clientId))
       .leftJoin(invoiceEventLink, eq(invoiceEventLink.eventId, events.id))
       .leftJoin(invoices, eq(invoices.id, invoiceEventLink.invoiceId))
       .where(and(eq(events.id, eventId), eq(events.businessId, businessId)))

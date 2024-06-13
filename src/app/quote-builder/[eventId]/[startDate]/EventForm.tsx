@@ -30,6 +30,8 @@ export const EventForm = ({
   const form = useForm<QuoteBuilder>({
     defaultValues: {
       eventId: event.id,
+      name: event.name ?? undefined,
+      clientId: event.clientId,
       date: event.date,
       startTime: event.startTime,
       endTime: event.endTime,
@@ -60,7 +62,7 @@ export const EventForm = ({
       <form onSubmit={form.handleSubmit(handleSubmit)} id="quote-builder">
         <div className="space-y-4">
           <div className="grid grid-cols-8 gap-4">
-            <EventInfo eventName={event.name} clientName={event.clientName} />
+            <EventInfo />
             <div className="col-span-3 h-full">
               <Recurrence />
             </div>

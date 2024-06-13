@@ -2,10 +2,10 @@ import type { Recurrence } from '../valueObjects/Recurrence'
 
 type Event = {
   id: string
-  name: string | null
+  name: string
   startTime: Date
   endTime: Date
-  clientName: string
+  clientId: string
   invoicedAt: string | null
 }
 

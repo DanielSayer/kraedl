@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   DollarSign,
   EllipsisVertical,
+  Eye,
   Ghost,
   Info,
   Laptop,
@@ -52,4 +53,5 @@ export const Icons = {
   system: Laptop,
   user: User,
   users: Users,
+  view: Eye,
 }
