@@ -6,6 +6,7 @@ import type { z } from 'zod'
 import { Recurrence, addTime } from '../../common/valueObjects/Recurrence'
 import type { EventWithLineItemTotals } from '../../repositories/actions/eventsActions'
 import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
+import eventExceptionsRepository from '../../repositories/events/eventExceptions/eventExceptionsRepository'
 
 type GetEventsInRangeRequest = z.infer<typeof getEventsInRangeSchema>
 
@@ -32,7 +33,18 @@ export async function getEventsInRange(
     getProjections(recurrence, event, range),
   )
 
-  return eventProjections.map((event) => ({
+  const eventExceptions = await eventExceptionsRepository.getEventsInDateRange(
+    start.toISOString(),
+    end.toISOString(),
+    businessId,
+  )
+
+  const eventsToDisplay = removeProjectionsWithExceptions(
+    eventProjections,
+    eventExceptions,
+  )
+
+  return eventsToDisplay.map((event) => ({
     id: event.id,
     name: event.name,
     clientName: event.clientName,
@@ -127,4 +139,19 @@ function isEventInRange(
     eventStart.getTime() >= new Date(queryStart).getTime() &&
     eventEnd.getTime() <= new Date(queryEnd).getTime()
   )
+}
+
+function removeProjectionsWithExceptions(
+  projections: EventWithLineItemTotals[],
+  exceptions: EventWithLineItemTotals[],
+): EventWithLineItemTotals[] {
+  const projectionsWithoutExceptions = projections.filter((projection) => {
+    return !exceptions.some(
+      (exception) =>
+        exception.eventId === projection.id &&
+        exception.startTime.getTime() === projection.startTime.getTime(),
+    )
+  })
+
+  return [...projectionsWithoutExceptions, ...exceptions]
 }

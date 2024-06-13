@@ -81,7 +81,7 @@ async function handleThisSaveType(
   businessId: string,
   dateRange: DateRange,
 ) {
-  await eventExceptionsRepository.create({
+  const { id } = await eventExceptionsRepository.create({
     eventId: req.eventId,
     name: req.name,
     clientId: req.clientId,
@@ -93,7 +93,7 @@ async function handleThisSaveType(
 
   await eventExceptionsPricingRepository.insertEventExceptionPricings(
     req.eventPricings,
-    req.eventId,
+    id,
   )
 }
 

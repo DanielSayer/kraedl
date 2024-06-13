@@ -1,5 +1,7 @@
 import type { DropdownOption } from './components/dropdownItem'
 
+export const DEFAULT_RRULE = 'FREQ=NONE'
+
 export const recurrenceFrequencies = [
   'NONE',
   'DAILY',

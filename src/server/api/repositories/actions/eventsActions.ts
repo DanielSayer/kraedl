@@ -1,15 +1,19 @@
+import { DEFAULT_RRULE } from '@/types/recurrence'
+
 type EventRawData = {
   id: string
+  eventId: string
   name: string
   clientName: string
   startTime: Date
   endTime: Date
-  rrule: string
+  rrule?: string
   lineItemTotal: string | null
 }
 
 export type EventWithLineItemTotals = {
   id: string
+  eventId: string
   name: string
   clientName: string
   startTime: Date
@@ -25,11 +29,12 @@ export const mapEvents = (data: EventRawData[]) => {
     if (!eventMap.has(item.id)) {
       eventMap.set(item.id, {
         id: item.id,
+        eventId: item.eventId,
         name: item.name,
         clientName: item.clientName,
         startTime: item.startTime,
         endTime: item.endTime,
-        rrule: item.rrule,
+        rrule: item.rrule ?? DEFAULT_RRULE,
         lineItemsTotal: [] as string[],
       })
     }

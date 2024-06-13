@@ -349,7 +349,7 @@ export const eventExceptions = createTable('eventExceptions', {
   eventId: uuid('eventId')
     .notNull()
     .references(() => events.id),
-  name: varchar('name', { length: 255 }),
+  name: varchar('name', { length: 255 }).notNull(),
   clientId: uuid('clientId').notNull(),
   eventStartTime: timestamp('eventStartTime', {
     mode: 'date',

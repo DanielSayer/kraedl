@@ -37,6 +37,7 @@ class EventsRepository {
     const rawEventInRangeData = await db
       .select({
         id: events.id,
+        eventId: events.id,
         name: events.name,
         clientName: clients.name,
         startTime: events.startTime,
