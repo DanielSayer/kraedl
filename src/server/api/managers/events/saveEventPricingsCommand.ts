@@ -9,7 +9,7 @@ import eventExceptionsPricingRepository from '../../repositories/events/eventExc
 import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
 import eventExceptionsRepository from '../../repositories/events/eventExceptions/eventExceptionsRepository'
 
-export async function saveEventPricingsCommand(
+export async function saveEventCommand(
   req: QuoteBuilder,
   businessId: string,
   timezone: string,

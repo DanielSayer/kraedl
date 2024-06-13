@@ -3,12 +3,15 @@ import {
   getEventsForInvoicesSchema,
   eventIdSchema,
   getEventsInRangeSchema,
+  quoteBuilderSchema,
 } from '@/lib/validations/events'
 import { createEventCommand } from '../../managers/events/createEventCommand'
 import { getEventById } from '../../managers/events/getEventById'
 import { getEventsInRange } from '../../managers/events/getEventsInRange'
 import { adminProcedure, createTRPCRouter } from '../../trpc'
 import { getPastEventsForInvoice } from '../../managers/events/getPastEventsForInvoice'
+import { saveEventCommand } from '../../managers/events/saveEventPricingsCommand'
+import { fromResult } from '../../common/fromResult'
 
 export const eventRouter = createTRPCRouter({
   create: adminProcedure
@@ -34,5 +37,15 @@ export const eventRouter = createTRPCRouter({
         input.pageSize,
         input.pageIndex,
       )
+    }),
+  save: adminProcedure
+    .input(quoteBuilderSchema)
+    .mutation(async ({ input, ctx }) => {
+      const result = await saveEventCommand(
+        input,
+        ctx.businessId,
+        ctx.session.user.timezone,
+      )
+      return fromResult(result)
     }),
 })

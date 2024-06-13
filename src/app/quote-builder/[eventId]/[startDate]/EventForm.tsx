@@ -48,7 +48,7 @@ export const EventForm = ({
     resolver: zodResolver(quoteBuilderSchema),
   })
 
-  const { isPending, mutateAsync } = api.eventPricing.save.useMutation({
+  const { isPending, mutateAsync } = api.events.save.useMutation({
     onError: (e) => form.setError('root', { message: e.message }),
     onSuccess: () => toast.success('Successfully saved'),
   })
