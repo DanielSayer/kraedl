@@ -1,9 +1,8 @@
-import { TRPCClientError } from '@trpc/client'
-import { convertDateAndTimeToDate } from '../../common/helperMethods/dateHelpers'
-import DateRange from '../../common/valueObjects/DateRange'
-import eventsRepository from '../../repositories/eventsRepository'
-import type { z } from 'zod'
 import type { createEventSchema } from '@/lib/validations/events'
+import { TRPCClientError } from '@trpc/client'
+import type { z } from 'zod'
+import eventsRepository from '../../repositories/eventsRepository'
+import { dateRangeValidatorService } from '../../services/DateRangeValidatorService'
 
 type EventRequest = z.infer<typeof createEventSchema>
 
@@ -12,27 +11,27 @@ export async function createEventCommand(
   businessId: string,
   timezone: string,
 ) {
-  const startDate = convertDateAndTimeToDate(
+  const dateRangeResult = dateRangeValidatorService(
     request.startTime,
-    request.date,
-    timezone,
-  )
-  const endDate = convertDateAndTimeToDate(
     request.endTime,
     request.date,
     timezone,
   )
-
-  const dateRangeResult = DateRange.NewResult(startDate, endDate)
   if (dateRangeResult.IsFailure) {
     throw new TRPCClientError(
       `${dateRangeResult.Error} If this is intentional and multi-day events are required, please contact support`,
     )
   }
+
   const dateRange = dateRangeResult.Value
+  let name = request.name
+  if (!name) {
+    name = 'Untitled Event'
+  }
+
   return await eventsRepository.create({
     clientId: request.clientId,
-    name: request.name === '' ? 'Untitled Event' : request.name,
+    name: name,
     startTime: dateRange.Start,
     endTime: dateRange.End,
     businessId: businessId,

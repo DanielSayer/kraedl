@@ -1,6 +1,6 @@
 type EventRawData = {
   id: string
-  name: string | null
+  name: string
   clientName: string
   startTime: Date
   endTime: Date
@@ -10,7 +10,7 @@ type EventRawData = {
 
 export type EventWithLineItemTotals = {
   id: string
-  name: string | null
+  name: string
   clientName: string
   startTime: Date
   endTime: Date

@@ -121,8 +121,19 @@ class EventsRepository {
       .limit(pageSize)
       .orderBy(desc(events.endTime))
   }
-  async updateEventRecurrence(rrule: string, until: Date, eventId: string) {
-    await db.update(events).set({ rrule, until }).where(eq(events.id, eventId))
+  async updateEvent(
+    name: string,
+    clientId: string,
+    startTime: Date,
+    endTime: Date,
+    rrule: string,
+    until: Date,
+    eventId: string,
+  ) {
+    await db
+      .update(events)
+      .set({ name, clientId, startTime, endTime, rrule, until })
+      .where(eq(events.id, eventId))
   }
 }
 

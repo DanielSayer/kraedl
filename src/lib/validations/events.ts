@@ -36,7 +36,10 @@ const recurrenceSchema = z.object({
 
 export const quoteBuilderSchema = z.object({
   eventId: z.string().uuid(),
-  name: z.string().max(255, 'Name must be less than 255 characters').optional(),
+  name: z
+    .string()
+    .min(1, 'Name is required')
+    .max(255, 'Name must be less than 255 characters'),
   clientId: z.string().min(1, 'Client is required'),
   startTime: time,
   endTime: time,

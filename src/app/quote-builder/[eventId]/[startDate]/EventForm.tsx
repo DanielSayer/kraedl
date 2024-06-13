@@ -30,7 +30,7 @@ export const EventForm = ({
   const form = useForm<QuoteBuilder>({
     defaultValues: {
       eventId: event.id,
-      name: event.name ?? undefined,
+      name: event.name,
       clientId: event.clientId,
       date: event.date,
       startTime: event.startTime,

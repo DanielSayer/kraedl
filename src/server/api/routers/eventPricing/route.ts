@@ -11,7 +11,11 @@ export const eventPricingRouter = createTRPCRouter({
   save: adminProcedure
     .input(quoteBuilderSchema)
     .mutation(async ({ input, ctx }) => {
-      const result = await saveEventPricingsCommand(input, ctx.businessId)
+      const result = await saveEventPricingsCommand(
+        input,
+        ctx.businessId,
+        ctx.session.user.timezone,
+      )
       return fromResult(result)
     }),
 })

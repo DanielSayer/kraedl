@@ -24,6 +24,7 @@ export async function getEventById(
   if (!projectedEvent) {
     throw new Error(`Event ${event.id} could not calculate projection`)
   }
+
   return {
     ...projectedEvent,
     date: format(projectedEvent.startTime, 'yyyy-MM-dd'),

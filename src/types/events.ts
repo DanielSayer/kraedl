@@ -2,7 +2,7 @@ import type { Recurrence } from './recurrence'
 
 export type Event = {
   id: string
-  name: string | null
+  name: string
   clientName: string
   startTime: Date
   endTime: Date
@@ -14,7 +14,7 @@ export type EventStatus = 'DRAFT' | 'READY'
 export type QuoteEvent = {
   id: string
   clientId: string
-  name: string | null
+  name: string
   startTime: string
   endTime: string
   date: string
