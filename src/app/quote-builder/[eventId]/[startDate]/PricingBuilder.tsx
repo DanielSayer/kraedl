@@ -15,16 +15,21 @@ import { api } from '@/trpc/react'
 import { getNewPricingLine } from '@/types/pricingLines'
 import { useMemo } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import { PricingLineRow } from './PricingLineRow'
+import { LoadingPricingLineRow, PricingLineRow } from './PricingLineRow'
 
 type PricingBuilderProps = {
+  isLoading: boolean
   isReadOnly: boolean
 }
 
-export const PricingBuilder = ({ isReadOnly }: PricingBuilderProps) => {
+export const PricingBuilder = ({
+  isLoading,
+  isReadOnly,
+}: PricingBuilderProps) => {
   const { watch } = useFormContext<QuoteBuilder>()
   const { append } = useFieldArray<QuoteBuilder>({ name: 'eventPricings' })
-  const { data: pricings, isLoading } = api.pricing.getPricings.useQuery()
+  const { data: pricings, isLoading: isPricingLoading } =
+    api.pricing.getPricings.useQuery()
   const pricingLines = watch('eventPricings')
 
   const getPriceForItem = (selectedPriceId: string) => {
@@ -70,15 +75,19 @@ export const PricingBuilder = ({ isReadOnly }: PricingBuilderProps) => {
           <Icons.add className="mr-2 h-4 w-4" /> Pricing line
         </Button>
         <div className="flex flex-col gap-4">
-          {pricingLines.map((line, index) => (
-            <PricingLineRow
-              key={line.id}
-              index={index}
-              pricingOptions={pricingOptions}
-              isPricingLoading={isLoading}
-              getPriceForItem={getPriceForItem}
-            />
-          ))}
+          {isLoading ? (
+            <LoadingPricingLineRow />
+          ) : (
+            pricingLines.map((line, index) => (
+              <PricingLineRow
+                key={line.id}
+                index={index}
+                pricingOptions={pricingOptions}
+                isPricingLoading={isPricingLoading}
+                getPriceForItem={getPriceForItem}
+              />
+            ))
+          )}
         </div>
         <Separator className="my-4" />
         <div className="flex items-center justify-between">

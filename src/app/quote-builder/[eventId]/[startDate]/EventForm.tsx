@@ -6,7 +6,6 @@ import { Form } from '@/components/ui/form'
 import { quoteBuilderSchema, type QuoteBuilder } from '@/lib/validations/events'
 import { api } from '@/trpc/react'
 import type { QuoteEvent } from '@/types/events'
-import type { PricingLine } from '@/types/pricingLines'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -19,14 +18,18 @@ import SaveRecurrenceDialog from './SaveRecurrenceDialog'
 type EventFormProps = {
   isReadOnly: boolean
   event: QuoteEvent
-  pricingLines: PricingLine[]
+  eventStart: string
 }
 
 export const EventForm = ({
   isReadOnly,
   event,
-  pricingLines,
+  eventStart,
 }: EventFormProps) => {
+  const { data: pricingLines, isLoading } = api.eventPricing.getById.useQuery({
+    id: event.id,
+    startDate: eventStart,
+  })
   const form = useForm<QuoteBuilder>({
     defaultValues: {
       eventId: event.id,
@@ -35,7 +38,7 @@ export const EventForm = ({
       date: event.date,
       startTime: event.startTime,
       endTime: event.endTime,
-      eventPricings: pricingLines,
+      eventPricings: pricingLines ?? [],
       saveType: undefined,
       recurrence: {
         frequency: event.recurrence.frequency,
@@ -67,7 +70,7 @@ export const EventForm = ({
               <Recurrence />
             </div>
           </div>
-          <PricingBuilder isReadOnly={isReadOnly} />
+          <PricingBuilder isReadOnly={isReadOnly} isLoading={isLoading} />
           <ErrorMessage>{form.formState.errors.root?.message}</ErrorMessage>
           <div className="flex justify-end gap-2">
             <Link

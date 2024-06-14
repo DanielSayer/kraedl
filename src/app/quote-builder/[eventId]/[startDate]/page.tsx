@@ -28,10 +28,6 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
     redirect('/scheduler')
   }
 
-  const pricingLines = await api.eventPricing.getById({
-    id: event.id,
-    startDate: eventStartDate,
-  })
   const isInvoiced = () => {
     return !!event.invoicedAt
   }
@@ -46,7 +42,7 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
       <EventForm
         event={event}
         isReadOnly={isInvoiced()}
-        pricingLines={pricingLines}
+        eventStart={eventStartDate}
       />
     </div>
   )

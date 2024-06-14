@@ -137,3 +137,46 @@ export const PricingLineRow = ({
     </Card>
   )
 }
+
+export const LoadingPricingLineRow = () => {
+  return (
+    <Card>
+      <CardContent className="flex items-end justify-between p-6 pt-4">
+        <div className="grid w-11/12 grid-cols-6 gap-4">
+          <FormItem className="col-span-3 space-y-1">
+            <FormLabel>Pricing Name</FormLabel>
+            <Combobox isLoading={true} />
+          </FormItem>
+          <FormItem className="space-y-1">
+            <FormLabel>Quantity</FormLabel>
+            <Input type="number" step={0.5} min={0} />
+          </FormItem>
+          <div className="space-y-1">
+            <Label htmlFor="price_per">Price per</Label>
+            <IconInput
+              startIcon={Icons.money}
+              id="price_per"
+              readOnly
+              disabled
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="total">Total Price</Label>
+            <IconInput startIcon={Icons.money} id="total" readOnly disabled />
+          </div>
+        </div>
+        <div className="me-4">
+          <Button
+            className="hover:bg-destructive hover:text-background"
+            variant="outline"
+            size="icon"
+            type="button"
+            disabled
+          >
+            <Icons.delete className="h-4 w-4" />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
