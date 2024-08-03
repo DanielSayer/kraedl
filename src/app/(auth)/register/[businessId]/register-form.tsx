@@ -73,6 +73,7 @@ const RegisterForm = (props: { businessId: string }) => {
               <FormField
                 control={form.control}
                 name="password"
+                rules={{ deps: ['confirmPassword'] }}
                 render={({ field }) => (
                   <PasswordField field={field} isLoading={isPending} />
                 )}
@@ -81,8 +82,10 @@ const RegisterForm = (props: { businessId: string }) => {
               <FormField
                 control={form.control}
                 name="confirmPassword"
+                rules={{ deps: ['password'] }}
                 render={({ field }) => (
                   <PasswordField
+                    placeholder="confirm password"
                     field={field}
                     isLoading={isPending}
                     isConfirm

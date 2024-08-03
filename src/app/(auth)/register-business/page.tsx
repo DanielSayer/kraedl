@@ -19,7 +19,7 @@ const Page = async () => {
           </div>
           <RegisterBusinessForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
-            Already have an accout?{' '}
+            Already have an account?{' '}
             <Link href={'/sign-in'} className="underline underline-offset-4">
               Sign in
             </Link>

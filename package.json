@@ -83,10 +83,10 @@
     "prettier": "^3.3.0",
     "prettier-plugin-tailwindcss": "^0.6.1",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.4"
   },
   "ct3aMetadata": {
     "initVersion": "7.31.0"
   },
-  "packageManager": "pnpm@9.1.1"
+  "packageManager": "pnpm@9.5.0"
 }

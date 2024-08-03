@@ -207,6 +207,7 @@ export const PasswordField = ({
   field,
   isLoading,
   isConfirm,
+  placeholder,
 }: PasswordFieldProps) => {
   const name = isConfirm ? 'confirmPassword' : 'password'
   return (
@@ -217,7 +218,7 @@ export const PasswordField = ({
       <FormControl>
         <Input
           id={name}
-          placeholder="password"
+          placeholder={placeholder ?? 'password'}
           type="password"
           autoCapitalize="none"
           autoComplete={isConfirm ? 'current-password' : 'new-password'}
