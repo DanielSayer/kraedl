@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { api } from '@/trpc/server'
-import SideNav from './SideNav'
+import SideNav from './side-nav'
 import { Icons } from '@/components/Icons'
 import Link from 'next/link'
 

@@ -13,7 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { formatCurrency } from '@/lib/currencyUtils'
-import NewPricingPackageButton from './NewPricingPackageButton'
+import NewPricingPackageButton from './new-pricing-package-button'
 import { api } from '@/trpc/react'
 import { Skeleton } from '@/components/ui/skeleton'
 

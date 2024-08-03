@@ -2,8 +2,8 @@ import DialogButton from '@/components/DialogButton'
 import { Icons } from '@/components/Icons'
 import useProtectedRoute from '@/hooks/useProtectedRoute'
 import { api } from '@/trpc/server'
-import AddClientModalContent from './AddClientModal'
-import ClientView from './ClientView'
+import AddClientModalContent from './add-client-modal'
+import ClientView from './client-view'
 
 export default async function Page() {
   await useProtectedRoute()

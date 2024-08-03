@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { SidebarNav } from './SidebarNav'
+import { SidebarNav } from './sidebar-nav'
 import useProtectedRoute from '@/hooks/useProtectedRoute'
 
 const sidebarNavItems = [

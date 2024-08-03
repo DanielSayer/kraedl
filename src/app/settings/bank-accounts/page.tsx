@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator'
-import { BankDetailsForm } from './BankDetailsForm'
+import { BankDetailsForm } from './bank-details-form'
 import { api } from '@/trpc/server'
 
 export default async function Page() {

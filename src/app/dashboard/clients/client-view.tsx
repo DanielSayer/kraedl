@@ -15,7 +15,7 @@ import { formatPhoneNumber } from '@/lib/phoneNumberUtils'
 import type { ClientWithAddress } from '@/types/clients'
 import Link from 'next/link'
 import { useState } from 'react'
-import ClientPreview from './ClientPreview'
+import ClientPreview from './client-preview'
 
 type ClientViewProps = {
   clients: ClientWithAddress[]

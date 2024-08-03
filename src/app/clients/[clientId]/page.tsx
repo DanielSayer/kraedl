@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import useProtectedRoute from '@/hooks/useProtectedRoute'
 import { formatPhoneNumber } from '@/lib/phoneNumberUtils'
 import { api } from '@/trpc/server'
-import { ClientHeader } from './ClientHeader'
+import { ClientHeader } from './client-header'
 
 interface ClientPageProps {
   params: {
