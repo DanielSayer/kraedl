@@ -5,7 +5,7 @@ const useProtectedRoute = async () => {
   const session = await getServerAuthSession()
 
   if (!session) {
-    redirect('/signIn')
+    redirect('/sign-in')
   }
 
   return { session, user: session.user }

@@ -1,7 +1,7 @@
 import { Icons } from '@/components/Icons'
 import { getServerAuthSession } from '@/server/auth'
 import { redirect } from 'next/navigation'
-import SignInForm from './SignInForm'
+import SignInForm from './sign-in-form'
 
 const Page = async () => {
   const session = await getServerAuthSession()

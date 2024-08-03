@@ -1,7 +1,6 @@
 import Link from 'next/link'
-
-import RegisterBusinessForm from '@/app/(auth)/registerBusiness/RegisterBusinessForm'
 import { Icons } from '@/components/Icons'
+import RegisterBusinessForm from './register-business-form'
 
 const Page = async () => {
   return (
@@ -21,7 +20,7 @@ const Page = async () => {
           <RegisterBusinessForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
             Already have an accout?{' '}
-            <Link href={'/signIn'} className="underline underline-offset-4">
+            <Link href={'/sign-in'} className="underline underline-offset-4">
               Sign in
             </Link>
           </p>

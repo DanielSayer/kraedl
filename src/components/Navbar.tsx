@@ -37,7 +37,7 @@ const NavItems = ({ session }: { session: Session | null }) => {
     return (
       <>
         <Link
-          href={'/signIn'}
+          href={'/sign-in'}
           className={buttonVariants({
             variant: 'ghost',
             size: 'sm',
@@ -46,7 +46,7 @@ const NavItems = ({ session }: { session: Session | null }) => {
           Sign in
         </Link>
         <Link
-          href={'/registerBusiness'}
+          href={'/register-business'}
           className={buttonVariants({
             size: 'sm',
           })}

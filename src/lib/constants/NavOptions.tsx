@@ -13,11 +13,11 @@ export const notAuthorizedNavOptions: NavOption[] = [
         Get Started <Icons.arrowRight className="ml-2 h-5 w-5" />
       </>
     ),
-    ref: '/registerBusiness',
+    ref: '/register-business',
   },
   {
     title: 'Sign In',
-    ref: '/signIn',
+    ref: '/sign-in',
   },
 ]
 

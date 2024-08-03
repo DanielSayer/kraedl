@@ -1,7 +1,7 @@
 import { Icons } from '@/components/Icons'
 import { api } from '@/trpc/server'
 import { notFound } from 'next/navigation'
-import RegisterForm from './RegisterForm'
+import RegisterForm from './register-form'
 
 interface RegisterAdminPageProps {
   params: {

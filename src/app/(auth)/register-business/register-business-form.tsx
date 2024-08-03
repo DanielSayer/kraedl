@@ -155,7 +155,7 @@ const RegisterBusinessForm = () => {
               />
             </div>
             <LoadingButton isLoading={isPending} loadingText="Registering...">
-              RegisterBusiness
+              Register Business
             </LoadingButton>
             <FormMessage>{form.formState.errors?.root?.message}</FormMessage>
           </div>
