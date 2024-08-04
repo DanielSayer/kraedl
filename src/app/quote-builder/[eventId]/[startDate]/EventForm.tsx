@@ -14,6 +14,7 @@ import { EventInfo } from './EventInfo'
 import { PricingBuilder } from './PricingBuilder'
 import { Recurrence } from './Recurrence'
 import SaveRecurrenceDialog from './SaveRecurrenceDialog'
+import { useState } from 'react'
 
 type EventFormProps = {
   isReadOnly: boolean
@@ -26,6 +27,8 @@ export const EventForm = ({
   event,
   eventStart,
 }: EventFormProps) => {
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState<boolean>(false)
+  const toggleSaveDialog = () => setIsSaveDialogOpen(!isSaveDialogOpen)
   const { data: pricingLines, isLoading } = api.eventPricing.getById.useQuery({
     id: event.id,
     startDate: eventStart,
@@ -53,7 +56,12 @@ export const EventForm = ({
 
   const { isPending, mutateAsync } = api.events.save.useMutation({
     onError: (e) => form.setError('root', { message: e.message }),
-    onSuccess: () => toast.success('Successfully saved'),
+    onSuccess: () => {
+      if (isSaveDialogOpen) {
+        toggleSaveDialog()
+      }
+      toast.success('Successfully saved')
+    },
   })
 
   const handleSubmit = async (data: QuoteBuilder) => {
@@ -80,6 +88,8 @@ export const EventForm = ({
               Go back
             </Link>
             <SaveRecurrenceDialog
+              isOpen={isSaveDialogOpen}
+              toggle={toggleSaveDialog}
               isPending={isPending}
               isReadOnly={isReadOnly}
             />
