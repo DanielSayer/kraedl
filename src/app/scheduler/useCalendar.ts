@@ -12,6 +12,7 @@ const useCalendar = () => {
     key: 'calendarDate',
     defaultValue: new Date(),
   })
+  const [referenceDate, setReferenceDate] = useState<Date>(selectedDate)
   const [dateRange, setDateRange] = useState<DateRange>({
     start: new Date(),
     end: new Date(),
@@ -35,6 +36,7 @@ const useCalendar = () => {
       end: args.view.activeEnd,
     })
     setSelectedDate(args.view.calendar.getDate())
+    setReferenceDate(args.view.calendar.getDate())
   }
 
   const handleSelectDate = (date: Date | undefined) => {
@@ -42,6 +44,11 @@ const useCalendar = () => {
     const selectDate = date ?? new Date()
     calendar.gotoDate(selectDate)
     setSelectedDate(selectDate)
+    setReferenceDate(selectDate)
+  }
+
+  const handleChangeReferenceDate = (date: Date) => {
+    setReferenceDate(date)
   }
 
   useEffect(() => {
@@ -57,8 +64,10 @@ const useCalendar = () => {
     calendarRef,
     selectedDate,
     dateRange,
+    referenceDate,
     datesSet,
     handleSelectDate,
+    handleChangeReferenceDate,
   }
 }
 
