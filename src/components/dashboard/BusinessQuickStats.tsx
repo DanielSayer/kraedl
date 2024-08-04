@@ -43,7 +43,7 @@ export const BusinessQuickStats = () => {
               {formatCurrency(sales.data?.total.toString() ?? '')}
             </div>
             <div className="text-xs text-muted-foreground">
-              <p>this month</p>
+              <p>so far this month</p>
               {sales.data?.comparison}
             </div>
           </CardContent>

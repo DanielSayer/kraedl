@@ -39,8 +39,8 @@ export const getBusinsessGrossIncome = async (businessId: string) => {
 
   const comparison =
     ratio < 100
-      ? `-${100 - ratio}% from last month`
-      : `+${ratio - 100}% from last month`
+      ? `-${100 - ratio}% from this time last month`
+      : `+${ratio - 100}% from this time last month`
   return {
     total: thisMonthsTotal,
     comparison,
