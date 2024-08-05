@@ -4,7 +4,6 @@ import { addTime, Recurrence } from '../common/valueObjects/Recurrence'
 import type { EventWithLineItemTotals } from '../repositories/actions/eventsActions'
 import eventExceptionsRepository from '../repositories/events/eventExceptions/eventExceptionsRepository'
 import eventsRepository from '../repositories/events/eventSeries/eventsRepository'
-import { is } from 'drizzle-orm'
 
 type Range = {
   start: Date
