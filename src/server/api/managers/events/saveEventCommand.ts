@@ -45,8 +45,9 @@ export async function saveEventCommand(
   const recurrence = recurrenceResult.Value
   const untilDate = recurrence.getRecurrenceEnd(dateRange.End)
 
-  for (const pricing of req.eventPricings) {
-    const computedQuantity = parseFloat(pricing.quantity)
+  const unformattedPricingLines: QuoteBuilder['eventPricings'] = []
+  req.eventPricings.forEach((p) => {
+    const computedQuantity = parseFloat(p.quantity)
     if (
       isNaN(computedQuantity) ||
       !isFinite(computedQuantity) ||
@@ -54,17 +55,26 @@ export async function saveEventCommand(
     ) {
       return Result.Failure('Quantity must be a positive number')
     }
+    unformattedPricingLines.push({
+      ...p,
+      totalPrice: p.totalPrice.replaceAll(',', ''),
+    })
+  })
+
+  const updatedEvent: QuoteBuilder = {
+    ...req,
+    eventPricings: unformattedPricingLines,
   }
 
-  switch (req.saveType) {
+  switch (updatedEvent.saveType) {
     case 'future':
       throw new TRPCClientError('Not implemented')
     case 'this':
-      await handleThisSaveType(req, businessId, dateRange)
+      await handleThisSaveType(updatedEvent, businessId, dateRange)
       break
     default:
       await handleDefaultSaveType(
-        req,
+        updatedEvent,
         event.id,
         dateRange,
         recurrence.RecurrenceRule,
