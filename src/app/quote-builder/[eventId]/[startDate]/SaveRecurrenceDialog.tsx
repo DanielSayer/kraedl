@@ -23,13 +23,17 @@ import type { QuoteBuilder } from '@/lib/validations/events'
 import { useFormContext } from 'react-hook-form'
 
 type SaveRecurrenceDialogProps = {
+  isOpen: boolean
   isPending: boolean
   isReadOnly: boolean
+  toggle: () => void
 }
 
 const SaveRecurrenceDialog = ({
+  isOpen,
   isReadOnly,
   isPending,
+  toggle,
 }: SaveRecurrenceDialogProps) => {
   const { formState, control } = useFormContext<QuoteBuilder>()
   const hasChanged = !isEmpty(formState.dirtyFields)
@@ -50,7 +54,7 @@ const SaveRecurrenceDialog = ({
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={toggle}>
       <DialogTrigger asChild>
         <Button type="button">Save</Button>
       </DialogTrigger>

@@ -1,5 +1,6 @@
 import { addDays, addMonths, lastDayOfWeek, startOfMonth } from 'date-fns'
 import dashboardRepository from '../../repositories/dashboardRespository'
+import { eventsService } from '../../services/eventsService'
 
 export const getUpcomingEventsQuery = async (businessId: string) => {
   return await dashboardRepository.getUpcomingAppointments(businessId)
@@ -21,19 +22,17 @@ export const getNumberOfEventsInLastMonth = async (businessId: string) => {
   const thisTimeLastMonth = addMonths(today, -1)
   const startOfLastMonth = startOfMonth(thisTimeLastMonth)
 
-  const thisMonthsEvents =
-    await dashboardRepository.getNumberOfEventsInDateRange(
-      startOfTheMonth,
-      today,
-      businessId,
-    )
+  const thisMonthsEvents = (
+    await eventsService.getEventsInRange(startOfTheMonth, today, businessId)
+  ).length
 
-  const lastMonthsEvents =
-    await dashboardRepository.getNumberOfEventsInDateRange(
+  const lastMonthsEvents = (
+    await eventsService.getEventsInRange(
       startOfLastMonth,
       thisTimeLastMonth,
       businessId,
     )
+  ).length
 
   if (lastMonthsEvents === 0) {
     return {
@@ -45,8 +44,8 @@ export const getNumberOfEventsInLastMonth = async (businessId: string) => {
   const ratio = Math.round((thisMonthsEvents * 100) / lastMonthsEvents)
   const comparison =
     ratio < 100
-      ? `-${100 - ratio}% from last month`
-      : `+${ratio - 100}% from last month`
+      ? `-${100 - ratio}% from this time last month`
+      : `+${ratio - 100}% from this time last month`
 
   return {
     total: thisMonthsEvents,

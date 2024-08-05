@@ -28,7 +28,7 @@ export const BusinessQuickStats = () => {
           <CardContent>
             <div className="text-2xl font-bold">{monthsEvents.data?.total}</div>
             <div className="text-xs text-muted-foreground">
-              <p>this month</p>
+              <p>completed this month</p>
               {monthsEvents.data?.comparison}
             </div>
           </CardContent>
@@ -43,7 +43,7 @@ export const BusinessQuickStats = () => {
               {formatCurrency(sales.data?.total.toString() ?? '')}
             </div>
             <div className="text-xs text-muted-foreground">
-              <p>this month</p>
+              <p>so far this month</p>
               {sales.data?.comparison}
             </div>
           </CardContent>
