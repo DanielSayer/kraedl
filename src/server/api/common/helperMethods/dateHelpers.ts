@@ -9,7 +9,7 @@ export function convertDateAndTimeToDate(
   const convertedDate = DateTime.fromISO(fomattedDateTime, { zone: timezone })
   const isoDate = convertedDate.toISO()
   if (!isoDate) {
-    return new Date()
+    return new Date(fomattedDateTime)
   }
   return new Date(isoDate)
 }
