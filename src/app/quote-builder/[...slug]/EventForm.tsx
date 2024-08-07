@@ -11,30 +11,34 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { EventInfo } from './EventInfo'
+import { useState } from 'react'
 import { PricingBuilder } from './PricingBuilder'
 import { Recurrence } from './Recurrence'
 import SaveRecurrenceDialog from './SaveRecurrenceDialog'
-import { useState } from 'react'
 
 type EventFormProps = {
   isReadOnly: boolean
   event: QuoteEvent
   eventStart: string
+  exceptionId: string | undefined
 }
 
 export const EventForm = ({
   isReadOnly,
   event,
   eventStart,
+  exceptionId,
 }: EventFormProps) => {
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState<boolean>(false)
   const toggleSaveDialog = () => setIsSaveDialogOpen(!isSaveDialogOpen)
   const { data: pricingLines, isLoading } = api.eventPricing.getById.useQuery({
     id: event.id,
     startDate: eventStart,
+    exceptionId,
   })
+
   const form = useForm<QuoteBuilder>({
-    defaultValues: {
+    values: {
       eventId: event.id,
       name: event.name,
       clientId: event.clientId,

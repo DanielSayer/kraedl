@@ -1,14 +1,19 @@
 import { format } from 'date-fns'
 import { getProjectedEvent } from '../../common/helperMethods/eventHelpers'
 import { Recurrence } from '../../common/valueObjects/Recurrence'
-import eventsRepository from '../../repositories/events/eventSeries/eventsRepository'
+import { eventsService } from '../../services/eventsService'
 
 export async function getEventById(
   eventId: string,
   startDate: string,
+  exceptionId: string | undefined,
   businessId: string,
 ) {
-  const event = await eventsRepository.getById(eventId, businessId)
+  const event = await eventsService.getEventById(
+    eventId,
+    exceptionId,
+    businessId,
+  )
   const recurrenceResult = Recurrence.TryCreate(
     event.rrule,
     format(event.startTime, 'yyyy-MM-dd'),

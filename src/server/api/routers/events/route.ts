@@ -26,7 +26,12 @@ export const eventRouter = createTRPCRouter({
       return await getEventsInRange(input, ctx.businessId)
     }),
   getById: adminProcedure.input(eventIdSchema).query(async ({ ctx, input }) => {
-    return await getEventById(input.id, input.startDate, ctx.businessId)
+    return await getEventById(
+      input.id,
+      input.startDate,
+      input.exceptionId,
+      ctx.businessId,
+    )
   }),
   getPastEvents: adminProcedure
     .input(getEventsForInvoicesSchema)

@@ -3,11 +3,11 @@ import useProtectedRoute from '@/hooks/useProtectedRoute'
 import { api } from '@/trpc/server'
 import { redirect } from 'next/navigation'
 import { EventForm } from './EventForm'
+import { z } from 'zod'
 
 interface QuoteBuilderPageProps {
   params: {
-    eventId: string
-    startDate: string
+    slug: string[]
   }
 }
 
@@ -17,12 +17,28 @@ const getPageDescription = (isInvoiced: boolean) => {
     : 'Manage your event here.'
 }
 
+const validateSlug = (slug: string[]) => {
+  try {
+    const eventId = z.string().uuid().parse(slug[0])
+    const startDate = z
+      .string()
+      .datetime()
+      .parse(decodeURIComponent(slug[1] ?? ''))
+    const exceptionId = z.string().uuid().optional().parse(slug[2])
+    return { eventId, startDate, exceptionId }
+  } catch (e) {
+    redirect('/scheduler')
+  }
+}
+
 export default async function Page({ params }: QuoteBuilderPageProps) {
   await useProtectedRoute()
-  const eventStartDate = decodeURIComponent(params.startDate)
+  const { eventId, startDate, exceptionId } = validateSlug(params.slug)
+
   const event = await api.events.getById({
-    id: params.eventId,
-    startDate: eventStartDate,
+    id: eventId,
+    startDate,
+    exceptionId,
   })
   if (!event) {
     redirect('/scheduler')
@@ -42,7 +58,8 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
       <EventForm
         event={event}
         isReadOnly={isInvoiced()}
-        eventStart={eventStartDate}
+        eventStart={startDate}
+        exceptionId={exceptionId}
       />
     </div>
   )

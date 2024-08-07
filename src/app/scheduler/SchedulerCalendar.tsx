@@ -28,9 +28,11 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
   const handleClickEvent = (e: EventClickArg) => {
     if (!e.event.start) return
     const formattedDate = e.event.start.toISOString()
-    router.push(
-      `/quote-builder/${e.event.extendedProps.eventId}/${formattedDate}`,
-    )
+    let route = `/quote-builder/${e.event.extendedProps.eventId}/${formattedDate}`
+    if (e.event.extendedProps.exceptionId) {
+      route += `/${e.event.extendedProps.exceptionId}`
+    }
+    router.push(route)
   }
 
   const getCalendarTitle = (event: Event) => {
@@ -39,6 +41,7 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
     }
     return `${event.name} - ${event.clientName}`
   }
+
   const fullCalendarEvents = events
     ? events.map((e) => ({
         title: getCalendarTitle(e),
@@ -48,6 +51,7 @@ const SchedulerCalendar = ({ events, ...props }: SchedulerCalendarProps) => {
         textColor: getEventTextStyles(e.status),
         extendedProps: {
           eventId: e.id,
+          exceptionId: e.exceptionId,
         },
       }))
     : []

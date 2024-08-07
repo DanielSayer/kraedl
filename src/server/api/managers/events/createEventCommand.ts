@@ -23,6 +23,7 @@ export async function createEventCommand(
     )
   }
 
+  console.log(`Creating event: ${request.name}. In timezone: ${timezone}`)
   const dateRange = dateRangeResult.Value
   let name = request.name
   if (!name) {

@@ -3,6 +3,8 @@ import type { Recurrence } from './recurrence'
 export type Event = {
   id: string
   name: string
+  isException: boolean
+  exceptionId: string | undefined
   clientName: string
   startTime: Date
   endTime: Date
