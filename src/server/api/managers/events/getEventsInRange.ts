@@ -14,14 +14,19 @@ export async function getEventsInRange(
 
   const events = await eventsService.getEventsInRange(start, end, businessId)
 
-  return events.map((event) => ({
-    id: event.id,
-    name: event.name,
-    clientName: event.clientName,
-    startTime: event.startTime,
-    endTime: event.endTime,
-    status: getEventStatus(event.lineItemsTotal),
-  }))
+  return events.map((event) => {
+    const isException = event.id !== event.eventId
+    return {
+      id: event.eventId,
+      isException: isException,
+      exceptionId: isException ? event.id : undefined,
+      name: event.name,
+      clientName: event.clientName,
+      startTime: event.startTime,
+      endTime: event.endTime,
+      status: getEventStatus(event.lineItemsTotal),
+    }
+  })
 }
 
 const getEventStatus = (lineItemsTotal: string[]): EventStatus => {

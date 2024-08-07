@@ -11,10 +11,10 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { EventInfo } from './EventInfo'
+import { useState } from 'react'
 import { PricingBuilder } from './PricingBuilder'
 import { Recurrence } from './Recurrence'
 import SaveRecurrenceDialog from './SaveRecurrenceDialog'
-import { useState } from 'react'
 
 type EventFormProps = {
   isReadOnly: boolean

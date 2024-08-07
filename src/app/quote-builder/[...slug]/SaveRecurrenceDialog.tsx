@@ -70,14 +70,14 @@ const SaveRecurrenceDialog = ({
           name="saveType"
           control={control}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="space-y-0">
               <FormLabel className="sr-only">Save Type</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  <FormItem className="flex items-center space-x-2 space-y-0 pt-2">
+                  <FormItem className="flex items-center space-x-2 space-y-0">
                     <RadioGroupItem value="this" id="r1" />
                     <Label htmlFor="r1">This event</Label>
                   </FormItem>
