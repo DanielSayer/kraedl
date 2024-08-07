@@ -21,6 +21,17 @@ class EventExceptionsPricingRepository {
       .insert(eventExceptionPricings)
       .values(pricings.map((x) => ({ eventExceptionId, ...x })))
   }
+  async getByEventId(exceptionId: string) {
+    return await db.query.eventExceptionPricings.findMany({
+      where: eq(eventExceptionPricings.eventExceptionId, exceptionId),
+      columns: {
+        id: true,
+        pricingId: true,
+        quantity: true,
+        totalPrice: true,
+      },
+    })
+  }
 }
 
 const eventExceptionsPricingRepository = new EventExceptionsPricingRepository()

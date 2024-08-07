@@ -39,6 +39,25 @@ export const eventsService = {
 
     return removeProjectionsWithExceptions(eventProjections, eventExceptions)
   },
+  getEventById: async (
+    eventId: string,
+    exceptionId: string | undefined,
+    businessId: string,
+  ) => {
+    if (exceptionId) {
+      const event = await eventExceptionsRepository.getById(
+        exceptionId,
+        businessId,
+      )
+      return {
+        ...event,
+        invoicedAt: null,
+        rrule: 'FREQ=NONE',
+      }
+    }
+
+    return await eventsRepository.getById(eventId, businessId)
+  },
 }
 
 function getProjections(

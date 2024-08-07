@@ -33,11 +33,12 @@ const validateSlug = (slug: string[]) => {
 
 export default async function Page({ params }: QuoteBuilderPageProps) {
   await useProtectedRoute()
-  const { eventId, startDate } = validateSlug(params.slug)
+  const { eventId, startDate, exceptionId } = validateSlug(params.slug)
 
   const event = await api.events.getById({
     id: eventId,
     startDate,
+    exceptionId,
   })
   if (!event) {
     redirect('/scheduler')
@@ -58,6 +59,7 @@ export default async function Page({ params }: QuoteBuilderPageProps) {
         event={event}
         isReadOnly={isInvoiced()}
         eventStart={startDate}
+        exceptionId={exceptionId}
       />
     </div>
   )

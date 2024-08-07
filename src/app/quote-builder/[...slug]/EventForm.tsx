@@ -20,18 +20,21 @@ type EventFormProps = {
   isReadOnly: boolean
   event: QuoteEvent
   eventStart: string
+  exceptionId: string | undefined
 }
 
 export const EventForm = ({
   isReadOnly,
   event,
   eventStart,
+  exceptionId,
 }: EventFormProps) => {
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState<boolean>(false)
   const toggleSaveDialog = () => setIsSaveDialogOpen(!isSaveDialogOpen)
   const { data: pricingLines, isLoading } = api.eventPricing.getById.useQuery({
     id: event.id,
     startDate: eventStart,
+    exceptionId,
   })
 
   const form = useForm<QuoteBuilder>({

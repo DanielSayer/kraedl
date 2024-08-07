@@ -61,6 +61,25 @@ class EventExceptionsRepository {
       )
     return mapEvents(rawEventInRangeData)
   }
+  async getById(exceptionId: string, businessId: string) {
+    const event = await db
+      .select({
+        id: eventExceptions.id,
+        name: eventExceptions.name,
+        startTime: eventExceptions.startTime,
+        endTime: eventExceptions.endTime,
+        clientId: eventExceptions.clientId,
+      })
+      .from(eventExceptions)
+      .where(
+        and(
+          eq(eventExceptions.id, exceptionId),
+          eq(eventExceptions.businessId, businessId),
+        ),
+      )
+
+    return single(event)
+  }
 }
 
 const eventExceptionsRepository = new EventExceptionsRepository()

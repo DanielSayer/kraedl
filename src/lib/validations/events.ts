@@ -19,6 +19,7 @@ export const getEventsInRangeSchema = z.object({
 export const eventIdSchema = z.object({
   id: z.string(),
   startDate: z.string().datetime(),
+  exceptionId: z.string().optional(),
 })
 
 export const getEventsForInvoicesSchema = z.object({
